@@ -12,7 +12,7 @@ interface MathProblem {
 const levels: (MathGameLevel & { problems: MathProblem[] })[] = [
   // Addition (1-5) — simple addition within 10
   { 
-    id: 1, name: 'Addition 1-5', op: '+', min: 1, max: 5, badge: '�',
+    id: 1, name: 'Addition 1-5', op: '+', min: 1, max: 5, badge: '🎩',
     problems: [
       { question: '1 + 1', answer: 2, a: 1, b: 1 },
       { question: '2 + 1', answer: 3, a: 2, b: 1 },

@@ -411,7 +411,7 @@ const AdminPage: React.FC = () => {
         <div className="p-8 bg-blue-600/20 backdrop-blur-md rounded-2xl border border-blue-400/30 shadow-lg">
           <h3 className="text-xl font-bold mb-2 text-blue-400">Pedagogisk information</h3>
           <p className="opacity-90 leading-relaxed">
-            "Lär med Nadira" är designad för att vara ett säkert utrymme för barn att utforska språket.
+            "Lär med Nadira" är designad för att vara ett säkert utrymme för barn att lära sig och utforska genom lek.
             Vi använder inga externa servrar eller annonser. All data sparas lokalt på denna enhet.
             Använd admin-sidan för att följa upp barnens framsteg och rensa gamla profiler vid behov.
           </p>

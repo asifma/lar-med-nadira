@@ -86,7 +86,7 @@ const WelcomePage: React.FC = () => {
         onClick={() => navigate('/admin')}
         className="absolute bottom-6 right-6 z-50 w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 group overflow-hidden"
         style={{ 
-          background: 'linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%)',
+          background: 'var(--primary-gradient)',
           boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3), 0 0 0 4px rgba(255, 255, 255, 0.1)'
         }}
         title="Inställningar"
