@@ -79,7 +79,7 @@ const Dashboard: React.FC = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* ABC Game Card */}
             <div
-              onClick={() => navigate('/spel/abc-aventyr/stavning')}
+              onClick={() => navigate('/spel/abc-aventyr/')}
               className="rounded-[2rem] p-8 shadow-[0_10px_0_rgba(0,0,0,0.1)] border border-white/20 cursor-pointer hover:translate-y-[-8px] hover:shadow-[0_18px_0_rgba(0,0,0,0.1)] transition-all group overflow-hidden relative active:translate-y-[-2px]"
               style={{ backgroundColor: 'var(--card-bg)', backdropFilter: 'blur(10px)' }}
             >

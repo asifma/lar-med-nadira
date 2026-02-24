@@ -48,7 +48,7 @@ const AppContent: React.FC = () => {
           <Route path="/" element={<WelcomePage />} />
           <Route path="/profil/ny" element={<ProfileWizard />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/spel/abc-aventyr/stavning" element={<SpellingGame />} />
+          <Route path="/spel/abc-aventyr/" element={<SpellingGame />} />
           <Route path="/spel/matte-magi" element={<MathGame />} />
           <Route path="/samling" element={<CollectionPage />} />
           <Route path="/admin" element={<AdminPage />} />
