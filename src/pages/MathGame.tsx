@@ -37,9 +37,9 @@ const makeProblems = (level: any, count = 10) => {
 };
 
 const VisualCount: React.FC<{ n: number, emoji?: string }> = ({ n, emoji = '🔵' }) => (
-  <div className="flex gap-1 flex-wrap justify-center">
+  <div className="flex gap-1 flex-wrap justify-center items-center">
     {Array.from({ length: Math.min(n, 12) }).map((_, i) => (
-      <span key={i} className="text-3xl">{emoji}</span>
+      <span key={i} className="text-4xl">{emoji}</span>
     ))}
     {n > 12 && <span className="text-xl opacity-60">+{n - 12}</span>}
   </div>
@@ -182,14 +182,21 @@ const MathGame: React.FC = () => {
   // playing
   const p = problems[index];
 
-  return (
-    <div className="min-h-screen p-6 flex flex-col">
-      <div className="flex items-center gap-4 mb-4">
-        <button onClick={() => setGameState('selecting')} className="w-12 h-12 rounded bg-white/10">←</button>
-        <div className="flex-1 text-center font-black">Nivå {selectedLevel} — {level?.name}</div>
-      </div>
+    return (
+      <div className="min-h-screen p-6 flex flex-col" style={{ background: 'var(--bg-gradient, var(--bg-color))' }}>
+        <div className="relative flex items-center px-4 py-3 bg-white/10 backdrop-blur-md rounded-2xl shadow-sm mb-2 z-10 border border-white/20">
+          <button onClick={() => setGameState('selecting')} className="text-3xl hover:scale-110 transition-transform z-10">←</button>
+          <h2 className="absolute inset-0 flex items-center justify-center text-xl md:text-2xl font-black tracking-tight pointer-events-none" style={{ color: 'var(--primary-color)' }}>
+            Nivå {selectedLevel} — {level?.name}
+          </h2>
+          <div className="flex-1" />
+          <div className="flex items-center gap-2 z-10">
+            <button className="text-xl hover:scale-110 transition-all" title="Ljud (ej aktiv)">🔊</button>
+            <div className="text-lg font-black text-yellow-600">⭐ {index + 1}/{problems.length}</div>
+          </div>
+        </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center gap-6">
+        <div className="flex-1 flex flex-col items-center justify-center gap-6">
         <div className="w-full max-w-3xl p-6 rounded-3xl bg-gradient-to-br from-white/5 to-white/2 border border-white/10 text-center shadow-2xl">
           <div className="flex items-center justify-between mb-4">
             <div className="text-4xl">{level?.badge}</div>
