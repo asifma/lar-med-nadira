@@ -97,14 +97,24 @@ const Dashboard: React.FC = () => {
               </div>
             </div>
 
-            {/* Future Math Game Placeholder */}
+            {/* Math Game Card */}
             <div
-              className="rounded-[2rem] p-8 shadow-[0_6px_0_rgba(0,0,0,0.05)] border-2 border-dashed opacity-50 flex flex-col justify-center items-center text-center"
-              style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--primary-color)', opacity: 0.4 }}
+              onClick={() => navigate('/spel/matte-magi')}
+              className="rounded-[2rem] p-8 shadow-[0_10px_0_rgba(0,0,0,0.08)] border border-white/20 cursor-pointer hover:translate-y-[-8px] hover:shadow-[0_18px_0_rgba(0,0,0,0.1)] transition-all group overflow-hidden relative active:translate-y-[-2px]"
+              style={{ backgroundColor: 'var(--card-bg)', backdropFilter: 'blur(10px)' }}
             >
-              <MathCardIllustration className="w-24 h-24 mb-4" />
-              <h3 className="text-xl font-bold">Matte-Magi</h3>
-              <p className="text-sm opacity-60">Kommer snart!</p>
+              <div
+                className="absolute top-4 right-4 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest shadow-sm z-10"
+                style={{ backgroundColor: 'var(--accent-color)' }}
+              >
+                Ny!
+              </div>
+              <div className="w-24 h-24 mb-4 flex items-center justify-center text-4xl">➗</div>
+              <h3 className="text-2xl font-black mb-2">Matte-Magi</h3>
+              <p className="font-bold opacity-70">Räkna, tänk visuellt och samla märken!</p>
+              <div className="mt-6 flex justify-end">
+                <div className="w-12 h-12 rounded-full text-white flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform" style={{ background: 'var(--primary-gradient, var(--primary-color))' }}>➔</div>
+              </div>
             </div>
 
             {/* Future Puzzle Placeholder */}

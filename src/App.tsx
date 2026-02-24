@@ -12,6 +12,7 @@ import WelcomePage from './pages/WelcomePage';
 import ProfileWizard from './pages/ProfileWizard';
 import Dashboard from './pages/Dashboard';
 import SpellingGame from './pages/SpellingGame';
+import MathGame from './pages/MathGame';
 import CollectionPage from './pages/CollectionPage';
 import AdminPage from './pages/AdminPage';
 import ThemeToggle from './components/ThemeToggle';
@@ -48,6 +49,7 @@ const AppContent: React.FC = () => {
           <Route path="/profil/ny" element={<ProfileWizard />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/spel/abc-aventyr/stavning" element={<SpellingGame />} />
+          <Route path="/spel/matte-magi" element={<MathGame />} />
           <Route path="/samling" element={<CollectionPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
