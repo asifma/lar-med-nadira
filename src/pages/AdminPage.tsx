@@ -159,6 +159,7 @@ const AdminPage: React.FC = () => {
   }
 
   const abcUnlocked = isGameFullyUnlocked('abc');
+  const mathUnlocked = isGameFullyUnlocked('math');
 
   return (
     <div
@@ -313,23 +314,44 @@ const AdminPage: React.FC = () => {
               {/* Unlock All Levels */}
               <div className="space-y-3">
                 <label className="text-sm font-bold opacity-60 uppercase tracking-wider">Lås upp nivåer</label>
-                <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/10">
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">🔤</span>
-                    <div>
-                      <p className="font-bold text-sm">ABC-Äventyr</p>
-                      <p className="text-xs opacity-40">Alla 20 nivåer</p>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/10">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">🔤</span>
+                      <div>
+                        <p className="font-bold text-sm">ABC-Äventyr</p>
+                        <p className="text-xs opacity-40">Alla 20 nivåer</p>
+                      </div>
                     </div>
+                    <button
+                      onClick={() => abcUnlocked ? lockAllLevels('abc') : unlockAllLevels('abc')}
+                      className={`px-4 py-2 rounded-xl font-bold text-sm transition-all ${abcUnlocked
+                        ? 'bg-amber-500 text-white hover:bg-amber-600'
+                        : 'bg-white/10 hover:bg-white/20 border border-white/10'
+                        }`}
+                    >
+                      {abcUnlocked ? '🔓 Upplåst' : '🔒 Lås upp alla'}
+                    </button>
                   </div>
-                  <button
-                    onClick={() => abcUnlocked ? lockAllLevels('abc') : unlockAllLevels('abc')}
-                    className={`px-4 py-2 rounded-xl font-bold text-sm transition-all ${abcUnlocked
-                      ? 'bg-amber-500 text-white hover:bg-amber-600'
-                      : 'bg-white/10 hover:bg-white/20 border border-white/10'
-                      }`}
-                  >
-                    {abcUnlocked ? '🔓 Upplåst' : '🔒 Lås upp alla'}
-                  </button>
+
+                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/10">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">➗</span>
+                      <div>
+                        <p className="font-bold text-sm">Matte-Magi</p>
+                        <p className="text-xs opacity-40">Alla 20 nivåer</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => mathUnlocked ? lockAllLevels('math') : unlockAllLevels('math')}
+                      className={`px-4 py-2 rounded-xl font-bold text-sm transition-all ${mathUnlocked
+                        ? 'bg-amber-500 text-white hover:bg-amber-600'
+                        : 'bg-white/10 hover:bg-white/20 border border-white/10'
+                        }`}
+                    >
+                      {mathUnlocked ? '🔓 Upplåst' : '🔒 Lås upp alla'}
+                    </button>
+                  </div>
                 </div>
               </div>
 
