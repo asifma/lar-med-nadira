@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProfile } from '../contexts/ProfileContext';
 import mathGame from '../data/mathLevels';
@@ -6,6 +6,7 @@ import Button from '../components/Button';
 import SpeakableText from '../components/SpeakableText';
 import NumericPad from '../components/NumericPad';
 import { useSettings } from '../contexts/SettingsContext';
+import { burstConfetti, fireConfetti } from '../utils/confetti';
 
 function shuffleArray<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -59,6 +60,12 @@ const MathGame: React.FC = () => {
   const [correctCount, setCorrectCount] = useState(0);
   const [feedback, setFeedback] = useState<'none'|'correct'|'wrong'>('none');
 
+  useEffect(() => {
+    if (gameState === 'complete' && correctCount > 0) {
+      fireConfetti();
+    }
+  }, [gameState, correctCount]);
+
   const startLevel = (id: number) => {
     setSelectedLevel(id);
     const lvl = mathGame.levels.find((l:any) => l.id === id);
@@ -73,6 +80,7 @@ const MathGame: React.FC = () => {
       setFeedback('correct');
       setCorrectCount(c => c + 1);
       updateStars(1);
+      burstConfetti();
       setTimeout(() => {
         if (index < problems.length - 1) { setIndex(i => i + 1); setInput(''); setFeedback('none'); }
         else setGameState('complete');
