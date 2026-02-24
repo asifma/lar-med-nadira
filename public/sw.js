@@ -25,23 +25,37 @@ self.addEventListener('activate', (event) => {
     self.clients.claim();
 });
 
-// Fetch: cache-first for shell, network-first for everything else
+// Fetch: NETWORK-FIRST strategy - always try to get latest from internet
 self.addEventListener('fetch', (event) => {
+    // Skip non-http(s) requests (chrome-extension, data:, blob:, etc.)
+    if (!event.request.url.startsWith('http')) {
+        return;
+    }
+
     event.respondWith(
-        caches.match(event.request).then((cached) => {
-            return cached || fetch(event.request).then((response) => {
-                // Cache successful GET responses
+        // Try network first
+        fetch(event.request)
+            .then((response) => {
+                // If successful, update cache with latest version
                 if (event.request.method === 'GET' && response.status === 200) {
                     const clone = response.clone();
                     caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
                 }
                 return response;
-            }).catch(() => {
-                // Fallback for navigation requests
-                if (event.request.mode === 'navigate') {
-                    return caches.match('/index.html');
-                }
-            });
-        })
+            })
+            .catch(() => {
+                // Network failed (offline) - use cache as fallback
+                return caches.match(event.request).then((cached) => {
+                    if (cached) {
+                        return cached;
+                    }
+                    // If navigation request and no cache, return index.html
+                    if (event.request.mode === 'navigate') {
+                        return caches.match('/index.html');
+                    }
+                    // Otherwise, let it fail
+                    return new Response('Offline and not cached', { status: 503 });
+                });
+            })
     );
 });

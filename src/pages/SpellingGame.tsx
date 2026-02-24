@@ -30,6 +30,8 @@ const SpellingGame: React.FC = () => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [userLetters, setUserLetters] = useState<string[]>([]);
   const [correctCount, setCorrectCount] = useState(0);
+  const [firstAttemptCorrect, setFirstAttemptCorrect] = useState(0); // Track first-try accuracy
+  const [hasAttempted, setHasAttempted] = useState(false); // Track if current word was attempted
   const [feedback, setFeedback] = useState<'none' | 'correct' | 'wrong'>('none');
   const [shake, setShake] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -72,6 +74,9 @@ const SpellingGame: React.FC = () => {
     if (guess === word.word) {
       setFeedback('correct');
       setCorrectCount(prev => prev + 1);
+      if (!hasAttempted) {
+        setFirstAttemptCorrect(prev => prev + 1); // Only count if first attempt
+      }
       updateStars(1);
       safeSpeak(`Rätt! Du stavade ${word.word} helt rätt!`);
 
@@ -80,12 +85,14 @@ const SpellingGame: React.FC = () => {
           setCurrentWordIndex(prev => prev + 1);
           setUserLetters([]);
           setFeedback('none');
+          setHasAttempted(false); // Reset for next word
         } else {
           setGameState('complete');
         }
       }, 2000);
     } else {
       setFeedback('wrong');
+      setHasAttempted(true); // Mark that they've attempted this word
       setShake(true);
       safeSpeak('Inte riktigt! Försök igen!');
       setTimeout(() => {
@@ -94,7 +101,7 @@ const SpellingGame: React.FC = () => {
         setUserLetters([]);
       }, 1000);
     }
-  }, [userLetters, word, currentWordIndex, words.length, updateStars, safeSpeak, level.placeholderMode]);
+  }, [userLetters, word, currentWordIndex, words.length, updateStars, safeSpeak, level.placeholderMode, hasAttempted]);
 
   useEffect(() => {
     // Reset state when level changes
@@ -103,7 +110,7 @@ const SpellingGame: React.FC = () => {
   // Handle game completion
   useEffect(() => {
     if (gameState === 'complete') {
-      const stars = correctCount >= 10 ? 3 : correctCount >= 7 ? 2 : correctCount >= 5 ? 1 : 0;
+      const stars = firstAttemptCorrect >= 10 ? 3 : firstAttemptCorrect >= 7 ? 2 : firstAttemptCorrect >= 5 ? 1 : 0;
       if (stars > 0) {
         completeLevel('abc', selectedLevel, stars);
       }
@@ -115,6 +122,8 @@ const SpellingGame: React.FC = () => {
     setCurrentWordIndex(0);
     setUserLetters([]);
     setCorrectCount(0);
+    setFirstAttemptCorrect(0);
+    setHasAttempted(false);
     setFeedback('none');
     setGameState('playing');
   };
@@ -283,7 +292,7 @@ const SpellingGame: React.FC = () => {
 
   // ─── COMPLETE ───
   if (gameState === 'complete') {
-    const stars = correctCount >= 10 ? 3 : correctCount >= 7 ? 2 : correctCount >= 5 ? 1 : 0;
+    const stars = firstAttemptCorrect >= 10 ? 3 : firstAttemptCorrect >= 7 ? 2 : firstAttemptCorrect >= 5 ? 1 : 0;
     const isNewBadge = !isLevelCompleted('abc', selectedLevel) || stars > getLevelStars('abc', selectedLevel);
 
     return (
@@ -296,7 +305,7 @@ const SpellingGame: React.FC = () => {
           {stars >= 2 ? 'BRA JOBBAT!' : stars >= 1 ? 'BRA FÖRSÖK!' : 'FÖRSÖK IGEN!'}
         </h2>
         <div className="text-3xl font-bold opacity-70">
-          Du fick {correctCount} av {words.length} rätt!
+          Du stavade {firstAttemptCorrect} av {words.length} ord rätt på första försöket!
         </div>
         <div className="flex gap-2">
           {[1, 2, 3].map(s => (
@@ -348,6 +357,20 @@ const SpellingGame: React.FC = () => {
         </div>
       </div>
 
+      {/* Progress Bar */}
+      <div className="w-full max-w-3xl mx-auto mb-4 z-10">
+        <div className="flex justify-between text-xs font-bold opacity-60 mb-1">
+          <span>Framsteg</span>
+          <span>{currentWordIndex}/{words.length}</span>
+        </div>
+        <div className="w-full bg-white/10 rounded-full h-3 overflow-hidden border border-white/20 shadow-inner">
+          <div
+            className="bg-gradient-to-r from-green-400 via-yellow-400 to-purple-500 h-full transition-all duration-500 ease-out rounded-full"
+            style={{ width: `${(currentWordIndex / words.length) * 100}%` }}
+          />
+        </div>
+      </div>
+
       {/* Main Game Area */}
       <div
         className="flex-1 flex flex-col items-center justify-center space-y-10 transition-all duration-700"
@@ -383,7 +406,7 @@ const SpellingGame: React.FC = () => {
             <div className="text-3xl font-black text-green-500 animate-bounce drop-shadow-lg">FANTASTISKT! ✅</div>
           )}
           {feedback === 'wrong' && (
-            <div className="text-3xl font-black text-red-400 drop-shadow-lg">Försök igen! 😅</div>
+            <div className="text-3xl font-black text-red-400 drop-shadow-lg">Försök igen! 😔</div>
           )}
         </div>
       </div>

@@ -8,14 +8,16 @@ export default defineConfig(({ mode }) => {
     return {
       server: {
         port: 3000,
-        host: true,
+        host: 'localhost',
         strictPort: true,
         hmr: {
           protocol: 'ws',
           host: 'localhost',
+          port: 3000,
         },
         watch: {
-          usePolling: false,
+          usePolling: true,
+          interval: 100,
         },
       },
       preview: {

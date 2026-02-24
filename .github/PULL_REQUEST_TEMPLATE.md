@@ -65,11 +65,16 @@ Fixes #(issue nummer)
 - [ ] Spelet är lämpligt för barn 6-9 år
 - [ ] Innehållet är pedagogiskt värdefullt
 - [ ] Instruktioner är tydliga och lätta att förstå
-- [ ] Spelet har progressiv svårighetsgrad
-- [ ] Belöningssystem är implementerat
+- [ ] Spelet har progressiv svårighetsgrad (20 nivåer rekommenderas)
+- [ ] Stjärnsystem baserat på första försökets noggrannhet (1-3 stjärnor)
+- [ ] Klistermärken för avklarade nivåer
 - [ ] Text-till-tal fungerar för alla instruktioner
-- [ ] Spelet fungerar i båda teman
+- [ ] Spelet fungerar i båda teman (Enhörning & Hjälte)
 - [ ] Animationer är smidiga och inte distraktioner
+- [ ] Spelet är registrerat i `src/data/gameRegistry.ts`
+- [ ] Route är tillagd i `src/App.tsx`
+- [ ] Speldata finns i `src/data/` katalogen
+- [ ] Progress bar visar framsteg inom nivån (börjar på 0%)
 
 ## 📚 Ytterligare kontext
 <!-- Lägg till annan kontext om pull requesten här -->

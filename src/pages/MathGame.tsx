@@ -18,32 +18,12 @@ function shuffleArray<T>(arr: T[]): T[] {
   return a;
 }
 
-const makeProblems = (level: any, count = 10) => {
-  const problems: any[] = [];
-  for (let i = 0; i < count; i++) {
-    const a = Math.floor(Math.random() * (level.max - level.min + 1)) + level.min;
-    const b = Math.floor(Math.random() * (level.max - level.min + 1)) + level.min;
-    let question = '';
-    let answer: number = 0;
-    switch (level.op) {
-      case '+': question = `${a} + ${b}`; answer = a + b; break;
-      case '-': question = `${a + b} - ${b}`; answer = a; break; // ensure positive
-      case '×': question = `${a} × ${b}`; answer = a * b; break;
-      case '÷': {
-        const prod = a * b; question = `${prod} ÷ ${b}`; answer = a; break; // divisible
-      }
-    }
-    problems.push({ question, answer, a, b });
-  }
-  return shuffleArray(problems);
-};
-
 const VisualCount: React.FC<{ n: number, emoji?: string }> = ({ n, emoji = '🔵' }) => (
-  <div className="flex gap-1 flex-wrap justify-center items-center">
-    {Array.from({ length: Math.min(n, 12) }).map((_, i) => (
-      <span key={i} className="text-4xl">{emoji}</span>
+  <div className="flex gap-1 flex-wrap justify-center items-center max-w-xs">
+    {Array.from({ length: Math.min(n, 10) }).map((_, i) => (
+      <span key={i} className="text-3xl">{emoji}</span>
     ))}
-    {n > 12 && <span className="text-xl opacity-60">+{n - 12}</span>}
+    {n > 10 && <span className="text-2xl font-black opacity-60">+{n - 10}</span>}
   </div>
 );
 
@@ -59,6 +39,8 @@ const MathGame: React.FC = () => {
   const [index, setIndex] = useState(0);
   const [input, setInput] = useState('');
   const [correctCount, setCorrectCount] = useState(0);
+  const [firstAttemptCorrect, setFirstAttemptCorrect] = useState(0); // Track first-try accuracy
+  const [hasAttempted, setHasAttempted] = useState(false); // Track if current question was attempted
   const [feedback, setFeedback] = useState<'none'|'correct'|'wrong'>('none');
   const [streak, setStreak] = useState(0);
   const { speak, stop } = useSpeech();
@@ -77,16 +59,25 @@ const MathGame: React.FC = () => {
   };
 
   useEffect(() => {
-    if (gameState === 'complete' && correctCount > 0) {
-      fireConfetti();
+    if (gameState === 'complete') {
+      if (correctCount > 0) fireConfetti();
+      const stars = firstAttemptCorrect >= 10 ? 3 : firstAttemptCorrect >= 7 ? 2 : firstAttemptCorrect >= 5 ? 1 : 0;
+      if (stars > 0) completeLevel('math', selectedLevel, stars);
     }
-  }, [gameState, correctCount]);
+  }, [gameState]);
 
   const startLevel = (id: number) => {
     setSelectedLevel(id);
     const lvl = mathGame.levels.find((l:any) => l.id === id);
-    setProblems(makeProblems(lvl, 10));
-    setIndex(0); setInput(''); setCorrectCount(0); setFeedback('none'); setGameState('playing');
+    // Use static problems from level definition
+    setProblems(lvl.problems);
+    setIndex(0); 
+    setInput(''); 
+    setCorrectCount(0); 
+    setFirstAttemptCorrect(0);
+    setHasAttempted(false);
+    setFeedback('none'); 
+    setGameState('playing');
     if (settings.autoPlayInstructions) safeSpeak(`Nivå ${id}, ${lvl?.name}`);
   };
 
@@ -96,16 +87,25 @@ const MathGame: React.FC = () => {
     if (val === p.answer) {
       setFeedback('correct');
       setCorrectCount(c => c + 1);
+      if (!hasAttempted) {
+        setFirstAttemptCorrect(c => c + 1); // Only count if first attempt
+      }
       setStreak(s => s + 1);
       updateStars(1);
       burstConfetti();
       safeSpeak('Rätt');
       setTimeout(() => {
-        if (index < problems.length - 1) { setIndex(i => i + 1); setInput(''); setFeedback('none'); }
+        if (index < problems.length - 1) { 
+          setIndex(i => i + 1); 
+          setInput(''); 
+          setFeedback('none');
+          setHasAttempted(false); // Reset for next question
+        }
         else setGameState('complete');
       }, 700);
     } else {
       setFeedback('wrong');
+      setHasAttempted(true); // Mark that they've attempted this question
       setStreak(0);
       safeSpeak('Inte rätt, försök igen');
       setTimeout(() => { setFeedback('none'); setInput(''); }, 700);
@@ -255,12 +255,16 @@ const MathGame: React.FC = () => {
   }
 
   if (gameState === 'complete') {
-    const stars = correctCount >= 10 ? 3 : correctCount >= 7 ? 2 : correctCount >= 5 ? 1 : 0;
-    if (stars > 0) completeLevel('math', selectedLevel, stars);
+    const stars = firstAttemptCorrect >= 10 ? 3 : firstAttemptCorrect >= 7 ? 2 : firstAttemptCorrect >= 5 ? 1 : 0;
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-8 text-center">
         <div className="text-6xl">{stars >= 2 ? '🎉' : '👏'}</div>
-        <h2 className="text-3xl font-black">Du fick {correctCount} av {problems.length} rätt</h2>
+        <h2 className="text-3xl font-black">Du fick {firstAttemptCorrect} av {problems.length} rätt på första försöket</h2>
+        <div className="flex gap-2 my-4">
+          {[1, 2, 3].map(s => (
+            <span key={s} className={`text-5xl ${s <= stars ? 'animate-bounce' : 'opacity-20'}`} style={{ animationDelay: `${s * 0.15}s` }}>⭐</span>
+          ))}
+        </div>
         <div className="pt-6 flex gap-4">
           <Button variant="secondary" size="lg" onClick={() => setGameState('selecting')}>Alla nivåer</Button>
           <Button variant="primary" size="lg" onClick={() => startLevel(selectedLevel)}>Spela igen</Button>
@@ -332,17 +336,35 @@ const MathGame: React.FC = () => {
         <div className="w-full max-w-3xl mx-auto mb-4">
           <div className="flex justify-between text-xs font-bold opacity-60 mb-1">
             <span>Framsteg</span>
-            <span>{index + 1}/{problems.length}</span>
+            <span>{index}/{problems.length}</span>
           </div>
           <div className="w-full bg-white/10 rounded-full h-3 overflow-hidden border border-white/20 shadow-inner">
             <div
               className="bg-gradient-to-r from-green-400 via-yellow-400 to-red-500 h-full transition-all duration-500 ease-out rounded-full"
-              style={{ width: `${((index + 1) / problems.length) * 100}%` }}
+              style={{ width: `${(index / problems.length) * 100}%` }}
             />
           </div>
         </div>
 
         <div className="flex-1 flex flex-col items-center justify-center gap-6">
+        
+        {/* Feedback text - positioned at top with nice visuals */}
+        <div className="h-20 flex items-center justify-center">
+          {feedback === 'correct' && (
+            <div className="text-5xl font-black text-green-500 animate-pop flex items-center gap-3 drop-shadow-lg">
+              <span className="animate-bounce">✅</span>
+              <span>Rätt!</span>
+              <span className="animate-bounce" style={{ animationDelay: '0.1s' }}>🎉</span>
+            </div>
+          )}
+          {feedback === 'wrong' && (
+            <div className="text-4xl font-black text-red-500 animate-shake flex items-center gap-3 drop-shadow-lg">
+              <span>❌</span>
+              <span>Försök igen!</span>
+            </div>
+          )}
+        </div>
+
         <div className={`w-full max-w-3xl p-6 rounded-3xl bg-gradient-to-br from-white/5 to-white/2 border border-white/10 text-center shadow-2xl ${feedback === 'correct' ? 'animate-wiggle' : ''} ${feedback === 'wrong' ? 'animate-shake' : ''}`}>
           <div className="flex items-center justify-between mb-4">
             <div className="text-4xl">{level?.badge}</div>
@@ -365,7 +387,7 @@ const MathGame: React.FC = () => {
               <div className={`bg-white/10 p-4 rounded-2xl animate-float ${feedback === 'correct' ? 'animate-glow-pulse' : ''} ${feedback === 'wrong' ? 'opacity-50' : ''}`}>
                 <VisualCount n={p.a} emoji={level?.op === '+' ? '🍎' : level?.op === '-' ? '🍐' : level?.op === '×' ? '🍇' : '🍪'} />
               </div>
-              <div className="text-4xl">{level?.op}</div>
+              <div className="text-4xl font-black">{level?.op}</div>
               <div className={`bg-white/10 p-4 rounded-2xl animate-float ${feedback === 'correct' ? 'animate-glow-pulse' : ''} ${feedback === 'wrong' ? 'opacity-50' : ''}`}>
                 <VisualCount n={p.b} emoji={level?.op === '+' ? '🍏' : level?.op === '-' ? '🍎' : level?.op === '×' ? '🍇' : '🍪'} />
               </div>
@@ -381,11 +403,6 @@ const MathGame: React.FC = () => {
               />
             </div>
             <NumericPad onPress={(v) => setInput(i => (v === '' ? '' : (i + v).slice(0,6)))} onClear={() => setInput('')} onEnter={check} />
-          </div>
-
-          <div className="h-12 mt-4">
-            {feedback === 'correct' && <div className="text-2xl text-green-500">Rätt! ✅</div>}
-            {feedback === 'wrong' && <div className="text-2xl text-red-400">Inte rätt — försök igen</div>}
           </div>
         </div>
       </div>

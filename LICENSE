@@ -1,34 +1,97 @@
-Creative Commons Attribution-NonCommercial 4.0 International License
+# The Polyform Noncommercial License 1.0.0
 
-Copyright (c) 2025 Asif Mithawala
+<https://polyformproject.org/licenses/noncommercial/1.0.0>
 
-This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 
-International License. To view a copy of this license, visit 
-http://creativecommons.org/licenses/by-nc/4.0/ or send a letter to 
-Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+## Acceptance
 
-You are free to:
-  - Share — copy and redistribute the material in any medium or format
-  - Adapt — remix, transform, and build upon the material
+In order to get any license under these terms, you must agree to them as both strict obligations and conditions to all your licenses.
 
-Under the following terms:
-  - Attribution — You must give appropriate credit to Asif Mithawala, provide 
-    a link to the license, and indicate if changes were made. You may do so in 
-    any reasonable manner, but not in any way that suggests the licensor 
-    endorses you or your use.
-  
-  - NonCommercial — You may not use the material for commercial purposes.
+## Copyright License
 
-  - No additional restrictions — You may not apply legal terms or technological 
-    measures that legally restrict others from doing anything the license permits.
+The licensor grants you a copyright license for the software to do everything you might do with the software that would otherwise infringe the licensor's copyright in it for any permitted purpose. However, you may only distribute the software according to [Distribution License](#distribution-license) and make changes or new works based on the software according to [Changes and New Works License](#changes-and-new-works-license).
 
-Notices:
-  - You do not have to comply with the license for elements of the material in 
-    the public domain or where your use is permitted by an applicable exception 
-    or limitation.
-  
-  - No warranties are given. The license may not give you all of the permissions 
-    necessary for your intended use. For example, other rights such as publicity, 
-    privacy, or moral rights may limit how you use the material.
+## Distribution License
+
+The licensor grants you an additional copyright license to distribute copies of the software. Your license to distribute covers distributing the software with changes and new works permitted by [Changes and New Works License](#changes-and-new-works-license).
+
+## Notices
+
+You must ensure that anyone who gets a copy of any part of the software from you also gets a copy of these terms or the URL for them above, as well as copies of any plain-text lines beginning with `Required Notice:` that the licensor provided with the software. For example:
+
+> Required Notice: Copyright Asif Mithawala (https://mithawala.com)
+
+## Changes and New Works License
+
+The licensor grants you an additional copyright license to make changes and new works based on the software for any permitted purpose.
+
+## Patent License
+
+The licensor grants you a patent license for the software that covers patent claims the licensor can license, or becomes able to license, that you would infringe by using the software.
+
+## Noncommercial Purposes
+
+Any noncommercial purpose is a permitted purpose.
+
+## Personal Uses
+
+Personal use for research, experiment, and testing for the benefit of public knowledge, personal study, private entertainment, hobby projects, amateur pursuits, or religious observance, without any anticipated commercial application, is use for a permitted purpose.
+
+## Noncommercial Organizations
+
+Use by any charitable organization, educational institution, public research organization, public safety or health organization, environmental protection organization, or government institution is use for a permitted purpose regardless of the source of funding or obligations resulting from the funding.
+
+## Defense
+
+Don't make any legal claim against anyone accusing the software, with or without changes, alone or with other technology, of infringing any patent.
+
+## Copyright
+
+The licensor licenses you to do everything with the software that would otherwise infringe their copyright in it.
+
+## Patent
+
+The licensor licenses you to do everything with the software that would otherwise infringe any patents they can license or become able to license.
+
+## Reliability
+
+The licensor can't revoke this license.
+
+## Excuse
+
+If anyone notifies you in writing that you have not complied with [Notices](#notices), you can keep your license by taking all practical steps to comply within 30 days after the notice. If you do not do so, your license ends immediately.
+
+## No Liability
+
+***As far as the law allows, the software comes as is, without any warranty or condition, and the licensor will not be liable to you for any damages arising out of these terms or the use or nature of the software, under any kind of legal claim.***
+
+---
+
+## Required Notice
+
+Copyright © 2024-2026 Asif Mithawala (https://mithawala.com)
+
+Licensed under the Polyform Noncommercial License 1.0.0
+
+## Commercial Licensing
 
 For commercial use, please contact: https://mithawala.com/
+
+---
+
+**What this means in simple terms:**
+
+✅ **You CAN:**
+- Use the app for free (personal, educational, non-profit)
+- View and study the source code
+- Modify and improve the code
+- Share your modifications with others
+- Use it in schools and educational institutions
+- Contribute improvements back to the project
+
+❌ **You CANNOT:**
+- Sell the app or charge money for it
+- Use it in a commercial product or service
+- Run it as a paid service (SaaS)
+- Make money from it in any way
+
+💼 **For commercial use:** Contact me at https://mithawala.com/

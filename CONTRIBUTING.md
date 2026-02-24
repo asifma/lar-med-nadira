@@ -34,44 +34,23 @@ Vi älskar nya idéer! När du föreslår en funktion:
 
 ### 🎮 Lägg till Nya Spel
 
-Vill du skapa ett nytt spel? Fantastiskt! Följ dessa steg:
+Vill du skapa ett nytt spel? Fantastiskt! 
 
-#### 1. Planering
-- Definiera **lärandemål** (vad ska barnet lära sig?)
-- Skissa **spelmekanik** (hur fungerar spelet?)
-- Planera **progressionssystem** (hur blir det svårare?)
-- Designa **belöningssystem** (märken, stjärnor, etc.)
+**📖 Läs den kompletta guiden: [docs/ADDING_GAMES.md](docs/ADDING_GAMES.md)**
 
-#### 2. Implementation
-```typescript
-// 1. Skapa speldata i src/data/
-export interface MyGameLevel {
-  id: number;
-  name: string;
-  // ... din speldata
-}
+**🎯 Använd mallen: [docs/GAME_TEMPLATE.md](docs/GAME_TEMPLATE.md)**
 
-export const myGame: GameDefinition = {
-  id: 'my-game',
-  name: 'Mitt Spel',
-  icon: '🎮',
-  levels: [...]
-};
+#### Snabbstart (5 steg)
 
-// 2. Skapa spelkomponent i src/pages/
-const MyGame: React.FC = () => {
-  // Din spellogik här
-};
+1. **Skapa speldata** i `src/data/yourGameLevels.ts`
+2. **Skapa spelkomponent** i `src/pages/YourGame.tsx`
+3. **Lägg till illustration** i `src/components/GameCardIllustration.tsx`
+4. **Registrera spelet** i `src/data/gameRegistry.ts`
+5. **Lägg till route** i `src/App.tsx`
 
-// 3. Lägg till i Dashboard.tsx
-<GameCard 
-  title="Mitt Spel"
-  icon="🎮"
-  onClick={() => navigate('/spel/my-game')}
-/>
-```
+Det är allt! Dashboard och samlingssidan uppdateras automatiskt.
 
-#### 3. Testa
+#### Testa
 - [ ] Fungerar spelet i båda teman?
 - [ ] Är instruktioner tydliga för barn?
 - [ ] Fungerar text-till-tal?

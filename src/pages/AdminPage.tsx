@@ -160,6 +160,7 @@ const AdminPage: React.FC = () => {
 
   const abcUnlocked = isGameFullyUnlocked('abc');
   const mathUnlocked = isGameFullyUnlocked('math');
+  const memoryUnlocked = isGameFullyUnlocked('memory');
 
   return (
     <div
@@ -350,6 +351,25 @@ const AdminPage: React.FC = () => {
                         }`}
                     >
                       {mathUnlocked ? '🔓 Upplåst' : '🔒 Lås upp alla'}
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/10">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">🧠</span>
+                      <div>
+                        <p className="font-bold text-sm">Minnes-Mästaren</p>
+                        <p className="text-xs opacity-40">Alla 20 nivåer</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => memoryUnlocked ? lockAllLevels('memory') : unlockAllLevels('memory')}
+                      className={`px-4 py-2 rounded-xl font-bold text-sm transition-all ${memoryUnlocked
+                        ? 'bg-amber-500 text-white hover:bg-amber-600'
+                        : 'bg-white/10 hover:bg-white/20 border border-white/10'
+                        }`}
+                    >
+                      {memoryUnlocked ? '🔓 Upplåst' : '🔒 Lås upp alla'}
                     </button>
                   </div>
                 </div>

@@ -11,19 +11,45 @@ export interface Word {
 
 export type PlaceholderMode = 'full' | 'partial' | 'none';
 
-export interface GameLevel {
+// Base level interface - all games must have these properties
+export interface BaseGameLevel {
   id: number;
   name: string;
-  words: Word[];
-  placeholderMode: PlaceholderMode;
   badge: string;
 }
 
-export interface GameDefinition {
+// Spelling game specific level
+export interface SpellingGameLevel extends BaseGameLevel {
+  words: Word[];
+  placeholderMode: PlaceholderMode;
+}
+
+// Math game specific level
+export interface MathGameLevel extends BaseGameLevel {
+  op: string;
+  min: number;
+  max: number;
+}
+
+// Memory game specific level (for future use)
+export interface MemoryGameLevel extends BaseGameLevel {
+  pairs: number;
+  theme: string;
+}
+
+// Union type for all game levels
+export type GameLevel = SpellingGameLevel | MathGameLevel | MemoryGameLevel;
+
+// Game definition with metadata
+export interface GameDefinition<T extends BaseGameLevel = BaseGameLevel> {
   id: string;
   name: string;
   icon: string;
-  levels: GameLevel[];
+  description: string;
+  route: string;
+  illustration: string; // Component name for the card illustration
+  badge?: string; // Optional badge text like "Populärt!" or "Ny!"
+  levels: T[];
 }
 
 export interface CompletedLevel {

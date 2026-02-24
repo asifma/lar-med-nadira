@@ -38,18 +38,20 @@ export const SpeechProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
     window.speechSynthesis.cancel();
 
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'sv-SE';
-    utterance.rate = speechRate;
+    const doSpeak = () => {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'sv-SE';
+      utterance.rate = speechRate;
 
-    // Find a Swedish voice if possible
-    const voices = window.speechSynthesis.getVoices();
-    const svVoice = voices.find(v => v.lang.startsWith('sv'));
-    if (svVoice) utterance.voice = svVoice;
+      const voices = window.speechSynthesis.getVoices();
+      const svVoice = voices.find(v => v.lang.startsWith('sv'));
+      if (svVoice) utterance.voice = svVoice;
 
-    // swallow handlers — do not log to console unless error
-    utterance.onerror = () => {};
-    window.speechSynthesis.speak(utterance);
+      window.speechSynthesis.speak(utterance);
+    };
+
+    // Small delay after cancel() to work around Chrome dropping utterances
+    setTimeout(doSpeak, 50);
   }, [speechRate]);
 
   const stop = useCallback(() => {

@@ -1,4 +1,4 @@
-import { GameDefinition, Word } from '../types';
+import type { GameDefinition, SpellingGameLevel, Word } from '../types';
 
 // Level 1-5: 2-4 letter words, placeholderMode: 'full'
 const level1Words: Word[] = [
@@ -264,10 +264,13 @@ const level20Words: Word[] = [
   { word: 'TROLLSLÄNDA', emoji: '🦟' },
 ];
 
-export const abcGame: GameDefinition = {
+export const abcGame: GameDefinition<SpellingGameLevel> = {
   id: 'abc',
   name: 'ABC-Äventyr',
   icon: '📚',
+  description: 'Lär dig stava roliga ord!',
+  route: '/spel/abc-aventyr/',
+  illustration: 'AbcCardIllustration',
   levels: [
     { id: 1, name: 'Första stegen', words: level1Words, placeholderMode: 'full', badge: '🌟' },
     { id: 2, name: 'Bokstavslandet', words: level2Words, placeholderMode: 'full', badge: '🎯' },

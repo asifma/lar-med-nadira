@@ -13,13 +13,91 @@
   <rect width="512" height="512" rx="112" fill="url(#bg)"/>
   <!-- Subtle inner glow -->
   <rect x="20" y="20" width="472" height="472" rx="96" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="4"/>
-  <!-- Letter N -->
+
+  <!-- School items - more playful scattered arrangement -->
+
+  <!-- Pencil (top-left, tilted) -->
+  <g transform="translate(62, 160) rotate(-45)" opacity="0.35">
+    <rect x="0" y="0" width="9" height="60" rx="2" fill="white"/>
+    <polygon points="0,60 9,60 4.5,72" fill="white"/>
+    <rect x="0" y="0" width="9" height="8" rx="1" fill="white" opacity="0.5"/>
+  </g>
+
+  <!-- Ruler (bottom-left, angled) -->
+  <g transform="translate(70, 370) rotate(-15)" opacity="0.3">
+    <rect x="0" y="0" width="90" height="20" rx="3" fill="none" stroke="white" stroke-width="2.5"/>
+    <line x1="15" y1="0" x2="15" y2="10" stroke="white" stroke-width="1.5"/>
+    <line x1="30" y1="0" x2="30" y2="14" stroke="white" stroke-width="2"/>
+    <line x1="45" y1="0" x2="45" y2="10" stroke="white" stroke-width="1.5"/>
+    <line x1="60" y1="0" x2="60" y2="14" stroke="white" stroke-width="2"/>
+    <line x1="75" y1="0" x2="75" y2="10" stroke="white" stroke-width="1.5"/>
+  </g>
+
+  <!-- ABC floating letters (top-right area, below star) -->
+  <text x="370" y="210" font-family="system-ui, sans-serif" font-weight="900" font-size="30" fill="white" opacity="0.3" transform="rotate(8, 370, 210)">A</text>
+  <text x="420" y="250" font-family="system-ui, sans-serif" font-weight="900" font-size="24" fill="white" opacity="0.22" transform="rotate(-5, 420, 250)">B</text>
+  <text x="445" y="200" font-family="system-ui, sans-serif" font-weight="900" font-size="20" fill="white" opacity="0.25" transform="rotate(12, 445, 200)">C</text>
+
+  <!-- Calculator (bottom-right, tilted) -->
+  <g transform="translate(370, 390) rotate(10)" opacity="0.3">
+    <rect x="0" y="0" width="50" height="65" rx="7" fill="none" stroke="white" stroke-width="2.5"/>
+    <rect x="7" y="7" width="36" height="15" rx="3" fill="white" opacity="0.35"/>
+    <!-- Buttons row 1 -->
+    <rect x="9" y="28" width="8" height="8" rx="2" fill="white" opacity="0.5"/>
+    <rect x="21" y="28" width="8" height="8" rx="2" fill="white" opacity="0.5"/>
+    <rect x="33" y="28" width="8" height="8" rx="2" fill="white" opacity="0.5"/>
+    <!-- Buttons row 2 -->
+    <rect x="9" y="40" width="8" height="8" rx="2" fill="white" opacity="0.5"/>
+    <rect x="21" y="40" width="8" height="8" rx="2" fill="white" opacity="0.5"/>
+    <rect x="33" y="40" width="8" height="8" rx="2" fill="white" opacity="0.5"/>
+    <!-- Buttons row 3 -->
+    <rect x="9" y="52" width="8" height="8" rx="2" fill="white" opacity="0.5"/>
+    <rect x="21" y="52" width="20" height="8" rx="2" fill="white" opacity="0.5"/>
+  </g>
+
+  <!-- Math symbols scattered -->
+  <!-- Plus (left middle) -->
+  <g transform="translate(50, 230)" opacity="0.35">
+    <line x1="0" y1="10" x2="20" y2="10" stroke="white" stroke-width="4" stroke-linecap="round"/>
+    <line x1="10" y1="0" x2="10" y2="20" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <!-- Equals (right middle) -->
+  <g transform="translate(445, 315)" opacity="0.25">
+    <line x1="0" y1="0" x2="22" y2="0" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="0" y1="10" x2="22" y2="10" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+  </g>
+
+  <!-- Open book (bottom center-left) -->
+  <g transform="translate(200, 430) rotate(-5)" opacity="0.25">
+    <path d="M0,30 Q22,22 22,0 Q22,22 44,30 L44,52 Q22,44 22,22 Q22,44 0,52 Z" fill="none" stroke="white" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- Page lines -->
+    <line x1="5" y1="38" x2="18" y2="34" stroke="white" stroke-width="1.2" opacity="0.5"/>
+    <line x1="5" y1="44" x2="18" y2="40" stroke="white" stroke-width="1.2" opacity="0.5"/>
+    <line x1="26" y1="34" x2="39" y2="38" stroke="white" stroke-width="1.2" opacity="0.5"/>
+    <line x1="26" y1="40" x2="39" y2="44" stroke="white" stroke-width="1.2" opacity="0.5"/>
+  </g>
+
+  <!-- Globe (top-left area) -->
+  <g transform="translate(85, 70)" opacity="0.25">
+    <circle cx="16" cy="16" r="15" fill="none" stroke="white" stroke-width="2.5"/>
+    <ellipse cx="16" cy="16" rx="8" ry="15" fill="none" stroke="white" stroke-width="1.5"/>
+    <line x1="1" y1="16" x2="31" y2="16" stroke="white" stroke-width="1.5"/>
+  </g>
+
+  <!-- Tiny "1+2" text (left side) -->
+  <text x="55" y="320" font-family="system-ui, sans-serif" font-weight="700" font-size="18" fill="white" opacity="0.2" transform="rotate(-10, 55, 320)">1+2</text>
+
+  <!-- Letter N (main hero) -->
   <text x="256" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="300" fill="white" opacity="0.95">N</text>
+
   <!-- Star top-right -->
   <polygon points="405,70 416,105 452,105 423,127 434,162 405,140 376,162 387,127 358,105 394,105" fill="url(#star)" opacity="0.9"/>
-  <!-- Small sparkles top-left -->
-  <circle cx="105" cy="90" r="10" fill="white" opacity="0.7"/>
-  <circle cx="138" cy="125" r="6" fill="white" opacity="0.5"/>
-  <!-- Bottom sparkle -->
+
+  <!-- Sparkles -->
+  <circle cx="138" cy="135" r="6" fill="white" opacity="0.5"/>
   <circle cx="400" cy="420" r="7" fill="white" opacity="0.4"/>
+  <circle cx="330" cy="455" r="4" fill="white" opacity="0.3"/>
+  <circle cx="455" cy="160" r="5" fill="white" opacity="0.4"/>
+  <circle cx="60" cy="450" r="4" fill="white" opacity="0.3"/>
 </svg>

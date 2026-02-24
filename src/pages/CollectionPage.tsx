@@ -2,19 +2,15 @@
 import React from 'react';
 import { useProfile } from '../contexts/ProfileContext';
 import SpeakableText from '../components/SpeakableText';
-import { abcGame } from '../data/abcWords';
-import { mathGame } from '../data/mathLevels';
-import { GameDefinition } from '../types';
-
-const ALL_GAMES: GameDefinition[] = [abcGame, mathGame];
+import GAMES from '../data/gameRegistry';
 
 const CollectionPage: React.FC = () => {
   const { activeProfile, isLevelCompleted, getLevelStars } = useProfile();
 
   if (!activeProfile) return null;
 
-  const totalBadges = ALL_GAMES.reduce((sum, g) => sum + g.levels.length, 0);
-  const earnedBadges = ALL_GAMES.reduce((sum, g) =>
+  const totalBadges = GAMES.reduce((sum, g) => sum + g.levels.length, 0);
+  const earnedBadges = GAMES.reduce((sum, g) =>
     sum + g.levels.filter(l => isLevelCompleted(g.id, l.id)).length
     , 0);
 
@@ -29,7 +25,7 @@ const CollectionPage: React.FC = () => {
           <p className="mt-2 font-bold opacity-60">{earnedBadges} av {totalBadges} märken</p>
         </div>
 
-        {ALL_GAMES.map(game => {
+        {GAMES.map(game => {
           const completed = game.levels.filter(l => isLevelCompleted(game.id, l.id)).length;
           return (
             <div key={game.id} className="mb-10">

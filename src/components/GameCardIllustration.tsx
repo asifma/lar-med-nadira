@@ -4,8 +4,8 @@ export const AbcCardIllustration: React.FC<{ className?: string }> = ({ classNam
   <div className={className}>
     <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
       {/* Open book */}
-      <g transform="translate(60, 75)">
-        <animateTransform attributeName="transform" type="translate" values="60,75;60,70;60,75" dur="3s" repeatCount="indefinite" />
+      <g transform="translate(60, 60)">
+        <animateTransform attributeName="transform" type="translate" values="60,60;60,55;60,60" dur="3s" repeatCount="indefinite" />
         <path d="M -5 0 Q -30 -5 -40 -25 L -40 15 Q -30 10 -5 12 Z" fill="var(--primary-color)" opacity="0.7" />
         <path d="M 5 0 Q 30 -5 40 -25 L 40 15 Q 30 10 5 12 Z" fill="var(--primary-color)" opacity="0.7" />
         <path d="M -5 0 L 0 -3 L 5 0 L 5 12 L 0 10 L -5 12 Z" fill="var(--primary-color)" opacity="0.4" />
@@ -79,22 +79,22 @@ export const MathCardIllustration: React.FC<{ className?: string }> = ({ classNa
           }
         `}
       </style>
-      {/* Calculator body with bounce */}
-      <g>
-        <animateTransform attributeName="transform" type="translate" values="30,20;30,18;30,20" dur="3s" repeatCount="indefinite" />
-        <rect x="30" y="20" width="60" height="90" rx="8" fill="var(--primary-color)" opacity="0.6" />
+      {/* Calculator body with bounce - CENTERED */}
+      <g transform="translate(60, 60)">
+        <animateTransform attributeName="transform" type="translate" values="60,60;60,58;60,60" dur="3s" repeatCount="indefinite" />
+        <rect x="-30" y="-40" width="60" height="90" rx="8" fill="var(--primary-color)" opacity="0.6" />
         {/* Screen */}
-        <rect x="35" y="25" width="50" height="20" rx="4" fill="white" opacity="0.3" />
+        <rect x="-25" y="-35" width="50" height="20" rx="4" fill="white" opacity="0.3" />
         {/* Buttons grid (3x4) with wave effect */}
         <g>
           {[ // Row 1
-            {cx: 38, cy: 35}, {cx: 53, cy: 35}, {cx: 68, cy: 35},
+            {cx: -22, cy: -25}, {cx: -7, cy: -25}, {cx: 8, cy: -25},
             // Row 2
-            {cx: 38, cy: 50}, {cx: 53, cy: 50}, {cx: 68, cy: 50},
+            {cx: -22, cy: -10}, {cx: -7, cy: -10}, {cx: 8, cy: -10},
             // Row 3
-            {cx: 38, cy: 65}, {cx: 53, cy: 65}, {cx: 68, cy: 65},
+            {cx: -22, cy: 5}, {cx: -7, cy: 5}, {cx: 8, cy: 5},
             // Row 4 (0)
-            {cx: 53, cy: 80}
+            {cx: -7, cy: 20}
           ].map((pos, i) => (
             <circle key={i} cx={pos.cx} cy={pos.cy} r="6" fill="white" opacity="0.2">
               <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2s" repeatCount="indefinite" begin={`${i * 0.2}s`} />
@@ -103,17 +103,17 @@ export const MathCardIllustration: React.FC<{ className?: string }> = ({ classNa
         </g>
         {/* Popping numbers (sample: 1, 2, 3) */}
         <g fill="var(--text-color)" fontSize="8" fontWeight="bold" fontFamily="sans-serif">
-          <text x="38" y="39" textAnchor="middle">
+          <text x="-22" y="-21" textAnchor="middle">
             <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin="0s" />
             <animateTransform attributeName="transform" type="scale" values="0;1.2;1" dur="1.5s" repeatCount="indefinite" begin="0s" additive="sum"/>
             1
           </text>
-          <text x="53" y="39" textAnchor="middle">
+          <text x="-7" y="-21" textAnchor="middle">
             <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin="0.5s" />
             <animateTransform attributeName="transform" type="scale" values="0;1.2;1" dur="1.5s" repeatCount="indefinite" begin="0.5s" additive="sum"/>
             2
           </text>
-          <text x="68" y="39" textAnchor="middle">
+          <text x="8" y="-21" textAnchor="middle">
             <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin="1s" />
             <animateTransform attributeName="transform" type="scale" values="0;1.2;1" dur="1.5s" repeatCount="indefinite" begin="1s" additive="sum"/>
             3
@@ -121,34 +121,110 @@ export const MathCardIllustration: React.FC<{ className?: string }> = ({ classNa
         </g>
         {/* Floating math symbols around calculator */}
         <g fill="var(--accent-color)" fontSize="12" fontWeight="bold">
-          <text x="20" y="35">
+          <text x="-40" y="-25">
             <animateTransform attributeName="transform" type="translate" values="0,0; -3,-3; 0,0" dur="4s" repeatCount="indefinite" />
             +
           </text>
-          <text x="95" y="25">
+          <text x="35" y="-35">
             <animateTransform attributeName="transform" type="translate" values="0,0; 3,-3; 0,0" dur="4s" repeatCount="indefinite" begin="1s" />
             −
           </text>
-          <text x="95" y="70">
+          <text x="35" y="10">
             <animateTransform attributeName="transform" type="translate" values="0,0; -3,3; 0,0" dur="4s" repeatCount="indefinite" begin="2s" />
             ×
           </text>
-          <text x="20" y="85">
+          <text x="-40" y="25">
             <animateTransform attributeName="transform" type="translate" values="0,0; 3,3; 0,0" dur="4s" repeatCount="indefinite" begin="3s" />
             ÷
           </text>
         </g>
         {/* Sparkles at corners */}
-        <circle cx="28" cy="18" r="3" fill="#FFD700">
+        <circle cx="-32" cy="-42" r="3" fill="#FFD700">
           <animate attributeName="opacity" values="0.7;0;0.7" dur="2s" repeatCount="indefinite" />
         </circle>
-        <circle cx="92" cy="18" r="2" fill="#FFD700">
+        <circle cx="32" cy="-42" r="2" fill="#FFD700">
           <animate attributeName="opacity" values="0.5;0;0.5" dur="2.5s" repeatCount="indefinite" />
         </circle>
-        <circle cx="28" cy="102" r="2.5" fill="#FFD700">
+        <circle cx="-32" cy="42" r="2.5" fill="#FFD700">
           <animate attributeName="opacity" values="0.6;0;0.6" dur="1.8s" repeatCount="indefinite" />
         </circle>
       </g>
+    </svg>
+  </div>
+);
+
+export const MemoryCardIllustration: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <div className={className}>
+    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+      {/* Brain with pulsing effect */}
+      <g transform="translate(60, 60)">
+        <ellipse cx="0" cy="0" rx="35" ry="30" fill="var(--primary-color)" opacity="0.3">
+          <animate attributeName="rx" values="35;38;35" dur="2s" repeatCount="indefinite" />
+          <animate attributeName="ry" values="30;33;30" dur="2s" repeatCount="indefinite" />
+        </ellipse>
+        
+        {/* Brain emoji */}
+        <text x="0" y="12" textAnchor="middle" fontSize="40" opacity="0.8">
+          <animateTransform attributeName="transform" type="scale" values="1;1.1;1" dur="2s" repeatCount="indefinite" additive="sum" />
+          🧠
+        </text>
+      </g>
+
+      {/* Floating memory cards around brain */}
+      <g>
+        {/* Card 1 - top left */}
+        <g transform="translate(15, 20)">
+          <animateTransform attributeName="transform" type="translate" values="15,20; 12,15; 15,20" dur="3s" repeatCount="indefinite" />
+          <rect x="0" y="0" width="20" height="26" rx="3" fill="white" opacity="0.7" />
+          <rect x="2" y="2" width="16" height="22" rx="2" fill="var(--accent-color)" opacity="0.4" />
+          <text x="10" y="18" textAnchor="middle" fontSize="12">🐶</text>
+        </g>
+
+        {/* Card 2 - top right */}
+        <g transform="translate(85, 25)">
+          <animateTransform attributeName="transform" type="translate" values="85,25; 88,20; 85,25" dur="3.5s" repeatCount="indefinite" />
+          <rect x="0" y="0" width="20" height="26" rx="3" fill="white" opacity="0.7" />
+          <rect x="2" y="2" width="16" height="22" rx="2" fill="var(--secondary-color)" opacity="0.4" />
+          <text x="10" y="18" textAnchor="middle" fontSize="12">🐱</text>
+        </g>
+
+        {/* Card 3 - bottom left */}
+        <g transform="translate(20, 75)">
+          <animateTransform attributeName="transform" type="translate" values="20,75; 17,80; 20,75" dur="2.8s" repeatCount="indefinite" />
+          <rect x="0" y="0" width="20" height="26" rx="3" fill="white" opacity="0.7" />
+          <rect x="2" y="2" width="16" height="22" rx="2" fill="var(--primary-color)" opacity="0.4" />
+          <text x="10" y="18" textAnchor="middle" fontSize="12">🍎</text>
+        </g>
+
+        {/* Card 4 - bottom right */}
+        <g transform="translate(80, 70)">
+          <animateTransform attributeName="transform" type="translate" values="80,70; 83,75; 80,70" dur="3.2s" repeatCount="indefinite" />
+          <rect x="0" y="0" width="20" height="26" rx="3" fill="white" opacity="0.7" />
+          <rect x="2" y="2" width="16" height="22" rx="2" fill="var(--accent-color)" opacity="0.4" />
+          <text x="10" y="18" textAnchor="middle" fontSize="12">🍌</text>
+        </g>
+      </g>
+
+      {/* Sparkles and stars */}
+      <circle cx="25" cy="50" r="2" fill="#FFD700">
+        <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="95" cy="55" r="2.5" fill="#FFD700">
+        <animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite" begin="0.5s" />
+      </circle>
+      <circle cx="60" cy="15" r="2" fill="#FFD700">
+        <animate attributeName="opacity" values="0;1;0" dur="1.8s" repeatCount="indefinite" begin="1s" />
+      </circle>
+
+      {/* Thought bubbles */}
+      <circle cx="40" cy="35" r="3" fill="white" opacity="0.3">
+        <animate attributeName="cy" values="35;25;35" dur="4s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.3;0;0.3" dur="4s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="75" cy="40" r="2.5" fill="white" opacity="0.3">
+        <animate attributeName="cy" values="40;30;40" dur="3.5s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.3;0;0.3" dur="3.5s" repeatCount="indefinite" />
+      </circle>
     </svg>
   </div>
 );

@@ -5,8 +5,9 @@ import { useProfile } from '../contexts/ProfileContext';
 import SpeakableText from '../components/SpeakableText';
 import Button from '../components/Button';
 import DashboardDecoration from '../components/DashboardDecoration';
-import { AbcCardIllustration, MathCardIllustration, PuzzleCardIllustration } from '../components/GameCardIllustration';
+import GameCard from '../components/GameCard';
 import ThemeToggle from '../components/ThemeToggle';
+import GAMES from '../data/gameRegistry';
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -77,81 +78,88 @@ const Dashboard: React.FC = () => {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* ABC Game Card */}
-            <div
-              onClick={() => navigate('/spel/abc-aventyr/')}
-              className="rounded-[2rem] p-8 shadow-[0_10px_0_rgba(0,0,0,0.1)] border border-white/20 cursor-pointer hover:translate-y-[-8px] hover:shadow-[0_18px_0_rgba(0,0,0,0.1)] transition-all group overflow-hidden relative active:translate-y-[-2px]"
-              style={{ backgroundColor: 'var(--card-bg)', backdropFilter: 'blur(10px)' }}
-            >
-              <div
-                className="absolute top-4 right-4 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest shadow-sm z-10"
-                style={{ backgroundColor: 'var(--accent-color)' }}
-              >
-                Populärt!
-              </div>
-              <AbcCardIllustration className="w-28 h-28 mb-4 group-hover:scale-105 transition-transform" />
-              <h3 className="text-3xl font-black mb-2">ABC-Äventyr</h3>
-              <p className="font-bold opacity-70">Lär dig stava roliga ord!</p>
-              <div className="mt-6 flex justify-end">
-                <div className="w-12 h-12 rounded-full text-white flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform" style={{ background: 'var(--primary-gradient, var(--primary-color))' }}>➔</div>
-              </div>
-            </div>
-
-            {/* Math Game Card */}
-            <div
-              onClick={() => navigate('/spel/matte-magi')}
-              className="rounded-[2rem] p-8 shadow-[0_10px_0_rgba(0,0,0,0.08)] border border-white/20 cursor-pointer hover:translate-y-[-8px] hover:shadow-[0_18px_0_rgba(0,0,0,0.1)] transition-all group overflow-hidden relative active:translate-y-[-2px]"
-              style={{ backgroundColor: 'var(--card-bg)', backdropFilter: 'blur(10px)' }}
-            >
-              <div
-                className="absolute top-4 right-4 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest shadow-sm z-10"
-                style={{ backgroundColor: 'var(--accent-color)' }}
-              >
-                Ny!
-              </div>
-              <MathCardIllustration className="w-28 h-28 mb-4" />
-              <h3 className="text-3xl font-black mb-2">Matte-Magi</h3>
-              <p className="font-bold opacity-70">Räkna, tänk visuellt och samla märken!</p>
-              <div className="mt-6 flex justify-end">
-                <div className="w-12 h-12 rounded-full text-white flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform" style={{ background: 'var(--primary-gradient, var(--primary-color))' }}>➔</div>
-              </div>
-            </div>
-
-            {/* Future Puzzle Placeholder */}
-            <div
-              className="rounded-[2rem] p-8 shadow-[0_6px_0_rgba(0,0,0,0.05)] border-2 border-dashed opacity-50 flex flex-col justify-center items-center text-center"
-              style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--primary-color)', opacity: 0.4 }}
-            >
-              <PuzzleCardIllustration className="w-24 h-24 mb-4" />
-              <h3 className="text-xl font-bold">Pussel-Palats</h3>
-              <p className="text-sm opacity-60">Kommer snart!</p>
-            </div>
+            {GAMES.map(game => (
+              <GameCard key={game.id} game={game} />
+            ))}
           </div>
 
           <div className="pt-12">
             <div
-              className="rounded-3xl p-8 border border-white/20 backdrop-blur-md shadow-inner"
+              className="rounded-3xl p-8 border border-white/20 backdrop-blur-md shadow-lg overflow-hidden relative"
               style={{ backgroundColor: 'var(--card-bg)' }}
             >
-              <h4 className="text-2xl font-black mb-6 flex items-center gap-3">
-                🏆 Dina framsteg
+              {/* Decorative background elements */}
+              <div className="absolute top-0 right-0 text-9xl opacity-5 pointer-events-none">🏆</div>
+              <div className="absolute bottom-0 left-0 text-7xl opacity-5 pointer-events-none">⭐</div>
+              
+              <h4 className="text-3xl font-black mb-8 flex items-center gap-3 relative z-10">
+                <span className="text-4xl">🏆</span>
+                <span>Dina framsteg</span>
               </h4>
-              <div className="flex gap-4 overflow-x-auto pb-4">
-                {(activeProfile.completedLevels || []).length === 0 ? (
-                  <p className="italic font-bold" style={{ color: 'var(--muted-color)' }}>Spela spel för att samla märken! 🎁</p>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-bold opacity-60">⭐ {activeProfile.stars} stjärnor</span>
-                    <span className="mx-2 opacity-30">|</span>
-                    <span className="text-sm font-bold opacity-60">🏅 {(activeProfile.completedLevels || []).length} nivåer klara</span>
+              
+              {(activeProfile.completedLevels || []).length === 0 ? (
+                <div className="text-center py-8 relative z-10">
+                  <div className="text-6xl mb-4 animate-bounce">🎁</div>
+                  <p className="text-xl font-bold opacity-70">Spela spel för att samla märken!</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+                  {/* Stars card */}
+                  <div className="rounded-2xl p-6 bg-gradient-to-br from-yellow-400/20 to-orange-400/20 border-2 border-yellow-400/30 shadow-lg relative overflow-hidden group hover:scale-105 transition-transform">
+                    {/* Floating stars background */}
+                    <div className="absolute inset-0 pointer-events-none">
+                      <div className="absolute top-2 right-4 text-3xl opacity-20 animate-bounce" style={{ animationDelay: '0s', animationDuration: '2s' }}>⭐</div>
+                      <div className="absolute top-8 left-6 text-2xl opacity-15 animate-bounce" style={{ animationDelay: '0.5s', animationDuration: '2.5s' }}>✨</div>
+                      <div className="absolute bottom-4 right-8 text-2xl opacity-20 animate-bounce" style={{ animationDelay: '1s', animationDuration: '3s' }}>💫</div>
+                      <div className="absolute bottom-8 left-4 text-3xl opacity-15 animate-bounce" style={{ animationDelay: '1.5s', animationDuration: '2.8s' }}>🌟</div>
+                    </div>
+                    <div className="flex items-center gap-4 relative z-10">
+                      <div className="text-6xl group-hover:scale-110 transition-transform">⭐</div>
+                      <div>
+                        <div className="text-5xl font-black text-yellow-600">{activeProfile.stars}</div>
+                        <div className="text-sm font-bold opacity-60">Stjärnor totalt</div>
+                      </div>
+                    </div>
                   </div>
-                )}
-              </div>
+                  
+                  {/* Levels card */}
+                  <div className="rounded-2xl p-6 bg-gradient-to-br from-green-400/20 to-emerald-400/20 border-2 border-green-400/30 shadow-lg relative overflow-hidden group hover:scale-105 transition-transform">
+                    {/* Floating badges background */}
+                    <div className="absolute inset-0 pointer-events-none">
+                      <div className="absolute top-3 right-5 text-3xl opacity-20 animate-bounce" style={{ animationDelay: '0s', animationDuration: '2.2s' }}>🏅</div>
+                      <div className="absolute top-10 left-5 text-2xl opacity-15 animate-bounce" style={{ animationDelay: '0.7s', animationDuration: '2.7s' }}>🎖️</div>
+                      <div className="absolute bottom-5 right-6 text-2xl opacity-20 animate-bounce" style={{ animationDelay: '1.2s', animationDuration: '3.2s' }}>🥇</div>
+                      <div className="absolute bottom-10 left-6 text-3xl opacity-15 animate-bounce" style={{ animationDelay: '1.8s', animationDuration: '2.5s' }}>🎯</div>
+                    </div>
+                    <div className="flex items-center gap-4 relative z-10">
+                      <div className="text-6xl group-hover:scale-110 transition-transform">🏅</div>
+                      <div>
+                        <div className="text-5xl font-black text-green-600">{(activeProfile.completedLevels || []).length}</div>
+                        <div className="text-sm font-bold opacity-60">Klistermärken samlade</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
         </div>
       </main>
+
+      {/* Settings Button - Fixed position above bottom nav */}
+      <button
+        onClick={() => navigate('/admin')}
+        className="fixed bottom-24 right-6 z-50 w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 group overflow-hidden"
+        style={{ 
+          background: 'linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%)',
+          boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3), 0 0 0 4px rgba(255, 255, 255, 0.1)'
+        }}
+        title="Inställningar"
+      >
+        <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <span className="relative z-10 group-hover:rotate-180 transition-transform duration-500 drop-shadow-lg">⚙️</span>
+      </button>
     </div>
   );
 };
