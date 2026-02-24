@@ -109,7 +109,7 @@ const Dashboard: React.FC = () => {
               >
                 Ny!
               </div>
-              <div className="w-24 h-24 mb-4 flex items-center justify-center text-4xl">➗</div>
+              <MathCardIllustration className="w-28 h-28 mb-4" />
               <h3 className="text-2xl font-black mb-2">Matte-Magi</h3>
               <p className="font-bold opacity-70">Räkna, tänk visuellt och samla märken!</p>
               <div className="mt-6 flex justify-end">
