@@ -195,6 +195,41 @@ const MathGame: React.FC = () => {
 
     return (
       <div className="min-h-screen p-6 flex flex-col" style={{ background: 'var(--bg-gradient, var(--bg-color))' }}>
+        <style>{`
+          @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+          }
+          .animate-pop { animation: pop 0.3s ease-out; }
+
+          @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-2deg); }
+            75% { transform: rotate(2deg); }
+          }
+          .animate-wiggle { animation: wiggle 0.3s ease-in-out; }
+
+          @keyframes glow-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.5); }
+            50% { box-shadow: 0 0 20px 10px rgba(255,255,255,0); }
+            100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+          }
+          .animate-glow-pulse { animation: glow-pulse 1s ease-out; }
+
+          @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+          }
+          .animate-shake { animation: shake 0.2s ease-in-out infinite; }
+
+          @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+          }
+          .animate-float { animation: float 3s ease-in-out infinite; }
+        `}</style>
         <div className="relative flex items-center px-4 py-3 bg-white/10 backdrop-blur-md rounded-2xl shadow-sm mb-2 z-10 border border-white/20">
           <button onClick={() => setGameState('selecting')} className="text-3xl hover:scale-110 transition-transform z-10">←</button>
           <h2 className="absolute inset-0 flex items-center justify-center text-xl md:text-2xl font-black tracking-tight pointer-events-none" style={{ color: 'var(--primary-color)' }}>
@@ -227,7 +262,7 @@ const MathGame: React.FC = () => {
         </div>
 
         <div className="flex-1 flex flex-col items-center justify-center gap-6">
-        <div className="w-full max-w-3xl p-6 rounded-3xl bg-gradient-to-br from-white/5 to-white/2 border border-white/10 text-center shadow-2xl">
+        <div className={`w-full max-w-3xl p-6 rounded-3xl bg-gradient-to-br from-white/5 to-white/2 border border-white/10 text-center shadow-2xl ${feedback === 'correct' ? 'animate-wiggle' : ''} ${feedback === 'wrong' ? 'animate-shake' : ''}`}>
           <div className="flex items-center justify-between mb-4">
             <div className="text-4xl">{level?.badge}</div>
             <div className="text-sm opacity-60">Fråga {index + 1}/{problems.length}</div>
@@ -236,11 +271,11 @@ const MathGame: React.FC = () => {
           <div className="mb-4 text-sm opacity-60">Föreställ dig bilden och skriv svaret</div>
           <div className="mb-6">
             <div className="flex gap-6 justify-center items-center">
-              <div className="bg-white/10 p-4 rounded-2xl">
+              <div className={`bg-white/10 p-4 rounded-2xl animate-float ${feedback === 'correct' ? 'animate-glow-pulse' : ''} ${feedback === 'wrong' ? 'opacity-50' : ''}`}>
                 <VisualCount n={p.a} emoji={level?.op === '+' ? '🍎' : level?.op === '-' ? '🍐' : level?.op === '×' ? '🍇' : '🍪'} />
               </div>
               <div className="text-4xl">{level?.op}</div>
-              <div className="bg-white/10 p-4 rounded-2xl">
+              <div className={`bg-white/10 p-4 rounded-2xl animate-float ${feedback === 'correct' ? 'animate-glow-pulse' : ''} ${feedback === 'wrong' ? 'opacity-50' : ''}`}>
                 <VisualCount n={p.b} emoji={level?.op === '+' ? '🍏' : level?.op === '-' ? '🍎' : level?.op === '×' ? '🍇' : '🍪'} />
               </div>
             </div>
@@ -248,7 +283,11 @@ const MathGame: React.FC = () => {
 
           <div className="max-w-md mx-auto">
             <div className="mb-4">
-              <input value={input} readOnly className="w-full p-6 rounded-xl text-6xl text-center bg-white/5 font-black" />
+              <input
+                value={input}
+                readOnly
+                className={`w-full p-6 rounded-xl text-6xl text-center bg-white/5 font-black transition-colors duration-300 ${feedback === 'correct' ? 'animate-pop' : ''} ${feedback === 'wrong' ? 'bg-red-200' : ''}`}
+              />
             </div>
             <NumericPad onPress={(v) => setInput(i => (v === '' ? '' : (i + v).slice(0,6)))} onClear={() => setInput('')} onEnter={check} />
           </div>
