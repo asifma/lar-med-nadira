@@ -93,6 +93,7 @@ Appen är byggd med öppen källkod för att möjliggöra för lärare, föräld
 - Anpassningsbara inställningar
 - Rösthastighetskontroll
 - Lås upp alla nivåer för testning
+- PIN-skyddad admin-sida (standard PIN: `1234`)
 
 ---
 
