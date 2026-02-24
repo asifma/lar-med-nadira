@@ -59,6 +59,7 @@ const MathGame: React.FC = () => {
   const [input, setInput] = useState('');
   const [correctCount, setCorrectCount] = useState(0);
   const [feedback, setFeedback] = useState<'none'|'correct'|'wrong'>('none');
+  const [streak, setStreak] = useState(0);
 
   useEffect(() => {
     if (gameState === 'complete' && correctCount > 0) {
@@ -79,6 +80,7 @@ const MathGame: React.FC = () => {
     if (val === p.answer) {
       setFeedback('correct');
       setCorrectCount(c => c + 1);
+      setStreak(s => s + 1);
       updateStars(1);
       burstConfetti();
       setTimeout(() => {
@@ -87,6 +89,7 @@ const MathGame: React.FC = () => {
       }, 700);
     } else {
       setFeedback('wrong');
+      setStreak(0);
       setTimeout(() => { setFeedback('none'); setInput(''); }, 700);
     }
   };
@@ -201,6 +204,25 @@ const MathGame: React.FC = () => {
           <div className="flex items-center gap-2 z-10">
             <button className="text-xl hover:scale-110 transition-all" title="Ljud (ej aktiv)">🔊</button>
             <div className="text-lg font-black text-yellow-600">⭐ {index + 1}/{problems.length}</div>
+            {streak > 1 && (
+              <div className="text-sm font-black text-orange-500 flex items-center gap-1 animate-bounce">
+                🔥 {streak}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Progress Bar */}
+        <div className="w-full max-w-3xl mx-auto mb-4">
+          <div className="flex justify-between text-xs font-bold opacity-60 mb-1">
+            <span>Framsteg</span>
+            <span>{index + 1}/{problems.length}</span>
+          </div>
+          <div className="w-full bg-white/10 rounded-full h-3 overflow-hidden border border-white/20 shadow-inner">
+            <div
+              className="bg-gradient-to-r from-green-400 via-yellow-400 to-red-500 h-full transition-all duration-500 ease-out rounded-full"
+              style={{ width: `${((index + 1) / problems.length) * 100}%` }}
+            />
           </div>
         </div>
 
