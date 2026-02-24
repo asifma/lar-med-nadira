@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+/* Unicorn Theme Variables - Magical Pastel Dream */
+[data-theme="unicorn"] {
+  --bg-color: #FFF0F5;
+  --bg-gradient: linear-gradient(145deg, #FFE0EC 0%, #E8D5FF 35%, #D5EAFF 65%, #E0FFF5 100%);
+  --primary-color: #FF6B9D;
+  --primary-gradient: linear-gradient(135deg, #FF6B9D 0%, #C084FC 100%);
+  --secondary-color: #D8B4FE;
+  --accent-color: #FF6B9D;
+  --text-color: #4A2040;
+  --muted-color: rgba(74, 32, 64, 0.45);
+  --muted-border: rgba(255, 107, 157, 0.3);
+  --card-bg: rgba(255, 240, 250, 0.85);
+  --card-border: rgba(255, 255, 255, 0.6);
+  --btn-radius: 9999px;
+  --btn-shadow: 0 6px 0 #D4467A, 0 8px 20px rgba(255, 107, 157, 0.3);
+  --btn-hover-shadow: 0 8px 0 #D4467A, 0 12px 30px rgba(255, 107, 157, 0.4);
+  --font-main: 'Baloo 2', cursive;
+}
+
+/* Hero Theme Variables - Epic Action Adventure */
+[data-theme="hero"] {
+  --bg-color: #0F172A;
+  --bg-gradient: linear-gradient(145deg, #1E293B 0%, #0F172A 50%, #1A0A2E 100%);
+  --primary-color: #009688;
+  --primary-gradient: linear-gradient(135deg, #4DB6AC 0%, #26A69A 50%, #009688 100%);
+  --secondary-color: #3B82F6;
+  --accent-color: #10B981;
+  --text-color: #F8FAFC;
+  --muted-color: rgba(148, 163, 184, 0.8);
+  --muted-border: rgba(59, 130, 246, 0.3);
+  --card-bg: rgba(30, 41, 59, 0.8);
+  --card-border: rgba(59, 130, 246, 0.2);
+  --btn-radius: 16px;
+  --btn-shadow: 0 4px 12px rgba(0, 150, 136, 0.3);
+  --btn-hover-shadow: 0 6px 16px rgba(0, 150, 136, 0.4);
+  --font-main: 'Bangers', cursive;
+}
+
+.theme-transition {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Floating elements animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-20px) translateX(10px) rotate(5deg);
+  }
+  50% {
+    transform: translateY(-40px) translateX(-10px) rotate(-5deg);
+  }
+  75% {
+    transform: translateY(-20px) translateX(10px) rotate(3deg);
+  }
+}
+
+.float-element {
+  animation: float 15s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Show/hide floaters based on theme */
+[data-theme="unicorn"] .hero-floaters {
+  display: none;
+}
+
+[data-theme="hero"] .unicorn-floaters {
+  display: none;
+}

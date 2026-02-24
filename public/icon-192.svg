@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B9D"/>
+      <stop offset="100%" style="stop-color:#C084FC"/>
+    </linearGradient>
+    <linearGradient id="star" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FBBF24"/>
+      <stop offset="100%" style="stop-color:#F59E0B"/>
+    </linearGradient>
+  </defs>
+  <!-- Background rounded square -->
+  <rect width="192" height="192" rx="42" fill="url(#bg)"/>
+  <!-- Subtle inner glow -->
+  <rect x="8" y="8" width="176" height="176" rx="36" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+  <!-- Letter N -->
+  <text x="96" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="110" fill="white" opacity="0.95">N</text>
+  <!-- Star top-right -->
+  <polygon points="152,28 156,40 168,40 158,48 162,60 152,52 142,60 146,48 136,40 148,40" fill="url(#star)" opacity="0.9"/>
+  <!-- Small sparkle top-left -->
+  <circle cx="40" cy="36" r="4" fill="white" opacity="0.7"/>
+  <circle cx="52" cy="48" r="2.5" fill="white" opacity="0.5"/>
+</svg>

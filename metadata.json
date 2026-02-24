@@ -1,0 +1,7 @@
+{
+  "name": "Lär med Nadira",
+  "description": "En rolig, svenskspråkig lärapp för barn i åldern 6–9 år med spel, klistermärken och två magiska världar.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
