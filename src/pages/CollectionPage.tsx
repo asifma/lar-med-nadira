@@ -3,9 +3,10 @@ import React from 'react';
 import { useProfile } from '../contexts/ProfileContext';
 import SpeakableText from '../components/SpeakableText';
 import { abcGame } from '../data/abcWords';
+import { mathGame } from '../data/mathLevels';
 import { GameDefinition } from '../types';
 
-const ALL_GAMES: GameDefinition[] = [abcGame];
+const ALL_GAMES: GameDefinition[] = [abcGame, mathGame];
 
 const CollectionPage: React.FC = () => {
   const { activeProfile, isLevelCompleted, getLevelStars } = useProfile();
