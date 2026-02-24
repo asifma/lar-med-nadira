@@ -21,6 +21,8 @@ export const SpeechProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     setIsSupported('speechSynthesis' in window);
   }, []);
 
+  // No debug logs by default — keep behavior quiet in production/dev
+
   // Sync from settings on mount and when settings change externally
   useEffect(() => {
     _setSpeechRate(settings.speechRate);
@@ -45,6 +47,8 @@ export const SpeechProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const svVoice = voices.find(v => v.lang.startsWith('sv'));
     if (svVoice) utterance.voice = svVoice;
 
+    // swallow handlers — do not log to console unless error
+    utterance.onerror = () => {};
     window.speechSynthesis.speak(utterance);
   }, [speechRate]);
 

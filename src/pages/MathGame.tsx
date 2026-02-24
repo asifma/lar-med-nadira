@@ -6,6 +6,7 @@ import Button from '../components/Button';
 import SpeakableText from '../components/SpeakableText';
 import NumericPad from '../components/NumericPad';
 import { useSettings } from '../contexts/SettingsContext';
+import { useSpeech } from '../contexts/SpeechContext';
 import { burstConfetti, fireConfetti } from '../utils/confetti';
 
 function shuffleArray<T>(arr: T[]): T[] {
@@ -49,7 +50,7 @@ const VisualCount: React.FC<{ n: number, emoji?: string }> = ({ n, emoji = '🔵
 const MathGame: React.FC = () => {
   const navigate = useNavigate();
   const { activeProfile, updateStars, completeLevel, isLevelCompleted, isLevelUnlocked, getLevelStars } = useProfile();
-  const { isGameFullyUnlocked } = useSettings();
+  const { isGameFullyUnlocked, settings } = useSettings();
 
   const [gameState, setGameState] = useState<'selecting' | 'playing' | 'complete'>('selecting');
   const [selectedLevel, setSelectedLevel] = useState<number>(1);
@@ -60,6 +61,20 @@ const MathGame: React.FC = () => {
   const [correctCount, setCorrectCount] = useState(0);
   const [feedback, setFeedback] = useState<'none'|'correct'|'wrong'>('none');
   const [streak, setStreak] = useState(0);
+  const { speak, stop } = useSpeech();
+  const [isMuted, setIsMuted] = useState(false);
+
+  const toggleMute = () => {
+    setIsMuted(prev => {
+      if (!prev) stop();
+      return !prev;
+    });
+  };
+
+  const safeSpeak = (text: string) => {
+    if (isMuted) return;
+    speak(text);
+  };
 
   useEffect(() => {
     if (gameState === 'complete' && correctCount > 0) {
@@ -72,6 +87,7 @@ const MathGame: React.FC = () => {
     const lvl = mathGame.levels.find((l:any) => l.id === id);
     setProblems(makeProblems(lvl, 10));
     setIndex(0); setInput(''); setCorrectCount(0); setFeedback('none'); setGameState('playing');
+    if (settings.autoPlayInstructions) safeSpeak(`Nivå ${id}, ${lvl?.name}`);
   };
 
   const check = () => {
@@ -83,6 +99,7 @@ const MathGame: React.FC = () => {
       setStreak(s => s + 1);
       updateStars(1);
       burstConfetti();
+      safeSpeak('Rätt');
       setTimeout(() => {
         if (index < problems.length - 1) { setIndex(i => i + 1); setInput(''); setFeedback('none'); }
         else setGameState('complete');
@@ -90,9 +107,21 @@ const MathGame: React.FC = () => {
     } else {
       setFeedback('wrong');
       setStreak(0);
+      safeSpeak('Inte rätt, försök igen');
       setTimeout(() => { setFeedback('none'); setInput(''); }, 700);
     }
   };
+
+  useEffect(() => {
+    if (!settings.autoPlayInstructions) return;
+    if (gameState === 'playing' && problems.length > 0) {
+      const p = problems[index];
+      if (p) {
+        const opWord = level?.op === '+' ? 'plus' : level?.op === '-' ? 'minus' : level?.op === '×' ? 'gånger' : 'delat med';
+        safeSpeak(`${p.a} ${opWord} ${p.b}`);
+      }
+    }
+  }, [gameState, index, problems, settings.autoPlayInstructions]);
 
   if (!activeProfile) return (<div className="p-8 text-center"><Button onClick={() => navigate('/')}>Gå till start</Button></div>);
 
@@ -103,6 +132,14 @@ const MathGame: React.FC = () => {
       { title: '✖️ Multiplikation', subtitle: 'Gör grupper', levels: mathGame.levels.slice(10,15), color: 'from-orange-400 to-red-500', borderColor: 'border-orange-300/40' },
       { title: '➗ Division', subtitle: 'Dela rättvist', levels: mathGame.levels.slice(15,20), color: 'from-purple-500 to-pink-500', borderColor: 'border-purple-300/40' },
     ];
+    const levelIcons: Record<number, string> = {
+      1: '➕', 2: '➕', 3: '➕', 4: '➕', 5: '➕',
+      6: '➖', 7: '➖', 8: '➖', 9: '➖', 10: '➖',
+      11: '✖️', 12: '✖️', 13: '✖️', 14: '✖️', 15: '✖️',
+      16: '➗', 17: '➗', 18: '➗', 19: '➗', 20: '➗',
+    };
+    const isFullyUnlocked = isGameFullyUnlocked('math');
+    const nextPlayableId = mathGame.levels.find((l:any) => (isLevelUnlocked('math', l.id) || isFullyUnlocked) && !isLevelCompleted('math', l.id))?.id;
 
     return (
       <div className="min-h-screen p-5 md:p-10 pb-12" style={{ background: 'var(--bg-gradient, var(--bg-color))' }}>
@@ -135,22 +172,43 @@ const MathGame: React.FC = () => {
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-5">
                     {group.levels.map((lvl:any) => {
-                      const unlocked = isLevelUnlocked('math', lvl.id) || isGameFullyUnlocked('math');
+                      const unlocked = isLevelUnlocked('math', lvl.id) || isFullyUnlocked;
                       const completed = isLevelCompleted('math', lvl.id);
                       const stars = getLevelStars('math', lvl.id);
+                      const isNext = lvl.id === nextPlayableId || (isFullyUnlocked && !completed);
+
                       return (
                         <button
                           key={lvl.id}
                           disabled={!unlocked}
                           onClick={() => startLevel(lvl.id)}
-                          className={`relative p-5 md:p-6 rounded-3xl border-2 transition-all duration-300 flex flex-col items-center gap-2 group overflow-hidden ${completed ? `backdrop-blur-md ${group.borderColor} shadow-[0_8px_0_rgba(0,0,0,0.2)]` : unlocked ? `backdrop-blur-md border-[var(--primary-color)] shadow-[0_8px_0_rgba(0,0,0,0.08)]` : 'bg-white/5 border-white/10 opacity-30 cursor-not-allowed grayscale'}`}
+                          className={`
+                            relative p-5 md:p-6 rounded-3xl border-2 transition-all duration-300 flex flex-col items-center gap-2 group overflow-hidden
+                            ${completed
+                              ? `backdrop-blur-md ${group.borderColor} shadow-[0_8px_0_rgba(0,0,0,0.2)] hover:shadow-[0_12px_0_rgba(0,0,0,0.3)] hover:translate-y-[-4px] active:translate-y-[2px] active:shadow-[0_2px_0_rgba(0,0,0,0.2)]`
+                              : unlocked
+                                ? `backdrop-blur-md border-[var(--primary-color)] shadow-[0_8px_0_rgba(0,0,0,0.08)] hover:shadow-[0_12px_0_rgba(0,0,0,0.1)] hover:translate-y-[-4px] active:translate-y-[2px] active:shadow-[0_2px_0_rgba(0,0,0,0.08)] ${isNext ? 'level-pulse' : ''}`
+                                : 'bg-white/5 border-white/10 opacity-30 cursor-not-allowed grayscale'
+                            }
+                          `}
                           style={unlocked ? { backgroundColor: 'var(--card-bg)' } : {}}
                         >
-                          <div className={`text-4xl md:text-5xl transition-transform duration-300 ${unlocked ? 'group-hover:scale-115 group-hover:rotate-6' : ''}`}>
-                            {lvl.badge}
+                          {/* Completion ribbon */}
+                          {completed && stars >= 3 && (
+                            <div className="absolute -top-1 -right-1 w-10 h-10">
+                              <div className={`absolute inset-0 bg-gradient-to-br ${group.color} rotate-12 rounded-lg opacity-90`} />
+                              <span className="absolute inset-0 flex items-center justify-center text-sm">💯</span>
+                            </div>
+                          )}
+
+                          <div className={`text-4xl md:text-5xl transition-transform duration-300 ${unlocked ? 'group-hover:scale-115 group-hover:rotate-6' : ''} ${isNext ? 'animate-bounce' : ''}`}>
+                            {completed ? lvl.badge : levelIcons[lvl.id] || '📐'}
                           </div>
+
                           <span className="text-lg md:text-xl font-black" style={{ color: 'var(--text-color)' }}>{lvl.id}</span>
+
                           <span className={`text-[10px] md:text-xs font-bold uppercase tracking-wide leading-tight text-center ${completed ? 'opacity-60' : unlocked ? 'opacity-50' : 'opacity-30'}`}>{lvl.name}</span>
+
                           {completed && (
                             <div className="flex gap-1 mt-1">
                               {[1,2,3].map(s => (
@@ -158,6 +216,16 @@ const MathGame: React.FC = () => {
                               ))}
                             </div>
                           )}
+
+                          {isNext && !completed && (
+                            <div
+                              className="mt-1 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest text-white shadow-lg"
+                              style={{ background: 'var(--primary-gradient, var(--primary-color))' }}
+                            >
+                              Spela! ▶
+                            </div>
+                          )}
+
                           {!unlocked && (
                             <div className="absolute inset-0 flex items-center justify-center rounded-3xl"><span className="text-3xl opacity-60">🔒</span></div>
                           )}
@@ -170,6 +238,17 @@ const MathGame: React.FC = () => {
             })}
 
           </div>
+
+          <style>{`
+            @keyframes levelPulse {
+              0%, 100% { box-shadow: 0 8px 0 rgba(0,0,0,0.08), 0 0 0 0 var(--primary-color); }
+              50% { box-shadow: 0 8px 0 rgba(0,0,0,0.08), 0 0 0 8px transparent; }
+            }
+            .level-pulse {
+              animation: levelPulse 2s ease-in-out infinite;
+              border-color: var(--primary-color);
+            }
+          `}</style>
         </div>
       </div>
     );
@@ -237,7 +316,9 @@ const MathGame: React.FC = () => {
           </h2>
           <div className="flex-1" />
           <div className="flex items-center gap-2 z-10">
-            <button className="text-xl hover:scale-110 transition-all" title="Ljud (ej aktiv)">🔊</button>
+            <button onClick={toggleMute} className={`text-xl hover:scale-110 transition-all ${isMuted ? 'opacity-40' : ''}`} title={isMuted ? 'Slå på ljud' : 'Stäng av ljud'}>
+              {isMuted ? '🔇' : '🔊'}
+            </button>
             <div className="text-lg font-black text-yellow-600">⭐ {index + 1}/{problems.length}</div>
             {streak > 1 && (
               <div className="text-sm font-black text-orange-500 flex items-center gap-1 animate-bounce">
@@ -267,7 +348,17 @@ const MathGame: React.FC = () => {
             <div className="text-4xl">{level?.badge}</div>
             <div className="text-sm opacity-60">Fråga {index + 1}/{problems.length}</div>
           </div>
-          <div className="text-4xl font-black mb-2">{p.question}</div>
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <div className="text-4xl font-black">{p.question}</div>
+            <button
+              onClick={() => {
+                const opWord = level?.op === '+' ? 'plus' : level?.op === '-' ? 'minus' : level?.op === '×' ? 'gånger' : 'delat med';
+                safeSpeak(`${p.a} ${opWord} ${p.b}`);
+              }}
+              className="text-2xl hover:scale-110 transition-transform"
+              title="Spela upp fråga"
+            >🔊</button>
+          </div>
           <div className="mb-4 text-sm opacity-60">Föreställ dig bilden och skriv svaret</div>
           <div className="mb-6">
             <div className="flex gap-6 justify-center items-center">
@@ -286,7 +377,7 @@ const MathGame: React.FC = () => {
               <input
                 value={input}
                 readOnly
-                className={`w-full p-6 rounded-xl text-6xl text-center bg-white/5 font-black transition-colors duration-300 ${feedback === 'correct' ? 'animate-pop' : ''} ${feedback === 'wrong' ? 'bg-red-200' : ''}`}
+                className={`w-full p-6 rounded-xl text-6xl text-center bg-[var(--card-bg)] text-[var(--text-color)] font-black transition-colors duration-300 ${feedback === 'correct' ? 'animate-pop' : ''} ${feedback === 'wrong' ? 'bg-red-500 text-white' : ''}`}
               />
             </div>
             <NumericPad onPress={(v) => setInput(i => (v === '' ? '' : (i + v).slice(0,6)))} onClear={() => setInput('')} onEnter={check} />

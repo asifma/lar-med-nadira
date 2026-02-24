@@ -110,7 +110,7 @@ const Dashboard: React.FC = () => {
                 Ny!
               </div>
               <MathCardIllustration className="w-28 h-28 mb-4" />
-              <h3 className="text-2xl font-black mb-2">Matte-Magi</h3>
+              <h3 className="text-3xl font-black mb-2">Matte-Magi</h3>
               <p className="font-bold opacity-70">Räkna, tänk visuellt och samla märken!</p>
               <div className="mt-6 flex justify-end">
                 <div className="w-12 h-12 rounded-full text-white flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform" style={{ background: 'var(--primary-gradient, var(--primary-color))' }}>➔</div>
