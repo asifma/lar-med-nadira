@@ -339,7 +339,7 @@ const SpellingGame: React.FC = () => {
             <span className="text-6xl">{level.badge}</span>
           </div>
         )}
-        <div className="pt-6 flex gap-4">
+        <div className="pt-6 flex flex-wrap gap-4 justify-center">
           <Button variant="secondary" size="lg" onClick={() => setGameState('selecting')}>ALLA NIVÅER</Button>
           <Button variant="primary" size="lg" onClick={() => startLevel(selectedLevel)}>SPELA IGEN</Button>
           {stars > 0 && selectedLevel < 20 && (

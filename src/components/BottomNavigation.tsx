@@ -12,6 +12,7 @@ const BottomNavigation: React.FC = () => {
     { path: '/dashboard', label: 'Hem', icon: '🏠', requiresProfile: true },
     { path: '/samling', label: 'Samling', icon: '⭐', requiresProfile: true },
     { path: '/', label: 'Byt Profil', icon: '👤', requiresProfile: false },
+    { path: '/admin', label: 'Inställningar', icon: '⚙️', requiresProfile: false },
   ];
 
   return (

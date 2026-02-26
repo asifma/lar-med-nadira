@@ -493,52 +493,19 @@ const MemoryGame: React.FC = () => {
               key={card.id}
               onClick={() => handleCardClick(card.id)}
               disabled={card.isMatched || card.isFlipped || flippedCards.length === 2}
-              className={`aspect-square rounded-3xl text-4xl md:text-5xl lg:text-6xl flex items-center justify-center transition-all duration-500 relative overflow-hidden group card-button ${
+              className={`aspect-square rounded-2xl md:rounded-3xl text-4xl md:text-5xl lg:text-6xl flex items-center justify-center transition-all duration-300 relative overflow-hidden group card-button ${
                 card.isFlipped || card.isMatched
-                  ? 'card-flipped shadow-2xl card-flip'
-                  : 'card-unflipped hover:shadow-2xl active:scale-95 card-back'
-              } ${card.isMatched ? 'card-matched' : ''} ${card.shake ? 'animate-shake-card' : ''}`}
-              style={{
-                animationDelay: `${idx * 0.05}s`,
-              }}
+                  ? 'card-flipped shadow-lg card-flip'
+                  : 'card-unflipped shadow-md hover:shadow-xl active:scale-95'
+              } ${card.isMatched ? 'card-matched opacity-80' : ''} ${card.shake ? 'animate-shake-card' : ''}`}
             >
               {/* Card back pattern */}
               {!card.isFlipped && !card.isMatched && (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  {/* Animated gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-white/10 animate-gradient-shift" />
-                  
-                  {/* Geometric pattern */}
-                  <div className="w-full h-full relative">
-                    {/* Rotating outer ring */}
-                    <div className="absolute inset-2 rounded-2xl border-4 border-white/30 border-dashed animate-spin-very-slow" />
-                    
-                    {/* Pulsing middle ring */}
-                    <div className="absolute inset-6 rounded-xl border-3 border-white/40 animate-pulse-ring" />
-                    
-                    {/* Inner glow circle */}
-                    <div className="absolute inset-8 rounded-full bg-white/10 backdrop-blur-sm animate-pulse-gentle" />
-                    
-                    {/* Center icon with multiple effects */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="relative">
-                        {/* Glow behind icon */}
-                        <div className="absolute inset-0 blur-2xl card-icon-glow animate-pulse-slow" />
-                        {/* Main icon */}
-                        <div className="relative text-5xl md:text-6xl opacity-90 group-hover:opacity-100 group-hover:scale-125 transition-all duration-300 animate-float-gentle drop-shadow-2xl">
-                          🎴
-                        </div>
-                      </div>
+                  <div className="w-full h-full relative border-4 border-white/20 rounded-2xl md:rounded-3xl flex items-center justify-center">
+                    <div className="text-4xl md:text-5xl opacity-80 drop-shadow-md">
+                      🎴
                     </div>
-                    
-                    {/* Animated corner stars */}
-                    <div className="absolute top-3 left-3 text-2xl opacity-60 group-hover:opacity-100 transition-all animate-twinkle" style={{ animationDelay: '0s' }}>⭐</div>
-                    <div className="absolute top-3 right-3 text-2xl opacity-60 group-hover:opacity-100 transition-all animate-twinkle" style={{ animationDelay: '0.5s' }}>⭐</div>
-                    <div className="absolute bottom-3 left-3 text-2xl opacity-60 group-hover:opacity-100 transition-all animate-twinkle" style={{ animationDelay: '1s' }}>⭐</div>
-                    <div className="absolute bottom-3 right-3 text-2xl opacity-60 group-hover:opacity-100 transition-all animate-twinkle" style={{ animationDelay: '1.5s' }}>⭐</div>
-                    
-                    {/* Shine sweep effect on hover */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-hover:opacity-100 group-hover:translate-x-full transition-all duration-700 ease-out -translate-x-full" />
                   </div>
                 </div>
               )}
@@ -546,40 +513,15 @@ const MemoryGame: React.FC = () => {
               {/* Card front (emoji) */}
               {(card.isFlipped || card.isMatched) && (
                 <div className={`relative z-10 ${card.isMatched ? 'animate-bounce-celebrate' : 'animate-flip-reveal'}`}>
-                  <div className="relative">
-                    {/* Radial glow behind emoji */}
-                    <div className="absolute inset-0 blur-3xl card-emoji-glow opacity-40 animate-pulse-slow" />
-                    
-                    {/* Main emoji with shadow */}
-                    <div className="relative drop-shadow-2xl" style={{ 
-                      filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.3))',
-                    }}>
-                      {card.emoji}
-                    </div>
-                    
-                    {/* Sparkle effects for matched cards */}
-                    {card.isMatched && (
-                      <>
-                        <div className="absolute -top-4 -right-4 text-3xl animate-spin-slow drop-shadow-lg">✨</div>
-                        <div className="absolute -bottom-3 -left-3 text-2xl animate-spin-slow drop-shadow-lg" style={{ animationDelay: '0.5s' }}>💫</div>
-                        <div className="absolute -top-3 -left-4 text-2xl animate-spin-slow drop-shadow-lg" style={{ animationDelay: '1s' }}>🌟</div>
-                        <div className="absolute -bottom-4 -right-3 text-3xl animate-spin-slow drop-shadow-lg" style={{ animationDelay: '1.5s' }}>⭐</div>
-                        
-                        {/* Pulsing rings around matched card */}
-                        <div className="absolute inset-0 rounded-full border-4 card-ring-1 animate-ping-slow opacity-30" />
-                        <div className="absolute inset-0 rounded-full border-4 card-ring-2 animate-ping-slow opacity-30" style={{ animationDelay: '0.5s' }} />
-                      </>
-                    )}
+                  <div className="relative drop-shadow-xl">
+                    {card.emoji}
                   </div>
                 </div>
               )}
 
-              {/* Matched overlay with celebration effect */}
+              {/* Matched overlay */}
               {card.isMatched && (
-                <>
-                  <div className="absolute inset-0 card-matched-overlay rounded-3xl animate-pulse-slow" />
-                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent animate-shimmer" />
-                </>
+                <div className="absolute inset-0 card-matched-overlay rounded-2xl md:rounded-3xl" />
               )}
             </button>
           ))}
@@ -595,122 +537,36 @@ const MemoryGame: React.FC = () => {
           animation: float 6s ease-in-out infinite;
         }
 
-        @keyframes gradientShift {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        .animate-gradient-shift {
-          background-size: 200% 200%;
-          animation: gradientShift 3s ease infinite;
-        }
-
-        @keyframes pulseRing {
-          0%, 100% { transform: scale(1); opacity: 0.5; }
-          50% { transform: scale(1.05); opacity: 0.8; }
-        }
-        .animate-pulse-ring {
-          animation: pulseRing 2s ease-in-out infinite;
-        }
-
-        @keyframes floatGentle {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-8px); }
-        }
-        .animate-float-gentle {
-          animation: floatGentle 3s ease-in-out infinite;
-        }
-
-        @keyframes twinkle {
-          0%, 100% { opacity: 0.4; transform: scale(1); }
-          50% { opacity: 1; transform: scale(1.2); }
-        }
-        .animate-twinkle {
-          animation: twinkle 2s ease-in-out infinite;
-        }
-
         @keyframes cardFlip {
           0% { transform: rotateY(0deg) scale(1); }
           50% { transform: rotateY(90deg) scale(1.1); }
           100% { transform: rotateY(180deg) scale(1); }
         }
         .card-flip {
-          animation: cardFlip 0.6s ease-out;
+          animation: cardFlip 0.3s ease-out;
         }
 
         @keyframes flipReveal {
           0% { transform: scale(0) rotateY(180deg); opacity: 0; }
-          50% { transform: scale(1.3) rotateY(180deg); opacity: 1; }
+          50% { transform: scale(1.1) rotateY(180deg); opacity: 1; }
           100% { transform: scale(1) rotateY(180deg); opacity: 1; }
         }
         .animate-flip-reveal {
-          animation: flipReveal 0.5s ease-out;
+          animation: flipReveal 0.3s ease-out;
         }
 
         @keyframes bounceCelebrate {
           0%, 100% { transform: translateY(0) scale(1); }
-          10% { transform: translateY(-20px) scale(1.1); }
-          20% { transform: translateY(0) scale(1); }
-          30% { transform: translateY(-10px) scale(1.05); }
-          40% { transform: translateY(0) scale(1); }
+          50% { transform: translateY(-10px) scale(1.1); }
         }
         .animate-bounce-celebrate {
-          animation: bounceCelebrate 1s ease-out;
-        }
-
-        @keyframes spinSlow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .animate-spin-slow {
-          animation: spinSlow 3s linear infinite;
-        }
-
-        @keyframes pingSlow {
-          0% { transform: scale(1); opacity: 0.5; }
-          50% { transform: scale(1.5); opacity: 0; }
-          100% { transform: scale(2); opacity: 0; }
-        }
-        .animate-ping-slow {
-          animation: pingSlow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-        }
-
-        @keyframes shimmer {
-          0% { transform: translateX(-100%) rotate(45deg); }
-          100% { transform: translateX(100%) rotate(45deg); }
-        }
-        .animate-shimmer {
-          animation: shimmer 3s ease-in-out infinite;
-        }
-
-        @keyframes pulseSlow {
-          0%, 100% { opacity: 0.3; }
-          50% { opacity: 0.6; }
-        }
-        .animate-pulse-slow {
-          animation: pulseSlow 2s ease-in-out infinite;
-        }
-
-        @keyframes cardBack {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.02); }
-        }
-        .card-back {
-          animation: cardBack 3s ease-in-out infinite;
-        }
-
-        @keyframes cardMatched {
-          0% { transform: scale(1); }
-          50% { transform: scale(1.15) rotate(5deg); }
-          100% { transform: scale(0.95) rotate(0deg); }
-        }
-        .card-matched {
-          animation: cardMatched 0.6s ease-out;
+          animation: bounceCelebrate 0.5s ease-out;
         }
 
         @keyframes slideIn {
           from { 
             opacity: 0; 
-            transform: translateY(20px) scale(0.8);
+            transform: translateY(10px) scale(0.9);
           }
           to { 
             opacity: 1; 
@@ -718,32 +574,16 @@ const MemoryGame: React.FC = () => {
           }
         }
         .grid > button {
-          animation: slideIn 0.5s ease-out backwards;
+          animation: slideIn 0.3s ease-out backwards;
         }
 
         @keyframes shakeCard {
           0%, 100% { transform: translateX(0) rotate(0deg); }
-          25% { transform: translateX(-10px) rotate(-5deg); }
-          75% { transform: translateX(10px) rotate(5deg); }
+          25% { transform: translateX(-5px) rotate(-2deg); }
+          75% { transform: translateX(5px) rotate(2deg); }
         }
         .animate-shake-card {
-          animation: shakeCard 0.4s ease-in-out;
-        }
-
-        @keyframes spinVerySlow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .animate-spin-very-slow {
-          animation: spinVerySlow 20s linear infinite;
-        }
-
-        @keyframes pulseGentle {
-          0%, 100% { transform: scale(1); opacity: 0.4; }
-          50% { transform: scale(1.05); opacity: 0.6; }
-        }
-        .animate-pulse-gentle {
-          animation: pulseGentle 2s ease-in-out infinite;
+          animation: shakeCard 0.3s ease-in-out;
         }
 
         @keyframes streakBurst {
@@ -759,25 +599,11 @@ const MemoryGame: React.FC = () => {
         /* Unicorn Theme - Pink/Purple/Magical */
         [data-theme="unicorn"] .card-unflipped {
           background: linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #f472b6 100%);
-          border: 4px solid rgba(255,255,255,0.5);
-          box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+          border: 3px solid rgba(255,255,255,0.5);
         }
         [data-theme="unicorn"] .card-flipped {
           background: linear-gradient(135deg, #ffffff 0%, #ddd6fe 50%, #fae8ff 100%);
-          border: 5px solid #FFD700;
-          box-shadow: 0 20px 60px rgba(255, 215, 0, 0.4), 0 0 30px rgba(255, 215, 0, 0.3);
-        }
-        [data-theme="unicorn"] .card-icon-glow {
-          background: rgba(255, 255, 255, 0.4);
-        }
-        [data-theme="unicorn"] .card-emoji-glow {
-          background: linear-gradient(135deg, #fde047 0%, #f9a8d4 50%, #c084fc 100%);
-        }
-        [data-theme="unicorn"] .card-ring-1 {
-          border-color: #fbbf24;
-        }
-        [data-theme="unicorn"] .card-ring-2 {
-          border-color: #4ade80;
+          border: 4px solid #FFD700;
         }
         [data-theme="unicorn"] .card-matched-overlay {
           background: linear-gradient(135deg, rgba(74, 222, 128, 0.3) 0%, rgba(251, 191, 36, 0.3) 50%, rgba(16, 185, 129, 0.3) 100%);
@@ -786,25 +612,11 @@ const MemoryGame: React.FC = () => {
         /* Hero Theme - Teal/Cyan/Blue */
         [data-theme="hero"] .card-unflipped {
           background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 50%, #3b82f6 100%);
-          border: 4px solid rgba(255,255,255,0.5);
-          box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+          border: 3px solid rgba(255,255,255,0.5);
         }
         [data-theme="hero"] .card-flipped {
           background: linear-gradient(135deg, #ffffff 0%, #cffafe 50%, #ccfbf1 100%);
-          border: 5px solid #10B981;
-          box-shadow: 0 20px 60px rgba(16, 185, 129, 0.4), 0 0 30px rgba(16, 185, 129, 0.3);
-        }
-        [data-theme="hero"] .card-icon-glow {
-          background: rgba(103, 232, 249, 0.4);
-        }
-        [data-theme="hero"] .card-emoji-glow {
-          background: linear-gradient(135deg, #5eead4 0%, #67e8f9 50%, #6ee7b7 100%);
-        }
-        [data-theme="hero"] .card-ring-1 {
-          border-color: #14b8a6;
-        }
-        [data-theme="hero"] .card-ring-2 {
-          border-color: #10b981;
+          border: 4px solid #10B981;
         }
         [data-theme="hero"] .card-matched-overlay {
           background: linear-gradient(135deg, rgba(16, 185, 129, 0.3) 0%, rgba(20, 184, 166, 0.3) 50%, rgba(6, 182, 212, 0.3) 100%);

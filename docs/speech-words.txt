@@ -1,0 +1,367 @@
+== UI / Navigation ==
+Välj nivå!
+Min samling
+Hej! Välkommen tillbaka! Välj din profil nedan!
+Hej! Välkommen till Lär med Nadira! Tryck på knappen för att börja!
+
+== Game Names (spoken on dashboard via GameCard) ==
+ABC-Äventyr
+Matte-Magi
+Minnes-Mästaren
+
+== Spelling Game - Feedback ==
+Rätt! Du stavade {word} helt rätt!
+Inte riktigt! Försök igen!
+
+== Spelling Game - Words (spoken when tapped/heard) ==
+KO
+BI
+IS
+ÖN
+ORM
+OST
+UR
+RO
+ÖGA
+OKEJ
+SOL
+HUS
+BIL
+MUS
+BÅT
+VÅG
+MÅNE
+LEK
+NÄSA
+VÄG
+ÄGG
+TRE
+TVÅ
+BRO
+FRÖ
+UGN
+FÅR
+TÅG
+RÖD
+SÅG
+KAKA
+FISK
+BOLL
+HUND
+ANKA
+GRIS
+TALL
+SKOG
+TUPP
+SVAN
+GLAD
+VARM
+KALL
+MASK
+MYRA
+RÄKA
+LAMM
+ROCK
+RING
+LAKE
+BANAN
+CYKEL
+LAMPA
+PANDA
+PIZZA
+TIGER
+ZEBRA
+DOCKA
+MOROT
+HÄST
+DRUVA
+FJÄLL
+GLASS
+HJORT
+JUICE
+KLOSS
+MELON
+SOFFA
+GRODA
+KANIN
+ÄPPLE
+MANGO
+KRÅKA
+PÄRON
+RÄVEN
+UGGLA
+TROLL
+DIMMA
+FROST
+GURKA
+HJÄLM
+VÄSKA
+SVAMP
+BJÖRK
+BÄVER
+KARTA
+NOTER
+STUGA
+BLOMMA
+DELFIN
+CITRON
+GIRAFF
+HJÄRTA
+KLOCKA
+TOMTEN
+ÅSKAN
+SNIGEL
+HATTEN
+ORANGE
+KORGEN
+FJÄRIL
+BLÅBÄR
+FÅGELN
+PINGIS
+RAKET
+VAGNEN
+MOLNET
+TUNNAN
+LEKSAK
+PLANET
+STJÄRNA
+BLOMMOR
+DANSARE
+FISKARE
+SNÖBOLL
+HAMSTER
+SOLSKEN
+APELSIN
+GORILLA
+GALAXEN
+KRUKOR
+DRAKE
+FOTBOLL
+ELEFANT
+HALSBAND
+HÄXA
+JOKER
+SKATTEN
+NYCKEL
+ÄVENTYRET
+BARNVAGN
+GLASÖGON
+SNÖGUBBE
+FLAMINGO
+KARUSELL
+GULDFISK
+KOKOSNÖT
+REGNBÅGE
+ENHÖRNING
+KLÄNNING
+NYCKELPIGA
+HELIKOPTER
+ASTRONAUT
+TVÄTTBJÖRN
+DINOSAURIE
+PRINSESSA
+KROKODIL
+KANELBULLE
+SNÖFLINGA
+SKÖLDPADDA
+HAMBURGARE
+VATTENMELON
+FÅGELUNGE
+SIMHALLEN
+FJÄLLSTUGA
+SMULTRON
+TUSSILAGO
+SKALBAGGE
+FLYGPLATS
+PINGVINEN
+BJÖRNBÄR
+BRANDKÅREN
+ELEFANTEN
+MÅNSKENET
+TÅRTBOTTEN
+BADMINTON
+TROLLKARL
+SOLUPPGÅNG
+SEGELBÅTEN
+TRÄDGÅRDEN
+BIBLIOTEKET
+SPINDELVÄV
+FOTBOLLEN
+LEKPLATSEN
+FJÄRILARNA
+KANINUNGEN
+RIDDARBORG
+UPPFINNING
+BLÄCKFISK
+MÅLARPENSEL
+VATTENFÄRGER
+SMÖRGÅSTÅRTA
+MORGONROCK
+SÄLLSKAPET
+SNÖSTORMEN
+VULKANEN
+SKORSTENEN
+CHOKLADKAKA
+SOLNEDGÅNG
+VATTENFALL
+BARNDOMSVÄN
+SAGOBOKEN
+NORRSKENET
+TROLLFORMEL
+JORDGUBBE
+TRUMSLAGET
+DRÖMFÅNGARE
+TORNSVALAN
+BERGSBÄCKEN
+TROLLSTAVEN
+
+== Math Game - Feedback ==
+Rätt
+Inte rätt, försök igen
+
+== Math Game - Level names (spoken on level start: "Nivå {id}, {name}") ==
+Addition 1-5
+Addition 1-10
+Addition 10-15
+Addition 10-20
+Addition Mästare
+Subtraktion 1-5
+Subtraktion 1-10
+Subtraktion 10-15
+Subtraktion 10-20
+Subtraktion Mästare
+Multiplikation 1-2
+Multiplikation 2-5
+Multiplikation 5-10
+Multiplikation 10+
+Multiplikation Expert
+Division 1-5
+Division 5-10
+Division 10-20
+Division 20+
+Division Mästare
+
+== Math Game - Dynamic questions (spoken as "{a} {op} {b}") ==
+plus
+minus
+gånger
+delat med
+
+== ABC Level Names (spoken on level start: "Nivå {id}, {name}") ==
+Första stegen
+Bokstavslandet
+Ordjakten
+Stavningsparken
+Bokstavsgården
+Ordskatten
+Ordvärlden
+Stavningsskolan
+Bokstavsdjungeln
+Ordmagikern
+Stavningsmästaren
+Ordkonstnären
+Bokstavsslottet
+Ordäventyraren
+Ordtrollkarlen
+Stavningsutopin
+Orduniversumet
+Bokstavskungen
+Ordlegenden
+Mästerstavaren
+
+== Memory Game - Feedback ==
+Fantastiskt! Du är på en vinnande rad!
+Perfekt!
+Försök igen!
+Grattis! Du hittade alla par!
+
+== Memory Game - Level names ==
+Första paren
+Fler djur
+Djurparken
+Vilda djur
+Djurmästare
+Fruktkorgen
+Fruktfesten
+Fruktsallad
+Fruktmix
+Fruktmästare
+Fordonsfärden
+Transportvägen
+Resan
+Äventyret
+Transportmästare
+Emoji-mix 1
+Emoji-mix 2
+Emoji-mix 3
+Emoji-mix 4
+Minnesmästare
+
+== Memory Game - Emoji names (spoken when card is flipped) ==
+hund
+katt
+råtta
+hamster
+kanin
+räv
+björn
+panda
+koala
+tiger
+lejon
+ko
+gris
+groda
+apa
+höna
+elefant
+giraff
+äpple
+banan
+druva
+jordgubbe
+vattenmelon
+apelsin
+citron
+körsbär
+persika
+kiwi
+ananas
+mango
+melon
+blåbär
+kokosnöt
+päron
+bil
+taxi
+bil
+buss
+buss
+racerbil
+polisbil
+ambulans
+brandbil
+skåpbil
+lastbil
+lastbil
+traktor
+cykel
+sparkcykel
+moped
+palett
+fotboll
+gitarr
+mask
+cirkus
+pariserhjul
+berg och dalbana
+karusell
+piltavla
+tärning
+pussel
+trumpet
+fiol
+piano
+trumma
+film
+kort

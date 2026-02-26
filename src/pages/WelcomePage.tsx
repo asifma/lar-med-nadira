@@ -81,20 +81,6 @@ const WelcomePage: React.FC = () => {
     >
       <ThemeToggle className="absolute top-4 right-4" />
 
-      {/* Settings Button */}
-      <button
-        onClick={() => navigate('/admin')}
-        className="absolute bottom-6 right-6 z-50 w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 group overflow-hidden"
-        style={{ 
-          background: 'var(--primary-gradient)',
-          boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3), 0 0 0 4px rgba(255, 255, 255, 0.1)'
-        }}
-        title="Inställningar"
-      >
-        <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        <span className="relative z-10 group-hover:rotate-180 transition-transform duration-500 drop-shadow-lg">⚙️</span>
-      </button>
-
       {/* HomeScreen Tip */}
       <HomeScreenTip />
 
