@@ -418,19 +418,21 @@ const AdminPage: React.FC = () => {
         </div>
 
         {/* Developer Credit */}
-        <div className="text-center py-6 opacity-60">
-          <p className="text-sm font-bold">
-            Developed with ❤️ by{' '}
+        <div className="flex items-center justify-center gap-3 pt-2 pb-1">
+          <div className="h-px flex-1 max-w-16 rounded-full" style={{ backgroundColor: 'var(--text-color)', opacity: 0.15 }} />
+          <p className="text-xs font-bold opacity-40 tracking-widest uppercase">
+            Made with <span className="text-red-400 text-sm">♥</span> by{' '}
             <a 
               href="https://mithawala.com/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="hover:opacity-100 transition-opacity underline"
+              className="hover:opacity-80 transition-opacity"
               style={{ color: 'var(--primary-color)' }}
             >
               Asif Mithawala
             </a>
           </p>
+          <div className="h-px flex-1 max-w-16 rounded-full" style={{ backgroundColor: 'var(--text-color)', opacity: 0.15 }} />
         </div>
       </div>
 

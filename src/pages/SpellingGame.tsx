@@ -54,17 +54,17 @@ const SpellingGame: React.FC = () => {
   );
   const word = words[currentWordIndex] || words[0];
 
-  const handleKeyPress = (char: string) => {
+  const handleKeyPress = useCallback((char: string) => {
     if (level.placeholderMode === 'none') {
       setUserLetters(prev => [...prev, char]);
     } else if (userLetters.length < word.word.length) {
       setUserLetters(prev => [...prev, char]);
     }
-  };
+  }, [level.placeholderMode, userLetters.length, word.word.length]);
 
-  const handleBackspace = () => {
+  const handleBackspace = useCallback(() => {
     setUserLetters(prev => prev.slice(0, -1));
-  };
+  }, []);
 
   const checkAnswer = useCallback(() => {
     if (userLetters.length === 0) return;
@@ -116,6 +116,24 @@ const SpellingGame: React.FC = () => {
       }
     }
   }, [gameState]);
+
+  // Physical keyboard support
+  useEffect(() => {
+    if (gameState !== 'playing') return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (feedback !== 'none') return;
+      const key = e.key;
+      if (key === 'Backspace') {
+        handleBackspace();
+      } else if (key === 'Enter') {
+        checkAnswer();
+      } else if (/^[a-zA-ZåäöÅÄÖ]$/.test(key)) {
+        handleKeyPress(key.toUpperCase());
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [gameState, feedback, checkAnswer, handleKeyPress, handleBackspace]);
 
   const startLevel = (levelId: number) => {
     setSelectedLevel(levelId);
@@ -339,13 +357,12 @@ const SpellingGame: React.FC = () => {
       style={{ perspective: '1000px', background: 'var(--bg-gradient, var(--bg-color))' }}
     >
       {/* HUD */}
-      <div className="relative flex items-center px-4 py-3 bg-white/10 backdrop-blur-md rounded-2xl shadow-sm mb-2 z-10 border border-white/20">
-        <button onClick={() => setGameState('selecting')} className="text-3xl hover:scale-110 transition-transform z-10">←</button>
-        <h2 className="absolute inset-0 flex items-center justify-center text-xl md:text-2xl font-black tracking-tight pointer-events-none" style={{ color: 'var(--primary-color)' }}>
+      <div className="flex items-center gap-2 px-4 py-3 bg-white/10 backdrop-blur-md rounded-2xl shadow-sm mb-2 z-10 border border-white/20">
+        <button onClick={() => setGameState('selecting')} className="text-3xl hover:scale-110 transition-transform shrink-0">←</button>
+        <h2 className="flex-1 min-w-0 text-center text-base md:text-2xl font-black tracking-tight truncate" style={{ color: 'var(--primary-color)' }}>
           Nivå {selectedLevel} — {level.name}
         </h2>
-        <div className="flex-1" />
-        <div className="flex items-center gap-2 z-10">
+        <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={toggleMute}
             className={`text-xl hover:scale-110 transition-all ${isMuted ? 'opacity-40' : ''}`}

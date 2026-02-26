@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProfile } from '../contexts/ProfileContext';
 import mathGame from '../data/mathLevels';
@@ -81,7 +81,7 @@ const MathGame: React.FC = () => {
     if (settings.autoPlayInstructions) safeSpeak(`Nivå ${id}, ${lvl?.name}`);
   };
 
-  const check = () => {
+  const check = useCallback(() => {
     const p = problems[index];
     const val = Number(input);
     if (val === p.answer) {
@@ -110,7 +110,24 @@ const MathGame: React.FC = () => {
       safeSpeak('Inte rätt, försök igen');
       setTimeout(() => { setFeedback('none'); setInput(''); }, 700);
     }
-  };
+  }, [problems, index, input, hasAttempted, updateStars, safeSpeak]);
+
+  // Physical keyboard support
+  useEffect(() => {
+    if (gameState !== 'playing') return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (feedback !== 'none') return;
+      if (e.key >= '0' && e.key <= '9') {
+        setInput(prev => (prev + e.key).slice(0, 6));
+      } else if (e.key === 'Backspace') {
+        setInput(prev => prev.slice(0, -1));
+      } else if (e.key === 'Enter') {
+        check();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [gameState, feedback, check]);
 
   useEffect(() => {
     if (!settings.autoPlayInstructions) return;
@@ -265,9 +282,12 @@ const MathGame: React.FC = () => {
             <span key={s} className={`text-5xl ${s <= stars ? 'animate-bounce' : 'opacity-20'}`} style={{ animationDelay: `${s * 0.15}s` }}>⭐</span>
           ))}
         </div>
-        <div className="pt-6 flex gap-4">
+        <div className="pt-6 flex flex-wrap gap-4 justify-center">
           <Button variant="secondary" size="lg" onClick={() => setGameState('selecting')}>Alla nivåer</Button>
           <Button variant="primary" size="lg" onClick={() => startLevel(selectedLevel)}>Spela igen</Button>
+          {stars > 0 && selectedLevel < 20 && (
+            <Button variant="accent" size="lg" onClick={() => startLevel(selectedLevel + 1)}>NÄSTA NIVÅ →</Button>
+          )}
         </div>
       </div>
     );
@@ -313,13 +333,12 @@ const MathGame: React.FC = () => {
           }
           .animate-float { animation: float 3s ease-in-out infinite; }
         `}</style>
-        <div className="relative flex items-center px-4 py-3 bg-white/10 backdrop-blur-md rounded-2xl shadow-sm mb-2 z-10 border border-white/20">
-          <button onClick={() => setGameState('selecting')} className="text-3xl hover:scale-110 transition-transform z-10">←</button>
-          <h2 className="absolute inset-0 flex items-center justify-center text-xl md:text-2xl font-black tracking-tight pointer-events-none" style={{ color: 'var(--primary-color)' }}>
+        <div className="flex items-center gap-2 px-4 py-3 bg-white/10 backdrop-blur-md rounded-2xl shadow-sm mb-2 z-10 border border-white/20">
+          <button onClick={() => setGameState('selecting')} className="text-3xl hover:scale-110 transition-transform shrink-0">←</button>
+          <h2 className="flex-1 min-w-0 text-center text-base md:text-2xl font-black tracking-tight truncate" style={{ color: 'var(--primary-color)' }}>
             Nivå {selectedLevel} — {level?.name}
           </h2>
-          <div className="flex-1" />
-          <div className="flex items-center gap-2 z-10">
+          <div className="flex items-center gap-2 shrink-0">
             <button onClick={toggleMute} className={`text-xl hover:scale-110 transition-all ${isMuted ? 'opacity-40' : ''}`} title={isMuted ? 'Slå på ljud' : 'Stäng av ljud'}>
               {isMuted ? '🔇' : '🔊'}
             </button>
@@ -347,25 +366,26 @@ const MathGame: React.FC = () => {
         </div>
 
         <div className="flex-1 flex flex-col items-center justify-center gap-6">
-        
-        {/* Feedback text - positioned at top with nice visuals */}
-        <div className="h-20 flex items-center justify-center">
-          {feedback === 'correct' && (
-            <div className="text-5xl font-black text-green-500 animate-pop flex items-center gap-3 drop-shadow-lg">
-              <span className="animate-bounce">✅</span>
-              <span>Rätt!</span>
-              <span className="animate-bounce" style={{ animationDelay: '0.1s' }}>🎉</span>
-            </div>
-          )}
-          {feedback === 'wrong' && (
-            <div className="text-4xl font-black text-red-500 animate-shake flex items-center gap-3 drop-shadow-lg">
-              <span>❌</span>
-              <span>Försök igen!</span>
-            </div>
-          )}
-        </div>
 
-        <div className={`w-full max-w-3xl p-6 rounded-3xl bg-gradient-to-br from-white/5 to-white/2 border border-white/10 text-center shadow-2xl ${feedback === 'correct' ? 'animate-wiggle' : ''} ${feedback === 'wrong' ? 'animate-shake' : ''}`}>
+        <div className={`relative w-full max-w-3xl p-6 rounded-3xl bg-gradient-to-br from-white/5 to-white/2 border border-white/10 text-center shadow-2xl ${feedback === 'correct' ? 'animate-wiggle' : ''} ${feedback === 'wrong' ? 'animate-shake' : ''}`}>
+          {/* Feedback overlay */}
+          {feedback !== 'none' && (
+            <div className="absolute inset-0 z-10 flex items-center justify-center rounded-3xl bg-black/30 backdrop-blur-[2px]">
+              {feedback === 'correct' && (
+                <div className="text-5xl font-black text-green-400 animate-pop flex items-center gap-3 drop-shadow-lg">
+                  <span className="animate-bounce">✅</span>
+                  <span>Rätt!</span>
+                  <span className="animate-bounce" style={{ animationDelay: '0.1s' }}>🎉</span>
+                </div>
+              )}
+              {feedback === 'wrong' && (
+                <div className="text-4xl font-black text-red-400 animate-shake flex items-center gap-3 drop-shadow-lg">
+                  <span>❌</span>
+                  <span>Försök igen!</span>
+                </div>
+              )}
+            </div>
+          )}
           <div className="flex items-center justify-between mb-4">
             <div className="text-4xl">{level?.badge}</div>
             <div className="text-sm opacity-60">Fråga {index + 1}/{problems.length}</div>
@@ -385,11 +405,11 @@ const MathGame: React.FC = () => {
           <div className="mb-6">
             <div className="flex gap-6 justify-center items-center">
               <div className={`bg-white/10 p-4 rounded-2xl animate-float ${feedback === 'correct' ? 'animate-glow-pulse' : ''} ${feedback === 'wrong' ? 'opacity-50' : ''}`}>
-                <VisualCount n={p.a} emoji={level?.op === '+' ? '🍎' : level?.op === '-' ? '🍐' : level?.op === '×' ? '🍇' : '🍪'} />
+                <VisualCount n={p.a} emoji={level?.op === '+' ? '🍎' : level?.op === '-' ? '🍎' : level?.op === '×' ? '🍇' : '🍪'} />
               </div>
               <div className="text-4xl font-black">{level?.op}</div>
               <div className={`bg-white/10 p-4 rounded-2xl animate-float ${feedback === 'correct' ? 'animate-glow-pulse' : ''} ${feedback === 'wrong' ? 'opacity-50' : ''}`}>
-                <VisualCount n={p.b} emoji={level?.op === '+' ? '🍏' : level?.op === '-' ? '🍎' : level?.op === '×' ? '🍇' : '🍪'} />
+                <VisualCount n={p.b} emoji={level?.op === '+' ? '🍎' : level?.op === '-' ? '🍎' : level?.op === '×' ? '🍇' : '🍪'} />
               </div>
             </div>
           </div>
@@ -399,7 +419,7 @@ const MathGame: React.FC = () => {
               <input
                 value={input}
                 readOnly
-                className={`w-full p-6 rounded-xl text-6xl text-center bg-[var(--card-bg)] text-[var(--text-color)] font-black transition-colors duration-300 ${feedback === 'correct' ? 'animate-pop' : ''} ${feedback === 'wrong' ? 'bg-red-500 text-white' : ''}`}
+                className={`w-full p-6 rounded-xl text-6xl text-center bg-[var(--card-bg)] text-[var(--text-color)] font-black transition-colors duration-300 ${feedback === 'correct' ? 'animate-pop' : ''}`}
               />
             </div>
             <NumericPad onPress={(v) => setInput(i => (v === '' ? '' : (i + v).slice(0,6)))} onClear={() => setInput('')} onEnter={check} />

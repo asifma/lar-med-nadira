@@ -71,3 +71,30 @@
 [data-theme="hero"] .unicorn-floaters {
   display: none;
 }
+
+/* Prevent overscroll/rubber-band effect on mobile */
+html, body {
+  overscroll-behavior: none;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+#root {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Safe area support for iOS notch/home indicator */
+.safe-area-bottom {
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+}
+
+/* Prevent pull-to-refresh on mobile */
+body {
+  overscroll-behavior-y: contain;
+}

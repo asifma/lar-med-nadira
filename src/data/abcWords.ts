@@ -11,7 +11,7 @@ const level1Words: Word[] = [
   { word: 'UR', emoji: '⏰' },
   { word: 'RO', emoji: '🚣‍♀️' },
   { word: 'ÖGA', emoji: '👁️' },
-  { word: 'OK', emoji: '👍' },
+  { word: 'OKEJ', emoji: '👍' },
 ];
 
 const level2Words: Word[] = [
@@ -20,15 +20,15 @@ const level2Words: Word[] = [
   { word: 'BIL', emoji: '🚗' },
   { word: 'MUS', emoji: '🐭' },
   { word: 'BÅT', emoji: '⛵' },
-  { word: 'HAV', emoji: '🌊' },
+  { word: 'VÅG', emoji: '🌊' },
   { word: 'MÅNE', emoji: '🌙' },
   { word: 'LEK', emoji: '🎮' },
-  { word: 'NOS', emoji: '👃' },
+  { word: 'NÄSA', emoji: '👃' },
   { word: 'VÄG', emoji: '🛣️' },
 ];
 
 const level3Words: Word[] = [
-  { word: 'SJÖ', emoji: '🌊' },
+  { word: 'ÄGG', emoji: '🥚' },
   { word: 'TRE', emoji: '3️⃣' },
   { word: 'TVÅ', emoji: '2️⃣' },
   { word: 'BRO', emoji: '🌉' },
@@ -60,7 +60,7 @@ const level5Words: Word[] = [
   { word: 'MASK', emoji: '🪱' },
   { word: 'MYRA', emoji: '🐜' },
   { word: 'RÄKA', emoji: '🦐' },
-  { word: 'LAMM', emoji: '🐏' },
+  { word: 'LAMM', emoji: '🐑' },
   { word: 'ROCK', emoji: '🧥' },
   { word: 'RING', emoji: '💍' },
   { word: 'LAKE', emoji: '🐟' },
@@ -109,7 +109,7 @@ const level8Words: Word[] = [
 const level9Words: Word[] = [
   { word: 'HJÄLM', emoji: '⛑️' },
   { word: 'VÄSKA', emoji: '👜' },
-  { word: 'STORK', emoji: '🦆' },
+  { word: 'SVAMP', emoji: '🍄' },
   { word: 'BJÖRK', emoji: '🌳' },
   { word: 'BÄVER', emoji: '🦫' },
   { word: 'KARTA', emoji: '🗺️' },
@@ -155,7 +155,7 @@ const level12Words: Word[] = [
   { word: 'HAMSTER', emoji: '🐹' },
   { word: 'SOLSKEN', emoji: '🌤️' },
   { word: 'APELSIN', emoji: '🍊' },
-  { word: 'SJÖHÄST', emoji: '🐴' },
+  { word: 'GORILLA', emoji: '🦍' },
   { word: 'GALAXEN', emoji: '🌌' },
 ];
 
@@ -178,7 +178,7 @@ const level14Words: Word[] = [
   { word: 'SNÖGUBBE', emoji: '⛄' },
   { word: 'FLAMINGO', emoji: '🦩' },
   { word: 'KARUSELL', emoji: '🎠' },
-  { word: 'GULDFISK', emoji: '🐡' },
+  { word: 'GULDFISK', emoji: '🐠' },
   { word: 'KOKOSNÖT', emoji: '🥥' },
   { word: 'REGNBÅGE', emoji: '🌈' },
   { word: 'ENHÖRNING', emoji: '🦄' },
@@ -261,7 +261,7 @@ const level20Words: Word[] = [
   { word: 'DRÖMFÅNGARE', emoji: '🕸️' },
   { word: 'TORNSVALAN', emoji: '🕊️' },
   { word: 'BERGSBÄCKEN', emoji: '🏔️' },
-  { word: 'TROLLSLÄNDA', emoji: '🦟' },
+  { word: 'TROLLSTAVEN', emoji: '🪄' },
 ];
 
 export const abcGame: GameDefinition<SpellingGameLevel> = {

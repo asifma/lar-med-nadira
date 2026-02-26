@@ -15,7 +15,7 @@ const BottomNavigation: React.FC = () => {
   ];
 
   return (
-    <nav className="sticky bottom-0 p-4 bg-white/10 backdrop-blur-xl border-t border-white/20 flex justify-around items-center z-50">
+    <nav className="fixed bottom-0 left-0 right-0 p-4 bg-white/10 backdrop-blur-xl border-t border-white/20 flex justify-around items-center z-50 safe-area-bottom">
       {navItems.map((item) => {
         const isActive = location.pathname === item.path;
         const isDisabled = item.requiresProfile && !activeProfile;

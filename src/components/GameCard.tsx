@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GameDefinition } from '../types';
 import { AbcCardIllustration, MathCardIllustration, MemoryCardIllustration, PuzzleCardIllustration } from './GameCardIllustration';
+import { useSpeech } from '../contexts/SpeechContext';
 
 interface GameCardProps {
   game: GameDefinition;
@@ -17,7 +18,13 @@ const ILLUSTRATIONS: Record<string, React.FC<{ className?: string }>> = {
 
 const GameCard: React.FC<GameCardProps> = ({ game, isComingSoon = false }) => {
   const navigate = useNavigate();
+  const { speak } = useSpeech();
   const Illustration = ILLUSTRATIONS[game.illustration] || AbcCardIllustration;
+
+  const handleSpeak = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    speak(game.name);
+  };
 
   if (isComingSoon) {
     return (
@@ -46,6 +53,23 @@ const GameCard: React.FC<GameCardProps> = ({ game, isComingSoon = false }) => {
           {game.badge}
         </div>
       )}
+      
+      {/* Speaker button */}
+      <button
+        onClick={handleSpeak}
+        className="absolute top-4 left-4 w-10 h-10 rounded-full border-2 flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-lg z-10"
+        style={{
+          backgroundColor: 'var(--card-bg)',
+          borderColor: 'var(--primary-color)'
+        }}
+        title={`Lyssna på ${game.name}`}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--primary-color)]">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        </svg>
+      </button>
+
       <Illustration className="w-28 h-28 mb-4 group-hover:scale-105 transition-transform" />
       <h3 className="text-3xl font-black mb-2">{game.name}</h3>
       <p className="font-bold opacity-70 flex-1">{game.description}</p>

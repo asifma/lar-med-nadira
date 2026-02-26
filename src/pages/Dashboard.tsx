@@ -66,7 +66,7 @@ const Dashboard: React.FC = () => {
       </header>
 
       {/* Content */}
-      <main className="flex-1 overflow-y-auto p-6 md:p-12">
+      <main className="flex-1 overflow-y-auto p-6 pb-32 md:p-12 md:pb-32">
         <div className="max-w-5xl mx-auto space-y-12">
 
           <div className="text-center relative">

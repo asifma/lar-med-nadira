@@ -76,10 +76,10 @@ const WelcomePage: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center relative px-6 py-10 pb-24"
+      className="min-h-screen flex flex-col items-center justify-center relative px-6 pt-20 pb-24"
       style={{ background: 'var(--bg-gradient, var(--bg-color))' }}
     >
-      <ThemeToggle className="absolute top-6 right-6" />
+      <ThemeToggle className="absolute top-4 right-4" />
 
       {/* Settings Button */}
       <button
