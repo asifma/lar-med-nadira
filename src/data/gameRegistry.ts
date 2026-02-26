@@ -2,6 +2,7 @@ import { GameDefinition, SpellingGameLevel, MathGameLevel } from '../types';
 import { abcGame } from './abcWords';
 import { mathGame } from './mathLevels';
 import { memoryGame } from './memoryLevels';
+import { puzzleGame } from './puzzleLevels';
 
 /**
  * GAME REGISTRY
@@ -38,6 +39,13 @@ export const GAMES: GameDefinition[] = [
     description: 'Hitta matchande par!',
     route: '/spel/minnes-mastaren',
     illustration: 'MemoryCardIllustration',
+    badge: 'Ny!',
+  },
+  {
+    ...puzzleGame,
+    description: 'Dra pusselbitarna till rätt plats!',
+    route: '/spel/pussel-palatset',
+    illustration: 'PuzzleCardIllustration',
     badge: 'Ny!',
   },
   // Add new games here following the same pattern

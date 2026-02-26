@@ -37,8 +37,13 @@ export interface MemoryGameLevel extends BaseGameLevel {
   theme: string;
 }
 
+// Puzzle game specific level
+export interface PuzzleGameLevel extends BaseGameLevel {
+  puzzles: Word[];
+}
+
 // Union type for all game levels
-export type GameLevel = SpellingGameLevel | MathGameLevel | MemoryGameLevel;
+export type GameLevel = SpellingGameLevel | MathGameLevel | MemoryGameLevel | PuzzleGameLevel;
 
 // Game definition with metadata
 export interface GameDefinition<T extends BaseGameLevel = BaseGameLevel> {

@@ -231,17 +231,70 @@ export const MemoryCardIllustration: React.FC<{ className?: string }> = ({ class
 
 export const PuzzleCardIllustration: React.FC<{ className?: string }> = ({ className = '' }) => (
   <div className={className}>
-    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full opacity-40 grayscale">
-      {/* Puzzle pieces */}
-      <g transform="translate(25, 25)">
-        <path d="M 0 10 L 0 0 L 30 0 L 30 10 Q 25 10 25 15 Q 25 20 30 20 L 30 35 L 0 35 L 0 25 Q 5 25 5 20 Q 5 15 0 15 Z" fill="var(--primary-color)" opacity="0.4" />
+    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+      <style>
+        {`
+          @keyframes float1 {
+            0%, 100% { transform: translate(-2px, -2px); }
+            50% { transform: translate(-5px, -5px); }
+          }
+          @keyframes float2 {
+            0%, 100% { transform: translate(2px, -2px); }
+            50% { transform: translate(5px, -5px); }
+          }
+          @keyframes float3 {
+            0%, 100% { transform: translate(-2px, 2px); }
+            50% { transform: translate(-5px, 5px); }
+          }
+          @keyframes float4 {
+            0%, 100% { transform: translate(2px, 2px); }
+            50% { transform: translate(5px, 5px); }
+          }
+        `}
+      </style>
+      
+      {/* Background glow */}
+      <circle cx="60" cy="60" r="40" fill="var(--primary-color)" opacity="0.15">
+        <animate attributeName="r" values="40;45;40" dur="3s" repeatCount="indefinite" />
+      </circle>
+
+      {/* Center Puzzle */}
+      <g transform="translate(60, 60)">
+        {/* Piece 1 (Top-Left) */}
+        <g style={{ animation: 'float1 4s ease-in-out infinite' }}>
+          <path d="M -30 -30 L 0 -30 L 0 -20 C 15 -20, 15 -10, 0 -10 L 0 0 L -10 0 C -10 -15, -20 -15, -20 0 L -30 0 Z" 
+                fill="var(--primary-color)" stroke="white" strokeWidth="2" strokeLinejoin="round" />
+        </g>
+        
+        {/* Piece 2 (Top-Right) */}
+        <g style={{ animation: 'float2 4.5s ease-in-out infinite' }}>
+          <path d="M 0 -30 L 30 -30 L 30 0 L 20 0 C 20 -15, 10 -15, 10 0 L 0 0 L 0 -10 C 15 -10, 15 -20, 0 -20 L 0 -30 Z" 
+                fill="var(--accent-color)" stroke="white" strokeWidth="2" strokeLinejoin="round" />
+        </g>
+        
+        {/* Piece 3 (Bottom-Left) */}
+        <g style={{ animation: 'float3 5s ease-in-out infinite' }}>
+          <path d="M -30 0 L -20 0 C -20 -15, -10 -15, -10 0 L 0 0 L 0 10 C -15 10, -15 20, 0 20 L 0 30 L -30 30 Z" 
+                fill="var(--secondary-color)" stroke="white" strokeWidth="2" strokeLinejoin="round" />
+        </g>
+        
+        {/* Piece 4 (Bottom-Right) */}
+        <g style={{ animation: 'float4 4s ease-in-out infinite' }}>
+          <path d="M 0 0 L 10 0 C 10 -15, 20 -15, 20 0 L 30 0 L 30 30 L 0 30 L 0 20 C -15 20, -15 10, 0 10 L 0 0 Z" 
+                fill="#FFD700" stroke="white" strokeWidth="2" strokeLinejoin="round" />
+        </g>
       </g>
-      <g transform="translate(60, 25)">
-        <path d="M 5 0 L 35 0 L 35 15 Q 30 15 30 20 Q 30 25 35 25 L 35 35 L 5 35 L 5 20 Q 10 20 10 15 Q 10 10 5 10 Z" fill="var(--accent-color)" opacity="0.3" />
-      </g>
-      <g transform="translate(25, 62)">
-        <path d="M 0 0 L 0 -5 Q 5 -5 5 -10 Q 5 -15 0 -15 L 0 -25 L 30 -25 L 30 0 L 0 0 Z" fill="var(--secondary-color)" opacity="0.35" transform="translate(0, 35)" />
-      </g>
+
+      {/* Sparkles */}
+      <circle cx="20" cy="20" r="2" fill="#FFD700">
+        <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="100" cy="40" r="2.5" fill="#FFD700">
+        <animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite" begin="0.5s" />
+      </circle>
+      <circle cx="80" cy="90" r="2" fill="#FFD700">
+        <animate attributeName="opacity" values="0;1;0" dur="1.8s" repeatCount="indefinite" begin="1s" />
+      </circle>
     </svg>
   </div>
 );
