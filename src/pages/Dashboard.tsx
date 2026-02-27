@@ -72,7 +72,7 @@ const Dashboard: React.FC = () => {
           <div className="text-center relative">
             <DashboardDecoration className="absolute inset-0 -top-8 -bottom-4 opacity-80" />
             <SpeakableText
-              text={`Välkommen tillbaka, ${activeProfile.name}! Vad vill du lära dig idag?`}
+              text={`Välkommen tillbaka. Vad vill du lära dig idag?`}
               className="text-4xl font-black relative z-10"
             />
           </div>
@@ -94,7 +94,7 @@ const Dashboard: React.FC = () => {
               
               <h4 className="text-3xl font-black mb-8 flex items-center gap-3 relative z-10">
                 <span className="text-4xl">🏆</span>
-                <span>Dina framsteg</span>
+                <SpeakableText text="Dina framsteg" className="inline" />
               </h4>
               
               {(activeProfile.completedLevels || []).length === 0 ? (

@@ -343,7 +343,7 @@ const PuzzleGame: React.FC = () => {
   // Check for puzzle completion
   useEffect(() => {
     if (gameState === 'playing' && pieces.length > 0 && placedPieces.size === pieces.length) {
-      if (!isMuted) speak(`Bra! ${currentPuzzle.word}`);
+      if (!isMuted) speak(`${currentPuzzle.word}`);
       
       const timer = setTimeout(() => {
         if (currentPuzzleIndex < level.puzzles.length - 1) {
