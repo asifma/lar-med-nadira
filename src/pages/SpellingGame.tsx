@@ -78,7 +78,7 @@ const SpellingGame: React.FC = () => {
         setFirstAttemptCorrect(prev => prev + 1); // Only count if first attempt
       }
       updateStars(1);
-      safeSpeak(`Rätt! Du stavade ${word.word} helt rätt!`);
+      safeSpeak(`Rätt! Du stavade helt rätt!`);
 
       setTimeout(() => {
         if (currentWordIndex < words.length - 1) {
