@@ -52,7 +52,7 @@ const CollectionPage: React.FC = () => {
             </div>
             
             {/* Stats cards */}
-            <div className="grid grid-cols-2 gap-4 mt-8 max-w-md mx-auto">
+            <div className="grid grid-cols-3 gap-4 mt-8 max-w-2xl mx-auto">
             {/* Earned badges card */}
             <div 
               className="rounded-3xl p-6 border-2 shadow-xl backdrop-blur-md relative overflow-hidden group hover:scale-105 transition-transform"
@@ -64,10 +64,10 @@ const CollectionPage: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-orange-400/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <div className="text-5xl mb-2 animate-bounce-slow">🏅</div>
               <div className="text-4xl font-black" style={{ color: 'var(--primary-color)' }}>{earnedBadges}</div>
-              <div className="text-sm font-bold opacity-60">Samlade</div>
+              <div className="text-sm font-bold opacity-60">Märken</div>
             </div>
 
-            {/* Total badges card */}
+            {/* Total stars card */}
             <div 
               className="rounded-3xl p-6 border-2 shadow-xl backdrop-blur-md relative overflow-hidden group hover:scale-105 transition-transform"
               style={{ 
@@ -76,9 +76,23 @@ const CollectionPage: React.FC = () => {
               }}
             >
               <div className="absolute inset-0 bg-gradient-to-br from-purple-400/10 to-pink-400/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div className="text-5xl mb-2 animate-bounce-slow" style={{ animationDelay: '0.5s' }}>🎯</div>
-              <div className="text-4xl font-black" style={{ color: 'var(--accent-color)' }}>{totalBadges}</div>
-              <div className="text-sm font-bold opacity-60">Totalt</div>
+              <div className="text-5xl mb-2 animate-bounce-slow" style={{ animationDelay: '0.5s' }}>⭐</div>
+              <div className="text-4xl font-black" style={{ color: 'var(--accent-color)' }}>{activeProfile.stars}</div>
+              <div className="text-sm font-bold opacity-60">Stjärnor</div>
+            </div>
+
+            {/* Streaks card */}
+            <div 
+              className="rounded-3xl p-6 border-2 shadow-xl backdrop-blur-md relative overflow-hidden group hover:scale-105 transition-transform"
+              style={{ 
+                backgroundColor: 'var(--card-bg)',
+                borderColor: 'var(--secondary-color)'
+              }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-400/10 to-red-400/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div className="text-5xl mb-2 animate-bounce-slow" style={{ animationDelay: '1s' }}>🔥</div>
+              <div className="text-4xl font-black" style={{ color: 'var(--secondary-color)' }}>{activeProfile.streaks || 0}</div>
+              <div className="text-sm font-bold opacity-60">Streaks</div>
             </div>
           </div>
 
@@ -172,42 +186,39 @@ const CollectionPage: React.FC = () => {
                     ];
                     const gradientClass = gradients[levelIndex % gradients.length];
                     
+                    // Colors for tracing game text badges
+                    const TRACING_COLORS = [
+                      '#ef4444', '#f97316', '#f59e0b', '#84cc16', '#22c55e', '#10b981', '#14b8a6', '#06b6d4', '#0ea5e9', '#3b82f6', '#6366f1', '#8b5cf6', '#a855f7', '#d946ef', '#ec4899', '#f43f5e'
+                    ];
+                    const badgeColor = game.id === 'tracing' ? TRACING_COLORS[level.id % TRACING_COLORS.length] : undefined;
+                    
                     return (
                       <div
                         key={level.id}
-                        className={`aspect-square rounded-3xl px-8 py-6 md:px-10 md:py-8 flex flex-col items-center justify-center transition-all duration-300 relative overflow-hidden group ${
+                        className={`aspect-square rounded-3xl px-2 py-2 md:px-4 md:py-4 flex flex-col items-center justify-center transition-all duration-300 relative overflow-hidden group ${
                           unlocked
-                            ? `bg-gradient-to-br ${gradientClass} shadow-2xl hover:scale-110 border-4 animate-badge-appear`
-                            : 'bg-gradient-to-br from-gray-800/20 to-gray-900/20 opacity-30 border-4 border-dashed border-white/20 hover:opacity-50'
+                            ? `bg-gradient-to-br ${gradientClass} shadow-md border-2`
+                            : 'bg-gradient-to-br from-gray-800/20 to-gray-900/20 opacity-30 border-2 border-dashed border-white/20'
                         }`}
                         style={{ 
                           borderColor: unlocked ? '#fbbf24' : undefined,
-                          animationDelay: `${levelIndex * 0.05}s`,
-                          boxShadow: unlocked ? '0 0 30px rgba(251, 191, 36, 0.4), 0 10px 40px rgba(0,0,0,0.2)' : undefined
                         }}
                       >
-                        {/* Animated glow effect for unlocked badges */}
-                        {unlocked && (
-                          <>
-                            <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                            <div className="absolute inset-0 animate-pulse-glow"></div>
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer-badge"></div>
-                          </>
-                        )}
-                        
                         {/* Badge emoji - bigger with spacing */}
-                        <span className={`text-3xl md:text-4xl lg:text-5xl relative z-10 drop-shadow-lg ${unlocked ? 'animate-bounce-once' : 'blur-sm grayscale'}`}>
+                        <span 
+                          className={`text-3xl md:text-4xl lg:text-5xl relative z-10 drop-shadow-sm ${unlocked ? '' : 'blur-sm grayscale'}`}
+                          style={{ color: badgeColor, fontWeight: game.id === 'tracing' ? '900' : 'normal' }}
+                        >
                           {level.badge}
                         </span>
                         
                         {/* Stars for unlocked badges with spacing */}
                         {unlocked && (
-                          <div className="flex gap-2 relative z-10">
+                          <div className="flex gap-0.5 mt-2 relative z-10">
                             {[1, 2, 3].map(s => (
                               <span 
                                 key={s} 
-                                className={`text-sm md:text-base transition-all drop-shadow-md ${s <= stars ? 'scale-100 animate-star-twinkle' : 'opacity-20 scale-75'}`}
-                                style={{ animationDelay: `${s * 0.2}s` }}
+                                className={`text-xs md:text-sm transition-all drop-shadow-sm ${s <= stars ? 'scale-100' : 'opacity-20 scale-75'}`}
                               >
                                 ⭐
                               </span>
@@ -217,17 +228,7 @@ const CollectionPage: React.FC = () => {
                         
                         {/* Level number for locked badges */}
                         {!unlocked && (
-                          <span className="text-sm font-bold opacity-60 relative z-10">{level.id}</span>
-                        )}
-
-                        {/* Enhanced sparkle effects on hover for unlocked */}
-                        {unlocked && (
-                          <>
-                            <div className="absolute -top-2 -right-2 text-lg opacity-0 group-hover:opacity-100 transition-opacity animate-twinkle drop-shadow-lg">✨</div>
-                            <div className="absolute -bottom-2 -left-2 text-lg opacity-0 group-hover:opacity-100 transition-opacity animate-twinkle drop-shadow-lg" style={{ animationDelay: '0.5s' }}>💫</div>
-                            <div className="absolute -top-2 -left-2 text-base opacity-0 group-hover:opacity-100 transition-opacity animate-twinkle drop-shadow-lg" style={{ animationDelay: '0.25s' }}>🌟</div>
-                            <div className="absolute -bottom-2 -right-2 text-base opacity-0 group-hover:opacity-100 transition-opacity animate-twinkle drop-shadow-lg" style={{ animationDelay: '0.75s' }}>⭐</div>
-                          </>
+                          <span className="text-sm font-bold opacity-60 relative z-10 mt-2">{level.id}</span>
                         )}
                       </div>
                     );
@@ -283,69 +284,12 @@ const CollectionPage: React.FC = () => {
           animation: slideInUp 0.6s ease-out backwards;
         }
 
-        @keyframes badgeAppear {
-          0% { opacity: 0; transform: scale(0) rotate(-180deg); }
-          60% { transform: scale(1.2) rotate(10deg); }
-          100% { opacity: 1; transform: scale(1) rotate(0deg); }
-        }
-        .animate-badge-appear {
-          animation: badgeAppear 0.6s ease-out backwards;
-        }
-
-        @keyframes shimmerProgress {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
-        }
-        .animate-shimmer-progress {
-          animation: shimmerProgress 2s ease-in-out infinite;
-        }
-
         @keyframes scaleIn {
           from { opacity: 0; transform: scale(0.5); }
           to { opacity: 1; transform: scale(1); }
         }
         .animate-scale-in {
           animation: scaleIn 0.6s ease-out;
-        }
-
-        @keyframes twinkle {
-          0%, 100% { opacity: 0.4; transform: scale(1); }
-          50% { opacity: 1; transform: scale(1.3); }
-        }
-        .animate-twinkle {
-          animation: twinkle 1.5s ease-in-out infinite;
-        }
-
-        @keyframes pulseGlow {
-          0%, 100% { 
-            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.3);
-            opacity: 0.5;
-          }
-          50% { 
-            box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.5);
-            opacity: 0.8;
-          }
-        }
-        .animate-pulse-glow {
-          animation: pulseGlow 2s ease-in-out infinite;
-        }
-
-        @keyframes shimmerBadge {
-          0% { transform: translateX(-100%) skewX(-15deg); }
-          100% { transform: translateX(200%) skewX(-15deg); }
-        }
-        .animate-shimmer-badge {
-          animation: shimmerBadge 3s ease-in-out infinite;
-        }
-
-        @keyframes starTwinkle {
-          0%, 100% { transform: scale(1) rotate(0deg); }
-          25% { transform: scale(1.2) rotate(5deg); }
-          50% { transform: scale(1) rotate(0deg); }
-          75% { transform: scale(1.2) rotate(-5deg); }
-        }
-        .animate-star-twinkle {
-          animation: starTwinkle 2s ease-in-out infinite;
         }
       `}</style>
     </div>

@@ -14,7 +14,7 @@ const Dashboard: React.FC = () => {
   const { activeProfile } = useProfile();
 
   if (!activeProfile) {
-    return <div className="p-8 text-center"><Button onClick={() => navigate('/')}>Gå till start</Button></div>;
+    return <div className="p-8 text-center"><Button onClick={() => navigate('/')}>🏠 Gå till start</Button></div>;
   }
 
   return (

@@ -298,3 +298,60 @@ export const PuzzleCardIllustration: React.FC<{ className?: string }> = ({ class
     </svg>
   </div>
 );
+
+export const TracingCardIllustration: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <div className={className}>
+    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+      <style>
+        {`
+          @keyframes drawLine {
+            0% { stroke-dashoffset: 100; }
+            50%, 100% { stroke-dashoffset: 0; }
+          }
+          @keyframes pencilMove {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(25px, -45px); }
+            100% { transform: translate(0, 0); }
+          }
+        `}
+      </style>
+      
+      {/* Background glow */}
+      <circle cx="60" cy="60" r="35" fill="var(--primary-color)" opacity="0.15">
+        <animate attributeName="r" values="35;40;35" dur="3s" repeatCount="indefinite" />
+      </circle>
+
+      {/* Dotted Letter A */}
+      <g transform="translate(45, 80)">
+        <path d="M 0 0 L 15 -40 L 30 0" stroke="var(--primary-color)" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="4 6" opacity="0.4" />
+        <path d="M 5 -15 L 25 -15" stroke="var(--primary-color)" strokeWidth="6" strokeLinecap="round" strokeDasharray="4 6" opacity="0.4" />
+      </g>
+
+      {/* Drawn Line (Animated) */}
+      <g transform="translate(45, 80)">
+        <path d="M 0 0 L 15 -40" stroke="var(--accent-color)" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="100" strokeDashoffset="100" style={{ animation: 'drawLine 3s ease-in-out infinite' }} />
+      </g>
+
+      {/* Pencil */}
+      <g style={{ animation: 'pencilMove 3s ease-in-out infinite' }} transform="translate(45, 80)">
+        <g transform="translate(-5, -5) rotate(45)">
+          <path d="M 0 0 L 5 15 L 10 0 Z" fill="#FCD34D" />
+          <path d="M 0 0 L 10 0 L 10 -25 L 0 -25 Z" fill="#FBBF24" />
+          <path d="M 0 -25 L 10 -25 L 10 -30 L 0 -30 Z" fill="#F87171" />
+          <path d="M 3 10 L 5 15 L 7 10 Z" fill="#4B5563" />
+        </g>
+      </g>
+
+      {/* Sparkles */}
+      <circle cx="30" cy="30" r="2" fill="#FFD700">
+        <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="90" cy="40" r="2.5" fill="#FFD700">
+        <animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite" begin="0.5s" />
+      </circle>
+      <circle cx="70" cy="90" r="2" fill="#FFD700">
+        <animate attributeName="opacity" values="0;1;0" dur="1.8s" repeatCount="indefinite" begin="1s" />
+      </circle>
+    </svg>
+  </div>
+);

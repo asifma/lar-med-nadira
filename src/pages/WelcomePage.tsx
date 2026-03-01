@@ -115,7 +115,7 @@ const WelcomePage: React.FC = () => {
           onClick={handleStart}
           className="text-3xl md:text-4xl py-6 md:py-8 px-14 md:px-20 hover:translate-y-[-4px] active:translate-y-[2px] active:shadow-none transition-all"
         >
-          BÖRJA! ▶️
+          🚀 BÖRJA! ▶️
         </Button>
       )}
 

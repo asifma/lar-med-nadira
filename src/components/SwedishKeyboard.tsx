@@ -70,7 +70,7 @@ const SwedishKeyboard: React.FC<SwedishKeyboardProps> = ({
             className="flex-1 max-w-[140px] md:max-w-[200px] text-sm md:text-lg px-3 py-2 md:px-6 md:py-3"
             disabled={disabled}
           >
-            KOLLA!
+            ✅ KOLLA!
           </Button>
         </div>
       </div>

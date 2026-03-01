@@ -3,6 +3,7 @@ import { abcGame } from './abcWords';
 import { mathGame } from './mathLevels';
 import { memoryGame } from './memoryLevels';
 import { puzzleGame } from './puzzleLevels';
+import { tracingGame } from './tracingLevels';
 
 /**
  * GAME REGISTRY
@@ -15,6 +16,7 @@ import { puzzleGame } from './puzzleLevels';
  * 3. Create your game card illustration in src/components/GameCardIllustration.tsx
  * 4. Import and add your game to the GAMES array below
  * 5. Add the route in src/App.tsx
+ * 6. (Optional) Add to CollectionPage if it has unique collectibles
  * 
  * That's it! The dashboard, collection page, and navigation will automatically update.
  */
@@ -23,7 +25,7 @@ export const GAMES: GameDefinition[] = [
   {
     ...abcGame,
     description: 'Lär dig stava roliga ord!',
-    route: '/spel/abc-aventyr/',
+    route: '/spel/abc-aventyr',
     illustration: 'AbcCardIllustration',
     badge: 'Populärt!',
   },
@@ -46,6 +48,13 @@ export const GAMES: GameDefinition[] = [
     description: 'Dra pusselbitarna till rätt plats!',
     route: '/spel/pussel-palatset',
     illustration: 'PuzzleCardIllustration',
+    badge: 'Ny!',
+  },
+  {
+    ...tracingGame,
+    description: 'Lär dig skriva och spåra!',
+    route: '/spel/spara-och-rita',
+    illustration: 'TracingCardIllustration',
     badge: 'Ny!',
   },
   // Add new games here following the same pattern

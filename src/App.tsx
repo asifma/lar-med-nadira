@@ -15,6 +15,7 @@ import SpellingGame from './pages/SpellingGame';
 import MathGame from './pages/MathGame';
 import MemoryGame from './pages/MemoryGame';
 import PuzzleGame from './pages/PuzzleGame';
+import TracingGame from './pages/TracingGame';
 import CollectionPage from './pages/CollectionPage';
 import AdminPage from './pages/AdminPage';
 import ThemeToggle from './components/ThemeToggle';
@@ -54,6 +55,7 @@ const AppContent: React.FC = () => {
           <Route path="/spel/matte-magi" element={<MathGame />} />
           <Route path="/spel/minnes-mastaren" element={<MemoryGame />} />
           <Route path="/spel/pussel-palatset" element={<PuzzleGame />} />
+          <Route path="/spel/spara-och-rita" element={<TracingGame />} />
           <Route path="/samling" element={<CollectionPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />

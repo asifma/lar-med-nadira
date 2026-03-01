@@ -12,7 +12,7 @@ interface MathProblem {
 const levels: (MathGameLevel & { problems: MathProblem[] })[] = [
   // Addition (1-5) — simple addition within 10
   { 
-    id: 1, name: 'Addition 1-5', op: '+', min: 1, max: 5, badge: '🎩',
+    id: 1, name: 'Addition 1-5', op: '+', min: 1, max: 5, badge: '🎩', emoji: '🍎',
     problems: [
       { question: '1 + 1', answer: 2, a: 1, b: 1 },
       { question: '2 + 1', answer: 3, a: 2, b: 1 },
@@ -27,7 +27,7 @@ const levels: (MathGameLevel & { problems: MathProblem[] })[] = [
     ]
   },
   { 
-    id: 2, name: 'Addition 1-10', op: '+', min: 1, max: 10, badge: '🌟',
+    id: 2, name: 'Addition 1-10', op: '+', min: 1, max: 10, badge: '🌟', emoji: '⭐',
     problems: [
       { question: '5 + 2', answer: 7, a: 5, b: 2 },
       { question: '4 + 3', answer: 7, a: 4, b: 3 },
@@ -42,7 +42,7 @@ const levels: (MathGameLevel & { problems: MathProblem[] })[] = [
     ]
   },
   { 
-    id: 3, name: 'Addition 10-15', op: '+', min: 1, max: 15, badge: '✨',
+    id: 3, name: 'Addition 10-15', op: '+', min: 1, max: 15, badge: '✨', emoji: '🦋',
     problems: [
       { question: '6 + 5', answer: 11, a: 6, b: 5 },
       { question: '7 + 4', answer: 11, a: 7, b: 4 },
@@ -57,7 +57,7 @@ const levels: (MathGameLevel & { problems: MathProblem[] })[] = [
     ]
   },
   { 
-    id: 4, name: 'Addition 10-20', op: '+', min: 1, max: 20, badge: '🎯',
+    id: 4, name: 'Addition 10-20', op: '+', min: 1, max: 20, badge: '🎯', emoji: '🎈',
     problems: [
       { question: '9 + 7', answer: 16, a: 9, b: 7 },
       { question: '8 + 8', answer: 16, a: 8, b: 8 },
@@ -72,7 +72,7 @@ const levels: (MathGameLevel & { problems: MathProblem[] })[] = [
     ]
   },
   { 
-    id: 5, name: 'Addition Mästare', op: '+', min: 1, max: 20, badge: '🏅',
+    id: 5, name: 'Addition Mästare', op: '+', min: 1, max: 20, badge: '🏅', emoji: '🍬',
     problems: [
       { question: '13 + 7', answer: 20, a: 13, b: 7 },
       { question: '12 + 9', answer: 21, a: 12, b: 9 },
@@ -89,7 +89,7 @@ const levels: (MathGameLevel & { problems: MathProblem[] })[] = [
 
   // Subtraction (6-10) — simple subtraction
   { 
-    id: 6, name: 'Subtraktion 1-5', op: '-', min: 1, max: 5, badge: '🍏',
+    id: 6, name: 'Subtraktion 1-5', op: '-', min: 1, max: 5, badge: '🍏', emoji: '🍪',
     problems: [
       { question: '2 - 1', answer: 1, a: 2, b: 1 },
       { question: '3 - 1', answer: 2, a: 3, b: 1 },
@@ -104,7 +104,7 @@ const levels: (MathGameLevel & { problems: MathProblem[] })[] = [
     ]
   },
   { 
-    id: 7, name: 'Subtraktion 1-10', op: '-', min: 1, max: 10, badge: '🍎',
+    id: 7, name: 'Subtraktion 1-10', op: '-', min: 1, max: 10, badge: '🍎', emoji: '🧁',
     problems: [
       { question: '6 - 2', answer: 4, a: 6, b: 2 },
       { question: '7 - 3', answer: 4, a: 7, b: 3 },
@@ -119,7 +119,7 @@ const levels: (MathGameLevel & { problems: MathProblem[] })[] = [
     ]
   },
   { 
-    id: 8, name: 'Subtraktion 10-15', op: '-', min: 1, max: 15, badge: '🍐',
+    id: 8, name: 'Subtraktion 10-15', op: '-', min: 1, max: 15, badge: '🍐', emoji: '🐟',
     problems: [
       { question: '11 - 3', answer: 8, a: 11, b: 3 },
       { question: '12 - 4', answer: 8, a: 12, b: 4 },
@@ -134,7 +134,7 @@ const levels: (MathGameLevel & { problems: MathProblem[] })[] = [
     ]
   },
   { 
-    id: 9, name: 'Subtraktion 10-20', op: '-', min: 1, max: 20, badge: '🍊',
+    id: 9, name: 'Subtraktion 10-20', op: '-', min: 1, max: 20, badge: '🍊', emoji: '🎁',
     problems: [
       { question: '15 - 4', answer: 11, a: 15, b: 4 },
       { question: '16 - 4', answer: 12, a: 16, b: 4 },
@@ -149,7 +149,7 @@ const levels: (MathGameLevel & { problems: MathProblem[] })[] = [
     ]
   },
   { 
-    id: 10, name: 'Subtraktion Mästare', op: '-', min: 1, max: 20, badge: '🍌',
+    id: 10, name: 'Subtraktion Mästare', op: '-', min: 1, max: 20, badge: '🍌', emoji: '🍩',
     problems: [
       { question: '20 - 5', answer: 15, a: 20, b: 5 },
       { question: '19 - 3', answer: 16, a: 19, b: 3 },
@@ -166,7 +166,7 @@ const levels: (MathGameLevel & { problems: MathProblem[] })[] = [
 
   // Multiplication (11-15) — times tables for kids
   { 
-    id: 11, name: 'Multiplikation 1-2', op: '×', min: 1, max: 3, badge: '🔢',
+    id: 11, name: 'Multiplikation 1-2', op: '×', min: 1, max: 3, badge: '🔢', emoji: '🐝',
     problems: [
       { question: '1 × 1', answer: 1, a: 1, b: 1 },
       { question: '1 × 2', answer: 2, a: 1, b: 2 },
@@ -181,7 +181,7 @@ const levels: (MathGameLevel & { problems: MathProblem[] })[] = [
     ]
   },
   { 
-    id: 12, name: 'Multiplikation 2-5', op: '×', min: 1, max: 5, badge: '🔢',
+    id: 12, name: 'Multiplikation 2-5', op: '×', min: 1, max: 5, badge: '🔢', emoji: '🌺',
     problems: [
       { question: '4 × 2', answer: 8, a: 4, b: 2 },
       { question: '3 × 4', answer: 12, a: 3, b: 4 },
@@ -196,7 +196,7 @@ const levels: (MathGameLevel & { problems: MathProblem[] })[] = [
     ]
   },
   { 
-    id: 13, name: 'Multiplikation 5-10', op: '×', min: 1, max: 10, badge: '✖️',
+    id: 13, name: 'Multiplikation 5-10', op: '×', min: 1, max: 10, badge: '✖️', emoji: '🚀',
     problems: [
       { question: '5 × 5', answer: 25, a: 5, b: 5 },
       { question: '6 × 3', answer: 18, a: 6, b: 3 },
@@ -211,7 +211,7 @@ const levels: (MathGameLevel & { problems: MathProblem[] })[] = [
     ]
   },
   { 
-    id: 14, name: 'Multiplikation 10+', op: '×', min: 1, max: 12, badge: '🔥',
+    id: 14, name: 'Multiplikation 10+', op: '×', min: 1, max: 12, badge: '🔥', emoji: '💎',
     problems: [
       { question: '7 × 5', answer: 35, a: 7, b: 5 },
       { question: '5 × 7', answer: 35, a: 5, b: 7 },
@@ -226,7 +226,7 @@ const levels: (MathGameLevel & { problems: MathProblem[] })[] = [
     ]
   },
   { 
-    id: 15, name: 'Multiplikation Expert', op: '×', min: 1, max: 15, badge: '🏆',
+    id: 15, name: 'Multiplikation Expert', op: '×', min: 1, max: 15, badge: '🏆', emoji: '🦄',
     problems: [
       { question: '8 × 7', answer: 56, a: 8, b: 7 },
       { question: '7 × 8', answer: 56, a: 7, b: 8 },
@@ -243,7 +243,7 @@ const levels: (MathGameLevel & { problems: MathProblem[] })[] = [
 
   // Division (16-20) — simple division
   { 
-    id: 16, name: 'Division 1-5', op: '÷', min: 1, max: 5, badge: '🔁',
+    id: 16, name: 'Division 1-5', op: '÷', min: 1, max: 5, badge: '🔁', emoji: '🍕',
     problems: [
       { question: '2 ÷ 1', answer: 2, a: 2, b: 1 },
       { question: '4 ÷ 2', answer: 2, a: 4, b: 2 },
@@ -258,7 +258,7 @@ const levels: (MathGameLevel & { problems: MathProblem[] })[] = [
     ]
   },
   { 
-    id: 17, name: 'Division 5-10', op: '÷', min: 1, max: 10, badge: '🔄',
+    id: 17, name: 'Division 5-10', op: '÷', min: 1, max: 10, badge: '🔄', emoji: '🍰',
     problems: [
       { question: '10 ÷ 5', answer: 2, a: 10, b: 5 },
       { question: '15 ÷ 5', answer: 3, a: 15, b: 5 },
@@ -273,7 +273,7 @@ const levels: (MathGameLevel & { problems: MathProblem[] })[] = [
     ]
   },
   { 
-    id: 18, name: 'Division 10-20', op: '÷', min: 1, max: 20, badge: '⚖️',
+    id: 18, name: 'Division 10-20', op: '÷', min: 1, max: 20, badge: '⚖️', emoji: '🍫',
     problems: [
       { question: '28 ÷ 4', answer: 7, a: 28, b: 4 },
       { question: '30 ÷ 5', answer: 6, a: 30, b: 5 },
@@ -288,7 +288,7 @@ const levels: (MathGameLevel & { problems: MathProblem[] })[] = [
     ]
   },
   { 
-    id: 19, name: 'Division 20+', op: '÷', min: 1, max: 20, badge: '🧮',
+    id: 19, name: 'Division 20+', op: '÷', min: 1, max: 20, badge: '🧮', emoji: '🎲',
     problems: [
       { question: '54 ÷ 6', answer: 9, a: 54, b: 6 },
       { question: '56 ÷ 7', answer: 8, a: 56, b: 7 },
@@ -303,7 +303,7 @@ const levels: (MathGameLevel & { problems: MathProblem[] })[] = [
     ]
   },
   { 
-    id: 20, name: 'Division Mästare', op: '÷', min: 1, max: 20, badge: '🌈',
+    id: 20, name: 'Division Mästare', op: '÷', min: 1, max: 20, badge: '🌈', emoji: '🌈',
     problems: [
       { question: '60 ÷ 6', answer: 10, a: 60, b: 6 },
       { question: '70 ÷ 7', answer: 10, a: 70, b: 7 },

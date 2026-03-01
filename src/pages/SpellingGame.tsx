@@ -9,6 +9,7 @@ import SwedishKeyboard from '../components/SwedishKeyboard';
 import SpeakableText from '../components/SpeakableText';
 import { abcGame } from '../data/abcWords';
 import { PlaceholderMode } from '../types';
+import { burstConfetti } from '../utils/confetti';
 
 function shuffleArray<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -21,7 +22,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 
 const SpellingGame: React.FC = () => {
   const navigate = useNavigate();
-  const { activeProfile, updateStars, completeLevel, isLevelUnlocked, isLevelCompleted, getLevelStars } = useProfile();
+  const { activeProfile, updateStars, completeLevel, isLevelUnlocked, isLevelCompleted, getLevelStars, addStreak } = useProfile();
   const { speak, stop } = useSpeech();
   const { isGameFullyUnlocked } = useSettings();
 
@@ -32,9 +33,11 @@ const SpellingGame: React.FC = () => {
   const [correctCount, setCorrectCount] = useState(0);
   const [firstAttemptCorrect, setFirstAttemptCorrect] = useState(0); // Track first-try accuracy
   const [hasAttempted, setHasAttempted] = useState(false); // Track if current word was attempted
+  const [streak, setStreak] = useState(0);
   const [feedback, setFeedback] = useState<'none' | 'correct' | 'wrong'>('none');
   const [shake, setShake] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const isCheckingRef = React.useRef(false);
 
   const safeSpeak = useCallback((text: string) => {
     if (!isMuted) speak(text);
@@ -67,20 +70,33 @@ const SpellingGame: React.FC = () => {
   }, []);
 
   const checkAnswer = useCallback(() => {
+    if (isCheckingRef.current) return;
     if (userLetters.length === 0) return;
     if (level.placeholderMode !== 'none' && userLetters.length < word.word.length) return;
 
+    isCheckingRef.current = true;
     const guess = userLetters.join('');
     if (guess === word.word) {
       setFeedback('correct');
       setCorrectCount(prev => prev + 1);
       if (!hasAttempted) {
         setFirstAttemptCorrect(prev => prev + 1); // Only count if first attempt
+        setStreak(prev => {
+          const newStreak = prev + 1;
+          if (newStreak >= 3 && newStreak % 3 === 0) {
+            addStreak();
+          }
+          return newStreak;
+        });
+      } else {
+        setStreak(0);
       }
       updateStars(1);
+      burstConfetti();
       safeSpeak(`Rätt! Du stavade helt rätt!`);
 
       setTimeout(() => {
+        isCheckingRef.current = false;
         if (currentWordIndex < words.length - 1) {
           setCurrentWordIndex(prev => prev + 1);
           setUserLetters([]);
@@ -89,23 +105,32 @@ const SpellingGame: React.FC = () => {
         } else {
           setGameState('complete');
         }
-      }, 2000);
+      }, 3500);
     } else {
       setFeedback('wrong');
       setHasAttempted(true); // Mark that they've attempted this word
+      setStreak(0);
       setShake(true);
       safeSpeak('Inte riktigt! Försök igen!');
       setTimeout(() => {
+        isCheckingRef.current = false;
         setShake(false);
         setFeedback('none');
         setUserLetters([]);
       }, 1000);
     }
-  }, [userLetters, word, currentWordIndex, words.length, updateStars, safeSpeak, level.placeholderMode, hasAttempted]);
+  }, [userLetters, word, currentWordIndex, words.length, updateStars, safeSpeak, level.placeholderMode, hasAttempted, addStreak]);
 
   useEffect(() => {
     // Reset state when level changes
   }, [selectedLevel]);
+
+  // Read aloud new word when it appears
+  useEffect(() => {
+    if (gameState === 'playing' && word) {
+      safeSpeak(word.word);
+    }
+  }, [currentWordIndex, gameState, word, safeSpeak]);
 
   // Handle game completion
   useEffect(() => {
@@ -142,6 +167,7 @@ const SpellingGame: React.FC = () => {
     setCorrectCount(0);
     setFirstAttemptCorrect(0);
     setHasAttempted(false);
+    setStreak(0);
     setFeedback('none');
     setGameState('playing');
   };
@@ -232,7 +258,7 @@ const SpellingGame: React.FC = () => {
                           {/* Completion ribbon */}
                           {completed && stars >= 3 && (
                             <div className="absolute -top-1 -right-1 w-10 h-10">
-                              <div className={`absolute inset-0 bg-gradient-to-br ${group.color} rotate-12 rounded-lg opacity-90`} />
+                              <div className="absolute inset-0 rotate-12 rounded-lg opacity-90" style={{ background: 'var(--primary-gradient, var(--primary-color))' }} />
                               <span className="absolute inset-0 flex items-center justify-center text-sm">💯</span>
                             </div>
                           )}
@@ -315,10 +341,30 @@ const SpellingGame: React.FC = () => {
 
     return (
       <div
-        className="min-h-screen flex flex-col items-center justify-center p-8 text-center space-y-8"
+        className="min-h-screen flex flex-col items-center justify-center p-8 text-center space-y-8 relative overflow-hidden"
         style={{ background: 'var(--bg-gradient, var(--bg-color))' }}
       >
-        <div className="text-8xl mb-4">{stars >= 2 ? '🎉' : stars >= 1 ? '👏' : '💪'}</div>
+        {/* Celebration confetti effect */}
+        {stars > 0 && (
+          <div className="absolute inset-0 pointer-events-none">
+            {[...Array(20)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute text-4xl animate-confetti"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: '-10%',
+                  animationDelay: `${Math.random() * 2}s`,
+                  animationDuration: `${2 + Math.random() * 2}s`,
+                }}
+              >
+                {['🎉', '⭐', '✨', '🎊', '💫', '🌟'][Math.floor(Math.random() * 6)]}
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="text-8xl mb-4 z-10">{stars >= 2 ? '🎉' : stars >= 1 ? '👏' : '💪'}</div>
         <h2 className="text-5xl font-black">
           {stars >= 2 ? 'BRA JOBBAT!' : stars >= 1 ? 'BRA FÖRSÖK!' : 'FÖRSÖK IGEN!'}
         </h2>
@@ -340,12 +386,22 @@ const SpellingGame: React.FC = () => {
           </div>
         )}
         <div className="pt-6 flex flex-wrap gap-4 justify-center">
-          <Button variant="secondary" size="lg" onClick={() => setGameState('selecting')}>ALLA NIVÅER</Button>
-          <Button variant="primary" size="lg" onClick={() => startLevel(selectedLevel)}>SPELA IGEN</Button>
+          <Button variant="secondary" size="lg" onClick={() => setGameState('selecting')}>🏠 ALLA NIVÅER</Button>
+          <Button variant="primary" size="lg" onClick={() => startLevel(selectedLevel)}>🔄 SPELA IGEN</Button>
           {stars > 0 && selectedLevel < 20 && (
-            <Button variant="accent" size="lg" onClick={() => startLevel(selectedLevel + 1)}>NÄSTA NIVÅ →</Button>
+            <Button variant="accent" size="lg" onClick={() => startLevel(selectedLevel + 1)}>⭐ NÄSTA NIVÅ →</Button>
           )}
         </div>
+
+        <style>{`
+          @keyframes confetti {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+          }
+          .animate-confetti {
+            animation: confetti 3s ease-in forwards;
+          }
+        `}</style>
       </div>
     );
   }
@@ -370,7 +426,14 @@ const SpellingGame: React.FC = () => {
           >
             {isMuted ? '🔇' : '🔊'}
           </button>
-          <div className="text-lg font-black text-yellow-600">⭐ {currentWordIndex + 1}/{words.length}</div>
+          <div className="flex items-center gap-4">
+            {streak > 1 && (
+              <div className="text-lg font-black text-orange-500 animate-bounce">
+                🔥 {streak}
+              </div>
+            )}
+            <div className="text-lg font-black text-yellow-600">⭐ {currentWordIndex + 1}/{words.length}</div>
+          </div>
         </div>
       </div>
 

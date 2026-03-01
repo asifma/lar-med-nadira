@@ -150,8 +150,8 @@ const AdminPage: React.FC = () => {
             ))}
           </div>
           <div className="flex flex-col gap-4">
-            <Button onClick={handlePinSubmit} size="lg">Logga in</Button>
-            <button onClick={() => navigate('/')} className="text-sm underline" style={{ color: 'var(--muted-color)' }}>Gå tillbaka</button>
+            <Button onClick={handlePinSubmit} size="lg">🔐 Logga in</Button>
+            <button onClick={() => navigate('/')} className="text-sm underline" style={{ color: 'var(--muted-color)' }}>🏠 Gå tillbaka</button>
           </div>
         </div>
       </div>
@@ -162,6 +162,7 @@ const AdminPage: React.FC = () => {
   const mathUnlocked = isGameFullyUnlocked('math');
   const memoryUnlocked = isGameFullyUnlocked('memory');
   const puzzleUnlocked = isGameFullyUnlocked('puzzle');
+  const tracingUnlocked = isGameFullyUnlocked('tracing');
 
   return (
     <div
@@ -392,6 +393,25 @@ const AdminPage: React.FC = () => {
                       {puzzleUnlocked ? '🔓 Upplåst' : '🔒 Lås upp alla'}
                     </button>
                   </div>
+
+                  <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/10">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">✍️</span>
+                      <div>
+                        <p className="font-bold text-sm">Skriv & Spåra</p>
+                        <p className="text-xs opacity-40">Alla 107 nivåer</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => tracingUnlocked ? lockAllLevels('tracing') : unlockAllLevels('tracing')}
+                      className={`px-4 py-2 rounded-xl font-bold text-sm transition-all ${tracingUnlocked
+                        ? 'bg-amber-500 text-white hover:bg-amber-600'
+                        : 'bg-white/10 hover:bg-white/20 border border-white/10'
+                        }`}
+                    >
+                      {tracingUnlocked ? '🔓 Upplåst' : '🔒 Lås upp alla'}
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -415,7 +435,7 @@ const AdminPage: React.FC = () => {
                   a.href = url;
                   a.download = 'backup.json';
                   a.click();
-                }}>Exportera Backup</Button>
+                }}>💾 Exportera Backup</Button>
 
                 <button
                   onClick={handleClearAllData}

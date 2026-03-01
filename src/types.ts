@@ -29,6 +29,7 @@ export interface MathGameLevel extends BaseGameLevel {
   op: string;
   min: number;
   max: number;
+  emoji: string;
 }
 
 // Memory game specific level (for future use)
@@ -42,8 +43,15 @@ export interface PuzzleGameLevel extends BaseGameLevel {
   puzzles: Word[];
 }
 
+// Tracing game specific level
+export interface TracingGameLevel extends BaseGameLevel {
+  target: string;
+  type: 'uppercase' | 'lowercase' | 'number' | 'word';
+  emoji?: string;
+}
+
 // Union type for all game levels
-export type GameLevel = SpellingGameLevel | MathGameLevel | MemoryGameLevel | PuzzleGameLevel;
+export type GameLevel = SpellingGameLevel | MathGameLevel | MemoryGameLevel | PuzzleGameLevel | TracingGameLevel;
 
 // Game definition with metadata
 export interface GameDefinition<T extends BaseGameLevel = BaseGameLevel> {
@@ -72,6 +80,7 @@ export interface Profile {
   completedLevels: CompletedLevel[];
   unlockedLevels: string[];
   lastPlayed?: string;
+  streaks?: number;
   /** @deprecated use completedLevels */
   stickers?: string[];
 }

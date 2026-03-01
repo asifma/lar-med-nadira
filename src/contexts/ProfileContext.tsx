@@ -9,6 +9,7 @@ interface ProfileContextType {
   selectProfile: (id: string) => void;
   updateStars: (starsEarned: number) => void;
   completeLevel: (gameId: string, levelId: number, stars: number) => void;
+  addStreak: () => void;
   isLevelCompleted: (gameId: string, levelId: number) => boolean;
   isLevelUnlocked: (gameId: string, levelId: number) => boolean;
   getLevelStars: (gameId: string, levelId: number) => number;
@@ -48,6 +49,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       avatar,
       theme,
       stars: 0,
+      streaks: 0,
       completedLevels: [],
       unlockedLevels: [],
       lastPlayed: new Date().toISOString()
@@ -62,9 +64,20 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const updateStars = (amount: number) => {
     if (!activeProfileId) return;
-    setProfiles(prev => prev.map(p =>
-      p.id === activeProfileId ? { ...p, stars: p.stars + amount } : p
-    ));
+    setProfiles(prev => prev.map(p => {
+      if (p.id !== activeProfileId) return p;
+      const currentStars = typeof p.stars === 'number' && !isNaN(p.stars) ? p.stars : 0;
+      return { ...p, stars: currentStars + amount };
+    }));
+  };
+
+  const addStreak = () => {
+    if (!activeProfileId) return;
+    setProfiles(prev => prev.map(p => {
+      if (p.id !== activeProfileId) return p;
+      const currentStreaks = typeof p.streaks === 'number' && !isNaN(p.streaks) ? p.streaks : 0;
+      return { ...p, streaks: currentStreaks + 1 };
+    }));
   };
 
   const completeLevel = (gameId: string, levelId: number, stars: number) => {
@@ -116,7 +129,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const resetProfile = (id: string) => {
     setProfiles(prev => prev.map(p =>
-      p.id === id ? { ...p, stars: 0, completedLevels: [], unlockedLevels: [] } : p
+      p.id === id ? { ...p, stars: 0, completedLevels: [], unlockedLevels: [], streaks: 0 } : p
     ));
   };
 
@@ -134,6 +147,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       addProfile,
       selectProfile,
       updateStars,
+      addStreak,
       completeLevel,
       isLevelCompleted,
       isLevelUnlocked,

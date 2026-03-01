@@ -73,7 +73,7 @@ const ProfileWizard: React.FC = () => {
               ))}
             </div>
             <div className="pt-8">
-              <Button size="lg" onClick={() => setStep(2)} variant={avatar ? "primary" : "secondary"} disabled={!avatar}>NÄSTA →</Button>
+              <Button size="lg" onClick={() => setStep(2)} variant={avatar ? "primary" : "secondary"} disabled={!avatar}>⭐ NÄSTA →</Button>
             </div>
           </div>
         )}
@@ -101,8 +101,8 @@ const ProfileWizard: React.FC = () => {
               />
             </div>
             <div className="flex justify-center gap-6 pt-8">
-              <Button variant="secondary" size="lg" onClick={() => setStep(1)}>← TILLBAKA</Button>
-              <Button size="lg" onClick={() => name && setStep(3)} disabled={!name}>NÄSTA →</Button>
+              <Button variant="secondary" size="lg" onClick={() => setStep(1)}>← 🏠 TILLBAKA</Button>
+              <Button size="lg" onClick={() => name && setStep(3)} disabled={!name}>⭐ NÄSTA →</Button>
             </div>
           </div>
         )}
@@ -195,8 +195,8 @@ const ProfileWizard: React.FC = () => {
               </button>
             </div>
             <div className="flex justify-center gap-6 pt-8">
-              <Button variant="secondary" size="lg" onClick={() => setStep(2)}>← TILLBAKA</Button>
-              <Button variant="primary" size="lg" onClick={handleFinish}>KLAR! ✨</Button>
+              <Button variant="secondary" size="lg" onClick={() => setStep(2)}>← 🏠 TILLBAKA</Button>
+              <Button variant="primary" size="lg" onClick={handleFinish}>✅ KLAR! ✨</Button>
             </div>
           </div>
         )}

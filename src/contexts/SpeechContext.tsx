@@ -14,28 +14,27 @@ interface SpeechContextType {
 
 const SpeechContext = createContext<SpeechContextType | undefined>(undefined);
 
+// Lazy-init Howl on first use (after user gesture) to avoid audio pool exhaustion
+// Persisted on window to survive HMR
+function getOrCreateHowl(): Howl {
+  const win = window as any;
+  if (!win.__lmn_howl) {
+    win.__lmn_howl = new Howl({
+      src: ['/audio/sprite.mp3'],
+      sprite: spriteData.sprite as any,
+      preload: true
+    });
+  }
+  return win.__lmn_howl;
+}
+
 export const SpeechProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { settings, updateSettings } = useSettings();
   const [speechRate, _setSpeechRate] = useState(settings.speechRate);
   const [isSupported, setIsSupported] = useState(false);
-  const soundRef = useRef<Howl | null>(null);
 
   useEffect(() => {
     setIsSupported('speechSynthesis' in window);
-    
-    // Initialize Howler with the sprite data
-    soundRef.current = new Howl({
-      src: ['/audio/sprite.mp3'],
-      sprite: spriteData.sprite,
-      html5: true, // Force HTML5 Audio to prevent loading whole file in memory if it's large
-      preload: true
-    });
-
-    return () => {
-      if (soundRef.current) {
-        soundRef.current.unload();
-      }
-    };
   }, []);
 
   // Sync from settings on mount and when settings change externally
@@ -50,24 +49,19 @@ export const SpeechProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const speak = useCallback((text: string) => {
     // 1. Try to play from the audio sprite first
-    if (soundRef.current) {
-      // Clean up the text to match our sprite keys (lowercase, trim)
-      const keyToFind = text.toLowerCase().trim();
-      
-      // Check if the key exists in our sprite definition (case-insensitive check against keys)
-      if (spriteData.sprite) {
-        // Find the actual key in the JSON that matches our lowercase text
-        const actualKey = Object.keys(spriteData.sprite).find(
-          k => k.toLowerCase().trim() === keyToFind
-        );
+    const keyToFind = text.toLowerCase().trim();
+    
+    if (spriteData.sprite) {
+      const actualKey = Object.keys(spriteData.sprite).find(
+        k => k.toLowerCase().trim() === keyToFind
+      );
 
-        if (actualKey) {
-          // Stop any currently playing sprite sound
-          soundRef.current.stop();
-          // Play the new sound using the exact key from the JSON
-          soundRef.current.play(actualKey);
-          return; // Success! Don't use fallback.
-        }
+      if (actualKey) {
+        // Lazy-init Howl on first actual use (triggered by user gesture)
+        const howl = getOrCreateHowl();
+        howl.stop();
+        howl.play(actualKey);
+        return;
       }
     }
 
@@ -93,8 +87,9 @@ export const SpeechProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   }, [speechRate]);
 
   const stop = useCallback(() => {
-    if (soundRef.current) {
-      soundRef.current.stop();
+    const win = window as any;
+    if (win.__lmn_howl) {
+      win.__lmn_howl.stop();
     }
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();

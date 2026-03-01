@@ -29,7 +29,7 @@ const VisualCount: React.FC<{ n: number, emoji?: string }> = ({ n, emoji = '🔵
 
 const MathGame: React.FC = () => {
   const navigate = useNavigate();
-  const { activeProfile, updateStars, completeLevel, isLevelCompleted, isLevelUnlocked, getLevelStars } = useProfile();
+  const { activeProfile, updateStars, completeLevel, isLevelCompleted, isLevelUnlocked, getLevelStars, addStreak } = useProfile();
   const { isGameFullyUnlocked, settings } = useSettings();
 
   const [gameState, setGameState] = useState<'selecting' | 'playing' | 'complete'>('selecting');
@@ -45,6 +45,7 @@ const MathGame: React.FC = () => {
   const [streak, setStreak] = useState(0);
   const { speak, stop } = useSpeech();
   const [isMuted, setIsMuted] = useState(false);
+  const isCheckingRef = React.useRef(false);
 
   const toggleMute = () => {
     setIsMuted(prev => {
@@ -76,25 +77,37 @@ const MathGame: React.FC = () => {
     setCorrectCount(0); 
     setFirstAttemptCorrect(0);
     setHasAttempted(false);
+    setStreak(0);
     setFeedback('none'); 
     setGameState('playing');
     if (settings.autoPlayInstructions) safeSpeak(`Nivå ${id}, ${lvl?.name}`);
   };
 
   const check = useCallback(() => {
+    if (isCheckingRef.current) return;
     const p = problems[index];
     const val = Number(input);
+    isCheckingRef.current = true;
     if (val === p.answer) {
       setFeedback('correct');
       setCorrectCount(c => c + 1);
       if (!hasAttempted) {
         setFirstAttemptCorrect(c => c + 1); // Only count if first attempt
+        setStreak(prev => {
+          const newStreak = prev + 1;
+          if (newStreak >= 3 && newStreak % 3 === 0) {
+            addStreak();
+          }
+          return newStreak;
+        });
+      } else {
+        setStreak(0);
       }
-      setStreak(s => s + 1);
       updateStars(1);
       burstConfetti();
       safeSpeak('Rätt');
       setTimeout(() => {
+        isCheckingRef.current = false;
         if (index < problems.length - 1) { 
           setIndex(i => i + 1); 
           setInput(''); 
@@ -108,9 +121,9 @@ const MathGame: React.FC = () => {
       setHasAttempted(true); // Mark that they've attempted this question
       setStreak(0);
       safeSpeak('Inte rätt, försök igen');
-      setTimeout(() => { setFeedback('none'); setInput(''); }, 700);
+      setTimeout(() => { isCheckingRef.current = false; setFeedback('none'); setInput(''); }, 700);
     }
-  }, [problems, index, input, hasAttempted, updateStars, safeSpeak]);
+  }, [problems, index, input, hasAttempted, updateStars, safeSpeak, addStreak]);
 
   // Physical keyboard support
   useEffect(() => {
@@ -140,7 +153,7 @@ const MathGame: React.FC = () => {
     }
   }, [gameState, index, problems, settings.autoPlayInstructions]);
 
-  if (!activeProfile) return (<div className="p-8 text-center"><Button onClick={() => navigate('/')}>Gå till start</Button></div>);
+  if (!activeProfile) return (<div className="p-8 text-center"><Button onClick={() => navigate('/')}>🏠 Gå till start</Button></div>);
 
   if (gameState === 'selecting') {
     const groups = [
@@ -213,7 +226,7 @@ const MathGame: React.FC = () => {
                           {/* Completion ribbon */}
                           {completed && stars >= 3 && (
                             <div className="absolute -top-1 -right-1 w-10 h-10">
-                              <div className={`absolute inset-0 bg-gradient-to-br ${group.color} rotate-12 rounded-lg opacity-90`} />
+                              <div className="absolute inset-0 rotate-12 rounded-lg opacity-90" style={{ background: 'var(--primary-gradient, var(--primary-color))' }} />
                               <span className="absolute inset-0 flex items-center justify-center text-sm">💯</span>
                             </div>
                           )}
@@ -283,10 +296,10 @@ const MathGame: React.FC = () => {
           ))}
         </div>
         <div className="pt-6 flex flex-wrap gap-4 justify-center">
-          <Button variant="secondary" size="lg" onClick={() => setGameState('selecting')}>Alla nivåer</Button>
-          <Button variant="primary" size="lg" onClick={() => startLevel(selectedLevel)}>Spela igen</Button>
+          <Button variant="secondary" size="lg" onClick={() => setGameState('selecting')}>🏠 Alla nivåer</Button>
+          <Button variant="primary" size="lg" onClick={() => startLevel(selectedLevel)}>🔄 Spela igen</Button>
           {stars > 0 && selectedLevel < 20 && (
-            <Button variant="accent" size="lg" onClick={() => startLevel(selectedLevel + 1)}>NÄSTA NIVÅ →</Button>
+            <Button variant="accent" size="lg" onClick={() => startLevel(selectedLevel + 1)}>⭐ NÄSTA NIVÅ →</Button>
           )}
         </div>
       </div>
@@ -367,31 +380,19 @@ const MathGame: React.FC = () => {
 
         <div className="flex-1 flex flex-col items-center justify-center gap-6">
 
-        <div className={`relative w-full max-w-3xl p-6 rounded-3xl bg-gradient-to-br from-white/5 to-white/2 border border-white/10 text-center shadow-2xl ${feedback === 'correct' ? 'animate-wiggle' : ''} ${feedback === 'wrong' ? 'animate-shake' : ''}`}>
-          {/* Feedback overlay */}
-          {feedback !== 'none' && (
-            <div className="absolute inset-0 z-10 flex items-center justify-center rounded-3xl bg-black/30 backdrop-blur-[2px]">
-              {feedback === 'correct' && (
-                <div className="text-5xl font-black text-green-400 animate-pop flex items-center gap-3 drop-shadow-lg">
-                  <span className="animate-bounce">✅</span>
-                  <span>Rätt!</span>
-                  <span className="animate-bounce" style={{ animationDelay: '0.1s' }}>🎉</span>
-                </div>
-              )}
-              {feedback === 'wrong' && (
-                <div className="text-4xl font-black text-red-400 animate-shake flex items-center gap-3 drop-shadow-lg">
-                  <span>❌</span>
-                  <span>Försök igen!</span>
-                </div>
-              )}
-            </div>
-          )}
+        <div className={`relative w-full max-w-3xl p-6 rounded-3xl border text-center shadow-2xl transition-all duration-300 ${
+          feedback === 'correct'
+            ? 'bg-green-500/10 border-green-400/40 animate-wiggle'
+            : feedback === 'wrong'
+              ? 'bg-red-500/10 border-red-400/40 animate-shake'
+              : 'bg-gradient-to-br from-white/5 to-white/2 border-white/10'
+        }`}>
           <div className="flex items-center justify-between mb-4">
             <div className="text-4xl">{level?.badge}</div>
             <div className="text-sm opacity-60">Fråga {index + 1}/{problems.length}</div>
           </div>
           <div className="flex items-center justify-center gap-3 mb-2">
-            <div className="text-4xl font-black">{p.question}</div>
+            <div className={`text-4xl font-black transition-all duration-300 ${feedback === 'correct' ? 'text-green-400 scale-110' : feedback === 'wrong' ? 'text-red-400' : ''}`}>{p.question}</div>
             <button
               onClick={() => {
                 const opWord = level?.op === '+' ? 'plus' : level?.op === '-' ? 'minus' : level?.op === '×' ? 'gånger' : 'delat med';
@@ -404,22 +405,39 @@ const MathGame: React.FC = () => {
           <div className="mb-4 text-sm opacity-60">Föreställ dig bilden och skriv svaret</div>
           <div className="mb-6">
             <div className="flex gap-6 justify-center items-center">
-              <div className={`bg-white/10 p-4 rounded-2xl animate-float ${feedback === 'correct' ? 'animate-glow-pulse' : ''} ${feedback === 'wrong' ? 'opacity-50' : ''}`}>
-                <VisualCount n={p.a} emoji={level?.op === '+' ? '🍎' : level?.op === '-' ? '🍎' : level?.op === '×' ? '🍇' : '🍪'} />
+              <div className={`bg-white/10 p-4 rounded-2xl animate-float transition-all duration-300 ${feedback === 'correct' ? 'scale-110' : feedback === 'wrong' ? 'opacity-50 scale-95' : ''}`}>
+                <VisualCount n={p.a} emoji={level?.emoji || '🍎'} />
               </div>
               <div className="text-4xl font-black">{level?.op}</div>
-              <div className={`bg-white/10 p-4 rounded-2xl animate-float ${feedback === 'correct' ? 'animate-glow-pulse' : ''} ${feedback === 'wrong' ? 'opacity-50' : ''}`}>
-                <VisualCount n={p.b} emoji={level?.op === '+' ? '🍎' : level?.op === '-' ? '🍎' : level?.op === '×' ? '🍇' : '🍪'} />
+              <div className={`bg-white/10 p-4 rounded-2xl animate-float transition-all duration-300 ${feedback === 'correct' ? 'scale-110' : feedback === 'wrong' ? 'opacity-50 scale-95' : ''}`}>
+                <VisualCount n={p.b} emoji={level?.emoji || '🍎'} />
               </div>
             </div>
           </div>
+
+          {/* Inline feedback banner */}
+          {feedback !== 'none' && (
+            <div className={`mb-4 py-3 px-6 rounded-2xl text-3xl font-black animate-pop ${
+              feedback === 'correct'
+                ? 'bg-green-500/20 text-green-400'
+                : 'bg-red-500/20 text-red-400'
+            }`}>
+              {feedback === 'correct' ? '✅ Rätt! 🎉' : '❌ Försök igen!'}
+            </div>
+          )}
 
           <div className="max-w-md mx-auto">
             <div className="mb-4">
               <input
                 value={input}
                 readOnly
-                className={`w-full p-6 rounded-xl text-6xl text-center bg-[var(--card-bg)] text-[var(--text-color)] font-black transition-colors duration-300 ${feedback === 'correct' ? 'animate-pop' : ''}`}
+                className={`w-full p-6 rounded-xl text-6xl text-center font-black transition-all duration-300 ${
+                  feedback === 'correct'
+                    ? 'bg-green-500/15 text-green-400 animate-pop ring-2 ring-green-400/50'
+                    : feedback === 'wrong'
+                      ? 'bg-red-500/15 text-red-400 ring-2 ring-red-400/50'
+                      : 'bg-[var(--card-bg)] text-[var(--text-color)]'
+                }`}
               />
             </div>
             <NumericPad onPress={(v) => setInput(i => (v === '' ? '' : (i + v).slice(0,6)))} onClear={() => setInput('')} onEnter={check} />

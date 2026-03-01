@@ -16,6 +16,7 @@
   --btn-radius: 9999px;
   --btn-shadow: 0 6px 0 #D4467A, 0 8px 20px rgba(255, 107, 157, 0.3);
   --btn-hover-shadow: 0 8px 0 #D4467A, 0 12px 30px rgba(255, 107, 157, 0.4);
+  --btn-text-color: #FFFFFF;
   --font-main: 'Baloo 2', cursive;
 }
 
@@ -35,6 +36,7 @@
   --btn-radius: 16px;
   --btn-shadow: 0 4px 12px rgba(0, 150, 136, 0.3);
   --btn-hover-shadow: 0 6px 16px rgba(0, 150, 136, 0.4);
+  --btn-text-color: #F8FAFC;
   --font-main: 'Bangers', cursive;
 }
 

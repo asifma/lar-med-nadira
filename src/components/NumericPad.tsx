@@ -17,7 +17,7 @@ const NumericPad: React.FC<NumericPadProps> = ({ onPress, onClear, onEnter }) =>
         ))}
         <button onClick={onClear} className="p-4 rounded-xl bg-red-600 text-white text-2xl font-black shadow-sm">⌫</button>
         <button onClick={() => onPress('0')} className="p-4 rounded-xl bg-[var(--bg-color)] text-2xl font-black shadow-sm">0</button>
-        <button onClick={onEnter} className="p-4 rounded-xl bg-[var(--accent-color)] text-[var(--text-color)] font-black shadow-sm">✔</button>
+        <button onClick={onEnter} className="p-4 rounded-xl bg-[var(--accent-color)] text-[var(--btn-text-color)] font-black shadow-sm">✔</button>
       </div>
       {/* Removed redundant Rensa/Kolla buttons — top row already provides clear and enter */}
     </div>

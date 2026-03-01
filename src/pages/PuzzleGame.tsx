@@ -120,10 +120,10 @@ const PuzzleContent = ({ word, emoji, width, height, theme }: { word: string, em
   );
 };
 
-const JigsawPieceComponent = ({ 
-  piece, w, h, ts, W, H, word, emoji, theme, onPlace, onMove 
-}: { 
-  piece: JigsawPieceData, w: number, h: number, ts: number, W: number, H: number, word: string, emoji: string, theme: string, onPlace: (id: string, isCorrect: boolean) => void, onMove: (id: string) => void 
+const JigsawPieceComponent: React.FC<{ 
+  piece: JigsawPieceData, w: number, h: number, ts: number, W: number, H: number, word: string, emoji: string, theme: string, onPlace: (id: string, isCorrect: boolean, isDrop?: boolean) => void, onMove: (id: string) => void, onRotate: () => void 
+}> = ({ 
+  piece, w, h, ts, W, H, word, emoji, theme, onPlace, onMove, onRotate 
 }) => {
   const [rotation, setRotation] = useState(piece.initialRotation);
   const [isCorrect, setIsCorrect] = useState(false);
@@ -139,21 +139,21 @@ const JigsawPieceComponent = ({
     y.set(piece.initialY);
   }, [piece, x, y]);
 
-  const checkAndSnap = (currentX: number, currentY: number, currentRot: number) => {
+  const checkAndSnap = (currentX: number, currentY: number, currentRot: number, isDrop: boolean = true) => {
     const normalizedRot = ((currentRot % 360) + 360) % 360;
     if (Math.abs(currentX) < 30 && Math.abs(currentY) < 30 && normalizedRot === 0) {
       x.set(0);
       y.set(0);
       setIsCorrect(true);
-      onPlace(piece.id, true);
+      onPlace(piece.id, true, isDrop);
     } else {
       setIsCorrect(false);
-      onPlace(piece.id, false);
+      onPlace(piece.id, false, isDrop);
     }
   };
 
   const handleDragEnd = () => {
-    checkAndSnap(x.get(), y.get(), rotation);
+    checkAndSnap(x.get(), y.get(), rotation, true);
     setTimeout(() => { hasDragged.current = false; }, 100);
   };
 
@@ -161,7 +161,8 @@ const JigsawPieceComponent = ({
     if (hasDragged.current) return;
     const newRot = rotation + 90;
     setRotation(newRot);
-    checkAndSnap(x.get(), y.get(), newRot);
+    onRotate();
+    checkAndSnap(x.get(), y.get(), newRot, false);
   };
 
   const path = getPiecePath(w, h, piece.top, piece.right, piece.bottom, piece.left, ts);
@@ -185,7 +186,7 @@ const JigsawPieceComponent = ({
       onDragStart={() => {
         hasDragged.current = true;
         setIsCorrect(false);
-        onPlace(piece.id, false);
+        onPlace(piece.id, false, false);
         onMove(piece.id);
       }}
       onDragEnd={handleDragEnd}
@@ -224,7 +225,7 @@ const JigsawPieceComponent = ({
 
 const PuzzleGame: React.FC = () => {
   const navigate = useNavigate();
-  const { activeProfile, completeLevel, isLevelCompleted, isLevelUnlocked, getLevelStars } = useProfile();
+  const { activeProfile, completeLevel, isLevelCompleted, isLevelUnlocked, getLevelStars, addStreak } = useProfile();
   const { speak, stop } = useSpeech();
   const { isGameFullyUnlocked } = useSettings();
 
@@ -232,6 +233,12 @@ const PuzzleGame: React.FC = () => {
   const [selectedLevel, setSelectedLevel] = useState<number>(1);
   const [currentPuzzleIndex, setCurrentPuzzleIndex] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
+  const [currentPuzzles, setCurrentPuzzles] = useState<typeof puzzleGame.levels[0]['puzzles']>([]);
+  const [streak, setStreak] = useState(0);
+  const [failedPieces, setFailedPieces] = useState<Set<string>>(new Set());
+  const [levelRotations, setLevelRotations] = useState(0);
+  const [levelTotalPieces, setLevelTotalPieces] = useState(0);
+  const [earnedStars, setEarnedStars] = useState(0);
 
   const toggleMute = () => {
     setIsMuted(prev => {
@@ -246,15 +253,14 @@ const PuzzleGame: React.FC = () => {
   const [puzzleMetrics, setPuzzleMetrics] = useState({ w: 0, h: 0, ts: 0, W: 320, H: 320 });
 
   const level = puzzleGame.levels.find(l => l.id === selectedLevel) || puzzleGame.levels[0];
-  const currentPuzzle = level.puzzles[currentPuzzleIndex];
+  const activePuzzles = currentPuzzles.length > 0 ? currentPuzzles : level.puzzles;
+  const currentPuzzle = activePuzzles[currentPuzzleIndex];
   const theme = activeProfile?.theme || 'unicorn';
 
-  const levelIcons: Record<number, string> = {
-    1: '🧩', 2: '🧩', 3: '🧩', 4: '🧩', 5: '🧩',
-    6: '🧩', 7: '🧩', 8: '🧩', 9: '🧩', 10: '🧩',
-    11: '🧩', 12: '🧩', 13: '🧩', 14: '🧩', 15: '🧩',
-    16: '🧩', 17: '🧩', 18: '🧩', 19: '🧩', 20: '🧩',
-  };
+  const levelIcons: Record<number, string> = {};
+  puzzleGame.levels.forEach(l => {
+    levelIcons[l.id] = isLevelCompleted('puzzle', l.id) ? l.badge : '🧩';
+  });
 
   const levelGroups = [
     { title: '🌱 Nybörjare', subtitle: 'Korta ord (2–3 bokstäver)', levels: puzzleGame.levels.slice(0, 5), color: 'from-green-400 to-emerald-500', borderColor: 'border-green-300/40' },
@@ -311,6 +317,8 @@ const PuzzleGame: React.FC = () => {
       setPuzzleMetrics({ w, h, ts, W, H });
       setPieces(shuffled);
       setPlacedPieces(new Set());
+      setFailedPieces(new Set());
+      setLevelTotalPieces(prev => prev + newPieces.length);
       
       speak(currentPuzzle.word);
     }
@@ -318,15 +326,42 @@ const PuzzleGame: React.FC = () => {
 
   const handleStartLevel = (levelId: number) => {
     setSelectedLevel(levelId);
+    const lvl = puzzleGame.levels.find(l => l.id === levelId) || puzzleGame.levels[0];
+    setCurrentPuzzles([...lvl.puzzles].sort(() => Math.random() - 0.5));
     setCurrentPuzzleIndex(0);
+    setLevelRotations(0);
+    setLevelTotalPieces(0);
+    setEarnedStars(0);
+    setStreak(0);
+    setFailedPieces(new Set());
     setGameState('playing');
   };
 
-  const handlePiecePlace = (id: string, isCorrect: boolean) => {
+  const handlePiecePlace = (id: string, isCorrect: boolean, isDrop: boolean = false) => {
+    if (isDrop) {
+      if (isCorrect && !placedPieces.has(id)) {
+        if (!failedPieces.has(id)) {
+          setStreak(prev => {
+            const newStreak = prev + 1;
+            if (newStreak >= 3 && newStreak % 3 === 0) {
+              addStreak();
+            }
+            return newStreak;
+          });
+        }
+      } else if (!isCorrect) {
+        setFailedPieces(prev => new Set(prev).add(id));
+        setStreak(0);
+      }
+    }
+
     setPlacedPieces(prev => {
       const next = new Set(prev);
-      if (isCorrect) next.add(id);
-      else next.delete(id);
+      if (isCorrect) {
+        next.add(id);
+      } else {
+        next.delete(id);
+      }
       return next;
     });
   };
@@ -346,7 +381,7 @@ const PuzzleGame: React.FC = () => {
       if (!isMuted) speak(`${currentPuzzle.word}`);
       
       const timer = setTimeout(() => {
-        if (currentPuzzleIndex < level.puzzles.length - 1) {
+        if (currentPuzzleIndex < activePuzzles.length - 1) {
           setCurrentPuzzleIndex(prev => prev + 1);
         } else {
           handleLevelComplete();
@@ -354,7 +389,7 @@ const PuzzleGame: React.FC = () => {
       }, 2000);
       return () => clearTimeout(timer);
     }
-  }, [placedPieces.size, pieces.length, gameState, currentPuzzle.word, currentPuzzleIndex, level.puzzles.length]);
+  }, [placedPieces.size, pieces.length, gameState, currentPuzzle?.word, currentPuzzleIndex, activePuzzles.length]);
 
   const handleLevelComplete = () => {
     confetti({
@@ -364,7 +399,17 @@ const PuzzleGame: React.FC = () => {
       colors: ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1']
     });
     
-    completeLevel('puzzle', selectedLevel, 3);
+    const avgRotations = levelTotalPieces > 0 ? levelRotations / levelTotalPieces : 0;
+    let stars = 0;
+    if (avgRotations <= 2.5) stars = 3;
+    else if (avgRotations <= 3.5) stars = 2;
+    else if (avgRotations < 5) stars = 1;
+    else stars = 0;
+
+    setEarnedStars(stars);
+    if (stars > 0) {
+      completeLevel('puzzle', selectedLevel, stars);
+    }
     setGameState('level-complete');
   };
 
@@ -394,9 +439,13 @@ const PuzzleGame: React.FC = () => {
           Du klarade alla pussel på nivå {selectedLevel}!
         </div>
         <div className="flex gap-2">
-          {[1, 2, 3].map(s => (
-            <span key={s} className="text-5xl animate-bounce" style={{ animationDelay: `${s * 0.15}s` }}>⭐</span>
-          ))}
+          {earnedStars > 0 ? (
+            Array.from({ length: earnedStars }).map((_, i) => (
+              <span key={i} className="text-5xl animate-bounce" style={{ animationDelay: `${i * 0.15}s` }}>⭐</span>
+            ))
+          ) : (
+            <span className="text-3xl font-bold opacity-50">Inga stjärnor den här gången, försök igen!</span>
+          )}
         </div>
         
         <div className="p-6 rounded-3xl border-4 border-yellow-400" style={{ backgroundColor: 'var(--card-bg)' }}>
@@ -405,10 +454,10 @@ const PuzzleGame: React.FC = () => {
         </div>
         
         <div className="pt-6 flex flex-wrap gap-4 justify-center">
-          <Button variant="secondary" size="lg" onClick={() => setGameState('selecting')}>ALLA NIVÅER</Button>
-          <Button variant="primary" size="lg" onClick={() => handleStartLevel(selectedLevel)}>SPELA IGEN</Button>
+          <Button variant="secondary" size="lg" onClick={() => setGameState('selecting')}>🏠 ALLA NIVÅER</Button>
+          <Button variant="primary" size="lg" onClick={() => handleStartLevel(selectedLevel)}>🔄 SPELA IGEN</Button>
           {selectedLevel < puzzleGame.levels.length && (
-            <Button variant="accent" size="lg" onClick={() => handleStartLevel(selectedLevel + 1)}>NÄSTA NIVÅ →</Button>
+            <Button variant="accent" size="lg" onClick={() => handleStartLevel(selectedLevel + 1)}>⭐ NÄSTA NIVÅ →</Button>
           )}
         </div>
       </div>
@@ -416,7 +465,7 @@ const PuzzleGame: React.FC = () => {
   }
 
   // PLAYING STATE
-  const progress = ((currentPuzzleIndex) / level.puzzles.length) * 100;
+  const progress = ((currentPuzzleIndex) / activePuzzles.length) * 100;
 
   return (
     <div className="min-h-[100dvh] flex flex-col p-4 overflow-hidden" style={{ background: 'var(--bg-gradient, var(--bg-color))' }}>
@@ -434,7 +483,14 @@ const PuzzleGame: React.FC = () => {
           >
             {isMuted ? '🔇' : '🔊'}
           </button>
-          <div className="text-lg font-black text-yellow-600">⭐ {currentPuzzleIndex + 1}/{level.puzzles.length}</div>
+          <div className="flex items-center gap-4">
+            {streak > 1 && (
+              <div className="text-lg font-black text-orange-500 animate-bounce">
+                🔥 {streak}
+              </div>
+            )}
+            <div className="text-lg font-black text-yellow-600">⭐ {currentPuzzleIndex + 1}/{activePuzzles.length}</div>
+          </div>
         </div>
       </div>
 
@@ -442,7 +498,7 @@ const PuzzleGame: React.FC = () => {
       <div className="w-full max-w-3xl mx-auto mb-4 z-10">
         <div className="flex justify-between text-xs font-bold opacity-60 mb-1">
           <span>Framsteg</span>
-          <span>{currentPuzzleIndex}/{level.puzzles.length}</span>
+          <span>{currentPuzzleIndex}/{activePuzzles.length}</span>
         </div>
         <div className="w-full bg-white/10 rounded-full h-3 overflow-hidden border border-white/20 shadow-inner">
           <div
@@ -475,6 +531,7 @@ const PuzzleGame: React.FC = () => {
               theme={theme}
               onPlace={handlePiecePlace}
               onMove={handlePieceMove}
+              onRotate={() => setLevelRotations(prev => prev + 1)}
             />
           ))}
         </div>

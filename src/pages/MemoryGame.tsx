@@ -26,7 +26,7 @@ interface Card {
 
 const MemoryGame: React.FC = () => {
   const navigate = useNavigate();
-  const { updateStars, completeLevel, isLevelUnlocked, isLevelCompleted, getLevelStars } = useProfile();
+  const { updateStars, completeLevel, isLevelUnlocked, isLevelCompleted, getLevelStars, addStreak } = useProfile();
   const { speak } = useSpeech();
   const { isGameFullyUnlocked } = useSettings();
 
@@ -38,6 +38,7 @@ const MemoryGame: React.FC = () => {
   const [moves, setMoves] = useState(0);
   const [showIntro, setShowIntro] = useState(false);
   const [streak, setStreak] = useState(0);
+  const [seenEmojis, setSeenEmojis] = useState<Set<string>>(new Set());
   const [showStreakBurst, setShowStreakBurst] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
 
@@ -86,6 +87,8 @@ const MemoryGame: React.FC = () => {
     setFlippedCards([]);
     setMatchedPairs(0);
     setMoves(0);
+    setStreak(0);
+    setSeenEmojis(new Set());
   };
 
   const startLevel = (levelId: number) => {
@@ -108,16 +111,26 @@ const MemoryGame: React.FC = () => {
 
       if (firstCard?.emoji === secondCard?.emoji) {
         // Match!
-        const newStreak = streak + 1;
-        setStreak(newStreak);
-        
-        if (newStreak >= 3) {
-          safeSpeak('Fantastiskt! Du är på en vinnande rad!');
-          setShowStreakBurst(true);
-          setTimeout(() => setShowStreakBurst(false), 2000);
-        } else {
-          safeSpeak('Perfekt!');
-        }
+        setStreak(prev => {
+          const newStreak = prev + 1;
+          
+          setTimeout(() => {
+            if (newStreak >= 3 && newStreak % 3 === 0) {
+              addStreak();
+              safeSpeak('Fantastiskt! Du är på en vinnande rad!');
+              setShowStreakBurst(true);
+              setTimeout(() => setShowStreakBurst(false), 2000);
+            } else if (newStreak >= 3) {
+              safeSpeak('Fantastiskt! Du är på en vinnande rad!');
+              setShowStreakBurst(true);
+              setTimeout(() => setShowStreakBurst(false), 2000);
+            } else {
+              safeSpeak('Perfekt!');
+            }
+          }, 1000);
+          
+          return newStreak;
+        });
         
         burstConfetti();
         updateStars(1);
@@ -127,9 +140,17 @@ const MemoryGame: React.FC = () => {
         setMatchedPairs(p => p + 1);
         setFlippedCards([]);
       } else {
-        // No match - shake cards and reset streak
-        setStreak(0);
-        safeSpeak('Försök igen!');
+        // No match - check if it was a "fair" mistake
+        const missedMatch = seenEmojis.has(firstCard!.emoji) || seenEmojis.has(secondCard!.emoji);
+        
+        if (missedMatch) {
+          setStreak(0); // They forgot where a card was!
+        }
+        
+        // Add these to seen
+        setSeenEmojis(prev => new Set(prev).add(firstCard!.emoji).add(secondCard!.emoji));
+
+        setTimeout(() => safeSpeak('Försök igen!'), 1000);
         setCards(prev => prev.map(c => 
           c.id === first || c.id === second ? { ...c, isFlipped: true, shake: true } : c
         ));
@@ -138,7 +159,7 @@ const MemoryGame: React.FC = () => {
             c.id === first || c.id === second ? { ...c, isFlipped: false, shake: false } : c
           ));
           setFlippedCards([]);
-        }, 1000);
+        }, 1200);
       }
     }
   }, [flippedCards]);
@@ -158,7 +179,7 @@ const MemoryGame: React.FC = () => {
   // Save completion when game state changes to complete
   useEffect(() => {
     if (gameState === 'complete') {
-      const stars = moves <= level.pairs + 2 ? 3 : moves <= level.pairs + 5 ? 2 : 1;
+      const stars = moves <= Math.ceil(level.pairs * 1.5) ? 3 : moves <= Math.ceil(level.pairs * 2.5) ? 2 : 1;
       completeLevel('memory', selectedLevel, stars);
     }
   }, [gameState]);
@@ -260,7 +281,7 @@ const MemoryGame: React.FC = () => {
 
   // ─── GAME COMPLETE ───
   if (gameState === 'complete') {
-    const stars = moves <= level.pairs + 2 ? 3 : moves <= level.pairs + 5 ? 2 : 1;
+    const stars = moves <= Math.ceil(level.pairs * 1.5) ? 3 : moves <= Math.ceil(level.pairs * 2.5) ? 2 : 1;
 
     return (
       <div 
@@ -340,14 +361,14 @@ const MemoryGame: React.FC = () => {
         {/* Buttons */}
         <div className="pt-6 flex flex-wrap gap-4 justify-center animate-slide-up" style={{ animationDelay: '0.3s' }}>
           <Button variant="secondary" size="lg" onClick={() => setGameState('selecting')}>
-            ALLA NIVÅER
+            🏠 ALLA NIVÅER
           </Button>
           <Button variant="primary" size="lg" onClick={() => startLevel(selectedLevel)}>
-            SPELA IGEN
+            🔄 SPELA IGEN
           </Button>
           {selectedLevel < 20 && (
             <Button variant="accent" size="lg" onClick={() => startLevel(selectedLevel + 1)}>
-              NÄSTA NIVÅ →
+              ⭐ NÄSTA NIVÅ →
             </Button>
           )}
         </div>

@@ -90,7 +90,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             onClick={onCancel} 
             className="flex-1 hover:scale-105 transition-transform"
           >
-            Avbryt
+            ❌ Avbryt
           </Button>
           <Button 
             variant="primary" 
@@ -98,7 +98,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             onClick={() => { onConfirm(); onCancel(); }} 
             className="flex-1 hover:scale-105 transition-transform"
           >
-            Bekräfta
+            ✅ Bekräfta
           </Button>
         </div>
       </div>

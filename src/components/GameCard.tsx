@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GameDefinition } from '../types';
-import { AbcCardIllustration, MathCardIllustration, MemoryCardIllustration, PuzzleCardIllustration } from './GameCardIllustration';
+import { AbcCardIllustration, MathCardIllustration, MemoryCardIllustration, PuzzleCardIllustration, TracingCardIllustration } from './GameCardIllustration';
 import { useSpeech } from '../contexts/SpeechContext';
 
 interface GameCardProps {
@@ -14,6 +14,7 @@ const ILLUSTRATIONS: Record<string, React.FC<{ className?: string }>> = {
   MathCardIllustration,
   MemoryCardIllustration,
   PuzzleCardIllustration,
+  TracingCardIllustration,
 };
 
 const GameCard: React.FC<GameCardProps> = ({ game, isComingSoon = false }) => {

@@ -14,7 +14,7 @@ interface LevelSelectorProps {
   gameId: string;
   gameName: string;
   levelGroups: LevelGroup[];
-  levelIcons: Record<number, string>;
+  levelIcons: Record<number, React.ReactNode>;
   isLevelUnlocked: (gameId: string, levelId: number) => boolean;
   isLevelCompleted: (gameId: string, levelId: number) => boolean;
   getLevelStars: (gameId: string, levelId: number) => number;
@@ -103,14 +103,14 @@ const LevelSelector: React.FC<LevelSelectorProps> = ({
                         {/* Completion ribbon */}
                         {completed && stars >= 3 && (
                           <div className="absolute -top-1 -right-1 w-10 h-10">
-                            <div className={`absolute inset-0 bg-gradient-to-br ${group.color} rotate-12 rounded-lg opacity-90`} />
+                            <div className="absolute inset-0 rotate-12 rounded-lg opacity-90" style={{ background: 'var(--primary-gradient, var(--primary-color))' }} />
                             <span className="absolute inset-0 flex items-center justify-center text-sm">💯</span>
                           </div>
                         )}
 
                         {/* Level Icon */}
                         <div className={`text-4xl md:text-5xl transition-transform duration-300 ${unlocked ? 'group-hover:scale-115 group-hover:rotate-6' : ''} ${isNext ? 'animate-bounce' : ''}`}>
-                          {completed ? lvl.badge : levelIcons[lvl.id] || '📖'}
+                          {levelIcons[lvl.id] || lvl.badge || '📖'}
                         </div>
 
                         {/* Level Number */}
