@@ -20,10 +20,9 @@ function shuffleArray<T>(arr: T[]): T[] {
 
 const VisualCount: React.FC<{ n: number, emoji?: string }> = ({ n, emoji = '🔵' }) => (
   <div className="flex gap-1 flex-wrap justify-center items-center max-w-xs">
-    {Array.from({ length: Math.min(n, 10) }).map((_, i) => (
+    {Array.from({ length: n }).map((_, i) => (
       <span key={i} className="text-3xl">{emoji}</span>
     ))}
-    {n > 10 && <span className="text-2xl font-black opacity-60">+{n - 10}</span>}
   </div>
 );
 
@@ -72,15 +71,18 @@ const MathGame: React.FC = () => {
     const lvl = mathGame.levels.find((l:any) => l.id === id);
     // Use static problems from level definition
     setProblems(lvl.problems);
-    setIndex(0); 
-    setInput(''); 
-    setCorrectCount(0); 
+    setIndex(0);
+    setInput('');
+    setCorrectCount(0);
     setFirstAttemptCorrect(0);
     setHasAttempted(false);
     setStreak(0);
-    setFeedback('none'); 
+    setFeedback('none');
     setGameState('playing');
-    if (settings.autoPlayInstructions) safeSpeak(`Nivå ${id}, ${lvl?.name}`);
+    // Auto-play level name only (without "Nivå X")
+    if (settings.autoPlayInstructions && lvl?.name) {
+      safeSpeak(lvl.name);
+    }
   };
 
   const check = useCallback(() => {
@@ -148,10 +150,20 @@ const MathGame: React.FC = () => {
       const p = problems[index];
       if (p) {
         const opWord = level?.op === '+' ? 'plus' : level?.op === '-' ? 'minus' : level?.op === '×' ? 'gånger' : 'delat med';
-        safeSpeak(`${p.a} ${opWord} ${p.b}`);
+        const message = `${p.a} ${opWord} ${p.b}`;
+
+        if (index === 0) {
+          // Delay first problem to avoid overlapping with level name speech
+          const timer = setTimeout(() => {
+            safeSpeak(message);
+          }, 2500);
+          return () => clearTimeout(timer);
+        } else {
+          safeSpeak(message);
+        }
       }
     }
-  }, [gameState, index, problems, settings.autoPlayInstructions]);
+  }, [gameState, index, problems, settings.autoPlayInstructions, level]);
 
   if (!activeProfile) return (<div className="p-8 text-center"><Button onClick={() => navigate('/')}>🏠 Gå till start</Button></div>);
 

@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useProfile } from '../contexts/ProfileContext';
 import { tracingGame } from '../data/tracingLevels';
 import Button from '../components/Button';
-import SpeakableText from '../components/SpeakableText';
 import LevelSelector from '../components/LevelSelector';
 import { useSettings } from '../contexts/SettingsContext';
 import { useSpeech } from '../contexts/SpeechContext';
@@ -19,7 +18,28 @@ const COLORS = [
   '#ec4899', // pink
   '#14b8a6', // teal
   '#000000', // black
+  '#0ea5e9', // sky blue
 ];
+
+const PRAISE_MESSAGES = [
+  "Bra jobbat!",
+  "Du gjorde helt rätt!",
+  "Fantastiskt spårat!",
+  "Superbra!",
+  "Snyggt skrivet!",
+  "Det där var perfekt!",
+  "Toppen!",
+  "Du klarade det galant!",
+  "Fortsätt så!",
+  "Så duktig du är!",
+  "Helt rätt!",
+  "Strålande!",
+  "Du följer linjerna jätte bra!",
+  "Imponerande!",
+  "Det där satt perfekt!",
+  "Heja dig!",
+  "Du fixade det!"
+] as const;
 
 const TracingGame: React.FC = () => {
   const navigate = useNavigate();
@@ -51,6 +71,7 @@ const TracingGame: React.FC = () => {
   const outsideCountRef = useRef<number>(0);
 
   const [fontLoaded, setFontLoaded] = useState(false);
+  const [praiseMessage, setPraiseMessage] = useState<string>('');
 
   useEffect(() => {
     const link = document.createElement('link');
@@ -67,6 +88,16 @@ const TracingGame: React.FC = () => {
     };
   }, []);
 
+  // Auto-play the target letter/word when level starts (if enabled)
+  useEffect(() => {
+    if (gameState === 'playing' && level && settings.autoPlayInstructions && !isMuted) {
+      const timer = setTimeout(() => {
+        speak(level.target);
+      }, 300); // Slight delay for UX
+      return () => clearTimeout(timer);
+    }
+  }, [gameState, selectedLevel, settings.autoPlayInstructions, level, speak, isMuted]);
+
   const toggleMute = () => {
     setIsMuted(prev => !prev);
   };
@@ -81,6 +112,7 @@ const TracingGame: React.FC = () => {
     setHasDrawn(false);
     setStreak(0);
     setDots([]);
+    setPraiseMessage('');
     clearCanvas();
   };
 
@@ -577,12 +609,17 @@ const TracingGame: React.FC = () => {
     playSound('complete');
     burstConfetti();
     setTimeout(fireConfetti, 500);
-    
+
+    // Select and speak random praise message
+    const randomPraise = PRAISE_MESSAGES[Math.floor(Math.random() * PRAISE_MESSAGES.length)];
+    setPraiseMessage(randomPraise);
+    speak(randomPraise);
+
     if (activeProfile && level) {
       completeLevel(tracingGame.id, level.id, stars);
       updateStars(stars);
     }
-    
+
     setGameState('complete');
   };
 
@@ -599,9 +636,9 @@ const TracingGame: React.FC = () => {
     const levelGroups = [
       { title: '🔠 Stora bokstäver', subtitle: 'A till Ö', levels: tracingGame.levels.slice(0, 29), color: 'from-blue-400 to-indigo-500', borderColor: 'border-blue-300/40' },
       { title: '🔤 Små bokstäver', subtitle: 'a till ö', levels: tracingGame.levels.slice(29, 58), color: 'from-green-400 to-emerald-500', borderColor: 'border-green-300/40' },
-      { title: '🔢 Siffror', subtitle: '1 till 9', levels: tracingGame.levels.slice(58, 67), color: 'from-orange-400 to-red-500', borderColor: 'border-orange-300/40' },
-      { title: '📝 Stora ord', subtitle: 'Lätta ord', levels: tracingGame.levels.slice(67, 87), color: 'from-purple-500 to-pink-500', borderColor: 'border-purple-300/40' },
-      { title: '✍️ Små ord', subtitle: 'Lätta ord', levels: tracingGame.levels.slice(87, 107), color: 'from-teal-400 to-cyan-500', borderColor: 'border-teal-300/40' },
+      { title: '🔢 Siffror', subtitle: '0 till 9', levels: tracingGame.levels.slice(58, 68), color: 'from-orange-400 to-red-500', borderColor: 'border-orange-300/40' },
+      { title: '📝 Stora ord', subtitle: 'Lätta ord', levels: tracingGame.levels.slice(68, 88), color: 'from-purple-500 to-pink-500', borderColor: 'border-purple-300/40' },
+      { title: '✍️ Små ord', subtitle: 'Lätta ord', levels: tracingGame.levels.slice(88, 108), color: 'from-teal-400 to-cyan-500', borderColor: 'border-teal-300/40' },
     ];
 
     const levelIcons: Record<number, React.ReactNode> = {};
@@ -661,11 +698,45 @@ const TracingGame: React.FC = () => {
       {/* Main Game Area */}
       {gameState === 'playing' && (
         <div className="flex-1 flex flex-col gap-4">
-          <div className="text-center flex items-center justify-center gap-2">
+          <div className="text-center flex items-center justify-center gap-3">
             <div className="text-2xl font-bold opacity-80">
               Spåra {level?.type === 'number' ? 'siffran' : level?.type === 'word' ? 'ordet' : 'bokstaven'} {level?.target}
             </div>
             {level?.emoji && <span className="text-3xl">{level.emoji}</span>}
+            {/* Custom speaker button */}
+            <button
+              onClick={() => speak(level.target)}
+              className="relative w-14 h-14 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-lg group"
+              style={{
+                background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), rgba(255,255,255,0.85))',
+                border: '3px solid var(--primary-color)'
+              }}
+              aria-label={
+                level?.type === 'number'
+                  ? `Lyssna på siffran ${level.target}`
+                  : level?.type === 'word'
+                  ? `Lyssna på ordet ${level.target}`
+                  : `Lyssna på bokstaven ${level.target}`
+              }
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-[var(--primary-color)]"
+              >
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              </svg>
+              {/* Ripple effect on hover */}
+              <span className="absolute inset-0 rounded-full border-2 border-[var(--primary-color)] opacity-0 group-hover:opacity-40 group-hover:animate-ping"></span>
+            </button>
           </div>
 
           <div 
@@ -716,7 +787,7 @@ const TracingGame: React.FC = () => {
           <div className="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl animate-in zoom-in-95 duration-500">
             <div className="text-6xl mb-4 animate-bounce" style={{ color: COLORS[(level?.id || 0) % COLORS.length] }}>{level?.badge}</div>
             <h2 className="text-3xl font-black mb-2 text-[var(--primary-color)]">Nivå Klar!</h2>
-            <p className="text-xl mb-6 font-medium">Du är fantastisk!</p>
+            <p className="text-xl mb-6 font-medium">{praiseMessage}</p>
             
             <div className="flex justify-center gap-2 mb-8">
               {[1, 2, 3].map(star => (

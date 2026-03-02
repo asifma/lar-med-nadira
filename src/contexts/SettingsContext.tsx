@@ -5,7 +5,7 @@ import { AppSettings } from '../types';
 const DEFAULT_SETTINGS: AppSettings = {
     adminPin: '1234',
     speechRate: 0.8,
-    autoPlayInstructions: false,
+    autoPlayInstructions: true,
     unlockedGames: [],
 };
 

@@ -25,8 +25,8 @@ const levels: TracingGameLevel[] = [];
   });
 });
 
-// 3. 1-9 (9 levels)
-'123456789'.split('').forEach(num => {
+// 3. 0-9 (10 levels)
+'0123456789'.split('').forEach(num => {
   levels.push({
     id: idCounter++,
     name: `Siffra ${num}`,
