@@ -9,21 +9,21 @@ Tack vare den nya standardiserade strukturen kan du lägga till ett komplett spe
 Skapa `src/data/yourGameLevels.ts`:
 
 ```typescript
-import type { GameDefinition, YourGameLevel } from '../types';
+import type { GameDefinition, YourGameLevel } from "../types";
 
 const levels: YourGameLevel[] = [
-  { id: 1, name: 'Nivå 1', badge: '🌟', /* dina properties */ },
+  { id: 1, name: "Nivå 1", badge: "🌟" /* dina properties */ },
   // ... 20 nivåer totalt
 ];
 
 export const yourGame: GameDefinition<YourGameLevel> = {
-  id: 'your-game',
-  name: 'Ditt Spelnamn',
-  icon: '🎮',
-  description: 'Kort beskrivning!',
-  route: '/spel/ditt-spelnamn',
-  illustration: 'YourGameCardIllustration',
-  levels
+  id: "your-game",
+  name: "Ditt Spelnamn",
+  icon: "🎮",
+  description: "Kort beskrivning!",
+  route: "/spel/ditt-spelnamn",
+  illustration: "YourGameCardIllustration",
+  levels,
 };
 ```
 
@@ -34,7 +34,11 @@ export interface YourGameLevel extends BaseGameLevel {
   yourProperty: string;
 }
 
-export type GameLevel = SpellingGameLevel | MathGameLevel | MemoryGameLevel | YourGameLevel;
+export type GameLevel =
+  | SpellingGameLevel
+  | MathGameLevel
+  | MemoryGameLevel
+  | YourGameLevel;
 ```
 
 ## 🎮 Steg 2: Spelkomponent (2 min)
@@ -61,13 +65,13 @@ export const YourGameCardIllustration: React.FC<{ className?: string }> = ({ cla
 I `src/data/gameRegistry.ts`:
 
 ```typescript
-import { yourGame } from './yourGameLevels';
+import { yourGame } from "./yourGameLevels";
 
 export const GAMES: GameDefinition[] = [
-  { ...abcGame, /* ... */ },
-  { ...mathGame, /* ... */ },
-  { ...memoryGame, /* ... */ },
-  { ...yourGame, /* ... */ },  // ← Lägg till här!
+  { ...abcGame /* ... */ },
+  { ...mathGame /* ... */ },
+  { ...memoryGame /* ... */ },
+  { ...yourGame /* ... */ }, // ← Lägg till här!
 ];
 ```
 
@@ -85,6 +89,7 @@ import YourGame from './pages/YourGame';
 ## ✅ Klart!
 
 Ditt spel visas nu automatiskt på:
+
 - ✅ Dashboard (spelkort)
 - ✅ Samlingssidan (märkessamling)
 - ✅ Alla teman fungerar
@@ -113,6 +118,7 @@ Se `src/pages/MemoryGame.tsx` för ett komplett exempel på ett enkelt memory-sp
 ## 🎉 Exempel: Memory-spelet
 
 Memory-spelet lades till med exakt dessa 5 steg och tog ~5 minuter. Kolla koden:
+
 - `src/data/memoryLevels.ts` - 60 rader
 - `src/pages/MemoryGame.tsx` - 180 rader
 - `src/components/GameCardIllustration.tsx` - 15 rader tillagda

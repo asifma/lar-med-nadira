@@ -9,12 +9,14 @@ Göra det enkelt för nya bidragsgivare att lägga till spel i Lär med Nadira.
 ### 1. Återanvändbara komponenter
 
 #### `src/components/GameCard.tsx`
+
 - Standardiserat spelkort för Dashboard
 - Stödjer illustration, badge, beskrivning
 - Automatisk navigation
 - Tema-kompatibel
 
 #### `src/components/LevelSelector.tsx`
+
 - Återanvändbar nivåväljare
 - Stödjer 4 svårighetsgrupper
 - Låsning/upplåsning
@@ -72,6 +74,7 @@ export const GAMES: GameDefinition[] = [
 ### 5. Exempel: Memory-spel
 
 Ett komplett memory-spel implementerades för att demonstrera hur enkelt det är:
+
 - 20 nivåer
 - 4 teman (djur, frukt, fordon, blandat)
 - Komplett spellogik
@@ -83,6 +86,7 @@ Ett komplett memory-spel implementerades för att demonstrera hur enkelt det är
 ### Före ❌
 
 För att lägga till ett spel behövde du:
+
 1. Skapa speldata
 2. Skapa spelkomponent med egen nivåväljare
 3. Manuellt lägga till spelkort i Dashboard
@@ -95,6 +99,7 @@ För att lägga till ett spel behövde du:
 ### Efter ✅
 
 För att lägga till ett spel behöver du:
+
 1. Skapa speldata
 2. Skapa spelkomponent (använd LevelSelector)
 3. Lägg till illustration
@@ -106,6 +111,7 @@ För att lägga till ett spel behöver du:
 ## 🎉 Fördelar
 
 ### För bidragsgivare
+
 - ✅ Tydlig struktur att följa
 - ✅ Återanvändbara komponenter
 - ✅ Mindre kod att skriva
@@ -114,6 +120,7 @@ För att lägga till ett spel behöver du:
 - ✅ Fungerande exempel (Memory-spel)
 
 ### För projektet
+
 - ✅ Konsekvent UI över alla spel
 - ✅ Enklare att underhålla
 - ✅ Lägre tröskel för bidrag
@@ -121,6 +128,7 @@ För att lägga till ett spel behöver du:
 - ✅ Färre buggar (mindre duplicerad kod)
 
 ### För användare
+
 - ✅ Konsekvent upplevelse
 - ✅ Fler spel snabbare
 - ✅ Högre kvalitet
@@ -128,16 +136,19 @@ För att lägga till ett spel behöver du:
 ## 📈 Mätbara resultat
 
 ### Kodreduktion
+
 - **Dashboard**: 60 rader → 5 rader (92% mindre)
 - **CollectionPage**: 40 rader → 5 rader (87% mindre)
 - **Nytt spel**: ~400 rader → ~265 rader (34% mindre)
 
 ### Tidsbesparing
+
 - **Före**: ~2-3 timmar att lägga till ett spel
 - **Efter**: ~5-10 minuter att lägga till ett spel
 - **Förbättring**: 95% snabbare!
 
 ### Underhåll
+
 - **Före**: Uppdatera 5+ filer för UI-ändringar
 - **Efter**: Uppdatera 1-2 komponenter
 - **Förbättring**: 70% mindre underhåll
@@ -152,12 +163,14 @@ För att lägga till ett spel behöver du:
 ## 🎓 Lärdomar
 
 ### Vad fungerade bra
+
 - Återanvändbara komponenter
 - TypeScript generics för flexibilitet
 - Single source of truth (gameRegistry)
 - Tydlig dokumentation
 
 ### Vad kan förbättras
+
 - Automatisk route-registrering (kräver build-step)
 - Automatisk illustration-registrering
 - Spel-generator CLI-tool
@@ -165,6 +178,7 @@ För att lägga till ett spel behöver du:
 ## 💡 Framtida förbättringar
 
 1. **CLI-tool för att scaffolda nya spel**
+
    ```bash
    npm run create-game -- --name "Minnes-Magi" --type memory
    ```

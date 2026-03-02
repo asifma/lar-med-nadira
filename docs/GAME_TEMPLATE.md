@@ -3,7 +3,7 @@
 ## Steg 1: Skapa speldata (`src/data/yourGameLevels.ts`)
 
 ```typescript
-import type { GameDefinition, YourGameLevel } from '../types';
+import type { GameDefinition, YourGameLevel } from "../types";
 
 // Om du behöver en ny nivåtyp, lägg först till den i src/types.ts:
 // export interface YourGameLevel extends BaseGameLevel {
@@ -12,20 +12,20 @@ import type { GameDefinition, YourGameLevel } from '../types';
 // }
 
 const levels: YourGameLevel[] = [
-  { id: 1, name: 'Nivå 1', badge: '🌟', /* dina properties */ },
-  { id: 2, name: 'Nivå 2', badge: '⭐', /* dina properties */ },
+  { id: 1, name: "Nivå 1", badge: "🌟" /* dina properties */ },
+  { id: 2, name: "Nivå 2", badge: "⭐" /* dina properties */ },
   // ... upp till 20 nivåer rekommenderas
 ];
 
 export const yourGame: GameDefinition<YourGameLevel> = {
-  id: 'your-game-id',                    // Unikt ID (lowercase, inga mellanslag)
-  name: 'Ditt Spelnamn',                 // Visningsnamn
-  icon: '🎮',                            // Emoji-ikon
-  description: 'Kort beskrivning!',      // Visas på spelkortet
-  route: '/spel/ditt-spelnamn',         // URL-sökväg
-  illustration: 'YourGameCardIllustration', // Komponentnamn
-  badge: 'Ny!',                          // Valfri: 'Ny!', 'Populärt!', etc.
-  levels
+  id: "your-game-id", // Unikt ID (lowercase, inga mellanslag)
+  name: "Ditt Spelnamn", // Visningsnamn
+  icon: "🎮", // Emoji-ikon
+  description: "Kort beskrivning!", // Visas på spelkortet
+  route: "/spel/ditt-spelnamn", // URL-sökväg
+  illustration: "YourGameCardIllustration", // Komponentnamn
+  badge: "Ny!", // Valfri: 'Ny!', 'Populärt!', etc.
+  levels,
 };
 
 export default yourGame;
@@ -45,13 +45,13 @@ import { yourGame } from '../data/yourGameLevels';
 
 const YourGame: React.FC = () => {
   const navigate = useNavigate();
-  const { 
-    activeProfile, 
-    updateStars, 
-    completeLevel, 
-    isLevelUnlocked, 
-    isLevelCompleted, 
-    getLevelStars 
+  const {
+    activeProfile,
+    updateStars,
+    completeLevel,
+    isLevelUnlocked,
+    isLevelCompleted,
+    getLevelStars
   } = useProfile();
   const { speak, stop } = useSpeech();
   const { isGameFullyUnlocked } = useSettings();
@@ -62,33 +62,33 @@ const YourGame: React.FC = () => {
 
   // Definiera nivågrupper (4 grupper med 5 nivåer vardera)
   const levelGroups = [
-    { 
-      title: '🌱 Nybörjare', 
-      subtitle: 'Enkla utmaningar', 
-      levels: yourGame.levels.slice(0, 5), 
-      color: 'from-green-400 to-emerald-500', 
-      borderColor: 'border-green-300/40' 
+    {
+      title: '🌱 Nybörjare',
+      subtitle: 'Enkla utmaningar',
+      levels: yourGame.levels.slice(0, 5),
+      color: 'from-green-400 to-emerald-500',
+      borderColor: 'border-green-300/40'
     },
-    { 
-      title: '📚 Mellannivå', 
-      subtitle: 'Lite svårare', 
-      levels: yourGame.levels.slice(5, 10), 
-      color: 'from-blue-400 to-indigo-500', 
-      borderColor: 'border-blue-300/40' 
+    {
+      title: '📚 Mellannivå',
+      subtitle: 'Lite svårare',
+      levels: yourGame.levels.slice(5, 10),
+      color: 'from-blue-400 to-indigo-500',
+      borderColor: 'border-blue-300/40'
     },
-    { 
-      title: '🔥 Utmanare', 
-      subtitle: 'Riktigt knepigt', 
-      levels: yourGame.levels.slice(10, 15), 
-      color: 'from-orange-400 to-red-500', 
-      borderColor: 'border-orange-300/40' 
+    {
+      title: '🔥 Utmanare',
+      subtitle: 'Riktigt knepigt',
+      levels: yourGame.levels.slice(10, 15),
+      color: 'from-orange-400 to-red-500',
+      borderColor: 'border-orange-300/40'
     },
-    { 
-      title: '👑 Mästare', 
-      subtitle: 'För experter', 
-      levels: yourGame.levels.slice(15, 20), 
-      color: 'from-purple-500 to-pink-500', 
-      borderColor: 'border-purple-300/40' 
+    {
+      title: '👑 Mästare',
+      subtitle: 'För experter',
+      levels: yourGame.levels.slice(15, 20),
+      color: 'from-purple-500 to-pink-500',
+      borderColor: 'border-purple-300/40'
     },
   ];
 
@@ -127,9 +127,9 @@ const YourGame: React.FC = () => {
   // ─── GAME COMPLETE ───
   if (gameState === 'complete') {
     const stars = correctCount >= 10 ? 3 : correctCount >= 7 ? 2 : correctCount >= 5 ? 1 : 0;
-    
+
     return (
-      <div 
+      <div
         className="min-h-screen flex flex-col items-center justify-center p-8 text-center space-y-8"
         style={{ background: 'var(--bg-gradient, var(--bg-color))' }}
       >
@@ -142,9 +142,9 @@ const YourGame: React.FC = () => {
         </div>
         <div className="flex gap-2">
           {[1, 2, 3].map(s => (
-            <span 
-              key={s} 
-              className={`text-5xl ${s <= stars ? 'animate-bounce' : 'opacity-20'}`} 
+            <span
+              key={s}
+              className={`text-5xl ${s <= stars ? 'animate-bounce' : 'opacity-20'}`}
               style={{ animationDelay: `${s * 0.15}s` }}
             >
               ⭐
@@ -172,20 +172,20 @@ const YourGame: React.FC = () => {
   const level = yourGame.levels.find(l => l.id === selectedLevel)!;
 
   return (
-    <div 
+    <div
       className="min-h-screen p-6 flex flex-col"
       style={{ background: 'var(--bg-gradient, var(--bg-color))' }}
     >
       {/* HUD */}
       <div className="relative flex items-center px-4 py-3 bg-white/10 backdrop-blur-md rounded-2xl shadow-sm mb-2 z-10 border border-white/20">
-        <button 
-          onClick={() => setGameState('selecting')} 
+        <button
+          onClick={() => setGameState('selecting')}
           className="text-3xl hover:scale-110 transition-transform z-10"
         >
           ←
         </button>
-        <h2 
-          className="absolute inset-0 flex items-center justify-center text-xl md:text-2xl font-black tracking-tight pointer-events-none" 
+        <h2
+          className="absolute inset-0 flex items-center justify-center text-xl md:text-2xl font-black tracking-tight pointer-events-none"
           style={{ color: 'var(--primary-color)' }}
         >
           Nivå {selectedLevel} — {level.name}
@@ -203,11 +203,11 @@ const YourGame: React.FC = () => {
         <div className="text-center">
           <h1 className="text-4xl font-black mb-4">Implementera din spellogik här!</h1>
           <p className="text-xl opacity-70">Nivå {selectedLevel}</p>
-          
+
           {/* Exempel: När spelaren lyckas */}
-          <Button 
-            variant="primary" 
-            size="lg" 
+          <Button
+            variant="primary"
+            size="lg"
             onClick={() => {
               updateStars(1);
               setCorrectCount(c => c + 1);

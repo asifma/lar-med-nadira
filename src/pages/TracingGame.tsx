@@ -172,6 +172,9 @@ const TracingGame: React.FC = () => {
     setFailShake(true);
     setStreak(0);
     clearCanvas();
+    if (!isMuted) {
+      speak("inte riktigt! försök igen!");
+    }
     setTimeout(() => setFailShake(false), 500);
   };
 

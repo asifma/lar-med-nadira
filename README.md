@@ -19,10 +19,10 @@
 
 <div align="center">
 
-| Enhörningsvärlden 🦄 | Hjältevärlden 🦸 |
-|:---:|:---:|
+|                       Enhörningsvärlden 🦄                        |                      Hjältevärlden 🦸                       |
+| :---------------------------------------------------------------: | :---------------------------------------------------------: |
 | ![Välkomstsida – Enhörning](docs/screenshots/welcome-unicorn.png) | ![Välkomstsida – Hjälte](docs/screenshots/welcome-hero.png) |
-| ![Dashboard – Enhörning](docs/screenshots/dashboard-unicorn.png) | ![Dashboard – Hjälte](docs/screenshots/dashboard-hero.png) |
+| ![Dashboard – Enhörning](docs/screenshots/dashboard-unicorn.png)  | ![Dashboard – Hjälte](docs/screenshots/dashboard-hero.png)  |
 
 </div>
 
@@ -41,6 +41,7 @@ Appen är byggd med öppen källkod för att möjliggöra för lärare, föräld
 ## ✨ Funktioner
 
 ### 🎮 Interaktiva Spel
+
 - **ABC-Äventyr**: 20 progressiva nivåer för stavningsträning
   - Nybörjare (nivå 1-5): Korta ord med full hjälp
   - Mellannivå (nivå 6-10): Medellånga ord
@@ -48,7 +49,6 @@ Appen är byggd med öppen källkod för att möjliggöra för lärare, föräld
   - Mästare (nivå 15-20): Avancerade ord utan hjälp
   - Svenskt tangentbord med Å, Ä, Ö
   - Text-till-tal för alla ord och instruktioner
-  
 - **Matte-Magi**: 20 nivåer med visuell matematik
   - Addition (nivå 1-5): 1+1 upp till 18+10
   - Subtraktion (nivå 6-10): 2-1 upp till 20-5
@@ -56,7 +56,6 @@ Appen är byggd med öppen källkod för att möjliggöra för lärare, föräld
   - Division (nivå 16-20): 2÷1 upp till 120÷10
   - Visuella representationer med emojis
   - Statiska problem anpassade för 6-9 år
-  
 - **Minnes-Mästaren**: 20 nivåer memory-spel
   - Djur (nivå 1-5): Hitta djurpar
   - Frukt (nivå 6-10): Fruktiga par
@@ -65,30 +64,54 @@ Appen är byggd med öppen källkod för att möjliggöra för lärare, föräld
   - Progressiv svårighetsgrad (4-16 par)
   - Streak-system och animationer
 
+- **Pussel-Palatset**: 10 nivåer med ordpussel
+  - Dra och släpp bokstäver för att bygga ord
+  - Visuella ledtrådar med emojis
+  - Progressiv svårighetsgrad från 2 till 5 bokstäver
+  - Interaktiv feedback och ljudstöd
+
+- **Spåra & Rita**: 29 nivåer för att lära sig skriva
+  - Spåra hela alfabetet (A-Ö)
+  - Interaktiv rityta med touch-stöd
+  - Visuella guider för hur bokstäverna formas
+  - Ljudstöd för varje bokstav
+
+### 🔊 Ljud & Röst
+
+- **Audio Sprite System**: Högkvalitativa förinspelade röster via Howler.js
+- **Sekventiell Uppläsning**: Läser upp matematiska problem steg för steg (t.ex. "5", "plus", "5")
+- **Web Speech API Fallback**: Automatisk fallback till enhetens inbyggda talsyntes
+- **Offline-stöd**: Alla ljud fungerar utan internetanslutning
+
 ### ⭐ Stjärnsystem
+
 - Få 1-3 stjärnor baserat på första försökets noggrannhet
 - Samla klistermärken för varje avklarad nivå
 - Spåra framsteg över tid
 
 ### 🎨 Två Magiska Teman
+
 - **Enhörningsvärlden** 🦄: Pastellfärger och magisk atmosfär
 - **Hjältevärlden** 🦸: Modig och äventyrlig design
 - Animerade bakgrundselement
 - Tema-anpassade färger och effekter
 
 ### 👤 Profilhantering
+
 - Flera barnprofiler per enhet
 - 24 roliga avatarer att välja mellan
 - Individuell framstegsspårning
 - Märkessamling för varje nivå
 
 ### 🔒 Säkerhet & Integritet
+
 - **Ingen datainsamling**: All data sparas lokalt
 - **Inga annonser**: 100% reklamfri upplevelse
 - **PIN-skyddad admin**: Föräldrakontroll
 - **Offline-först**: Fungerar utan internetanslutning
 
 ### 📊 Föräldrafunktioner
+
 - Framstegsspårning per barn
 - Anpassningsbara inställningar
 - Rösthastighetskontroll
@@ -100,7 +123,8 @@ Appen är byggd med öppen källkod för att möjliggöra för lärare, föräld
 ## 🚀 Kom Igång
 
 ### Förutsättningar
-- Node.js 18+ 
+
+- Node.js 18+
 - npm eller yarn
 
 ### Installation
@@ -140,7 +164,8 @@ npm run preview
 - **Routing**: React Router 7
 - **Build Tool**: Vite 6.2
 - **PWA**: Service Worker för offline-stöd
-- **Speech**: Web Speech API
+- **Audio**: Howler.js med Audio Sprites för blixtsnabb, offline-vänlig röst
+- **Speech Fallback**: Web Speech API
 
 ---
 
@@ -189,6 +214,7 @@ Tack vare vår standardiserade struktur är det superenkelt att lägga till nya 
 **⚡ Snabbstart**: [docs/QUICK_START_NEW_GAME.md](docs/QUICK_START_NEW_GAME.md) - Lägg till ett spel på 5 minuter!
 
 **📚 Mer resurser:**
+
 - [Detaljerad guide](docs/ADDING_GAMES.md) - Komplett guide med alla detaljer
 - [Spelmall](docs/GAME_TEMPLATE.md) - Kopiera och anpassa
 - [Checklista](docs/NEW_GAME_CHECKLIST.md) - Glöm inget
@@ -198,6 +224,7 @@ Tack vare vår standardiserade struktur är det superenkelt att lägga till nya 
 **🎯 Exempel**: Memory-spelet lades till på 5 minuter med bara 265 rader kod!
 
 **5 enkla steg:**
+
 1. Skapa speldata i `src/data/`
 2. Skapa spelkomponent i `src/pages/`
 3. Lägg till illustration
@@ -209,6 +236,7 @@ Tack vare vår standardiserade struktur är det superenkelt att lägga till nya 
 ### Hur du kan bidra
 
 #### 🎮 Lägg till nya spel
+
 Vill du skapa ett nytt spel? Fantastiskt! Följ dessa steg:
 
 1. Skapa en ny fil i `src/data/` (t.ex. `mathGame.ts`)
@@ -218,18 +246,22 @@ Vill du skapa ett nytt spel? Fantastiskt! Följ dessa steg:
 5. Testa grundligt med barn i målgruppen
 
 #### 📝 Förbättra ordlistor
+
 - Lägg till fler ord i `src/data/abcWords.ts`
 - Föreslå bättre emoji-representationer
 - Skapa tematiska ordlistor (djur, mat, etc.)
 
 #### 🎨 Design & UX
+
 - Föreslå nya teman
 - Förbättra animationer
 - Skapa nya avatarer
 - Designa märken och belöningar
 
 #### 🐛 Rapportera buggar
+
 Hittade du en bugg? [Skapa en issue](https://github.com/asifma/lar-med-nadira/issues) med:
+
 - Beskrivning av problemet
 - Steg för att återskapa
 - Förväntad vs faktisk beteende
@@ -251,6 +283,7 @@ Se [CONTRIBUTING.md](CONTRIBUTING.md) för detaljerade riktlinjer.
 ## 📋 Roadmap
 
 ### Version 1.1 (Klar) ✅
+
 - [x] Matte-Magi spel (addition, subtraktion, multiplikation, division)
 - [x] Minnes-Mästaren spel (memory-spel med olika teman)
 - [x] Standardiserad spelstruktur för enkla bidrag
@@ -258,19 +291,22 @@ Se [CONTRIBUTING.md](CONTRIBUTING.md) för detaljerade riktlinjer.
 - [x] Visuella framstegskort på dashboard
 - [x] Mute-knapp i alla spel
 
-### Version 1.2 (Planerad)
-- [ ] Pussel-Palats (logiska pussel)
+### Version 1.2 (Klar) ✅
+
+- [x] Pussel-Palatset (ordpussel med dra-och-släpp)
+- [x] Spåra & Rita (bokstavsspårning på canvas)
+- [x] Audio Sprite System (Howler.js) för högkvalitativa röster offline
+- [x] Sekventiell röstuppläsning för Matte-Magi
+
+### Version 1.3 (Planerad)
+
 - [ ] Dagliga utmaningar
 - [ ] Förbättrad statistik för föräldrar
 - [ ] Flerspråksstöd (engelska)
-
-### Version 1.3 (Framtida)
 - [ ] Anpassningsbara svårighetsgrader
-- [ ] Ljudeffekter och bakgrundsmusik
-- [ ] Exportera framstegsrapporter
-- [ ] Fler spel (geografi, klockan, etc.)
 
 ### Långsiktigt
+
 - [ ] Lärarportal för klassrumsanvändning
 - [ ] Community-skapade spel
 - [ ] Tillgänglighetsförbättringar
@@ -283,6 +319,7 @@ Se [CONTRIBUTING.md](CONTRIBUTING.md) för detaljerade riktlinjer.
 Detta projekt är licensierat under **PolyForm Noncommercial License 1.0.0** - se [LICENSE](LICENSE) filen för detaljer.
 
 **Vad betyder det?**
+
 - ✅ Du får använda, kopiera, modifiera och distribuera koden
 - ✅ Du måste ange Asif Mithawala som upphovsman
 - ❌ Du får **INTE** använda den kommersiellt
@@ -305,6 +342,7 @@ Lärande ska vara gratis och tillgängligt för alla barn. Denna licens säkerst
 ## 👨‍💻 Skapare
 
 **Asif Mithawala**
+
 - Website: [mithawala.com](https://mithawala.com/)
 - GitHub: [@asifma](https://github.com/asifma)
 
@@ -315,6 +353,7 @@ Utvecklad med ❤️ för att demokratisera lärande
 ## 📞 Support
 
 Har du frågor eller behöver hjälp?
+
 - 📧 Skapa en [GitHub Issue](https://github.com/asifma/lar-med-nadira/issues)
 - 💬 Starta en [Discussion](https://github.com/asifma/lar-med-nadira/discussions)
 

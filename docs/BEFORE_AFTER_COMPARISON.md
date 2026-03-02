@@ -9,6 +9,7 @@ Före standardiseringen var det svårt och tidskrävande att lägga till nya spe
 ### För att lägga till ett spel behövde du:
 
 #### 1. Dashboard.tsx (hårdkodat)
+
 ```typescript
 // Manuellt lägga till varje spelkort
 <div onClick={() => navigate('/spel/abc-aventyr/')} className="...">
@@ -29,15 +30,17 @@ Före standardiseringen var det svårt och tidskrävande att lägga till nya spe
 ```
 
 #### 2. CollectionPage.tsx (hårdkodat)
+
 ```typescript
 const ALL_GAMES = [abcGame, mathGame]; // Manuell array
 
 // Manuell import av varje spel
-import { abcGame } from '../data/abcWords';
-import { mathGame } from '../data/mathLevels';
+import { abcGame } from "../data/abcWords";
+import { mathGame } from "../data/mathLevels";
 ```
 
 #### 3. Varje spel hade egen nivåväljare
+
 ```typescript
 // SpellingGame.tsx - 150 rader nivåväljare
 // MathGame.tsx - 150 rader nivåväljare (duplicerad!)
@@ -45,6 +48,7 @@ import { mathGame } from '../data/mathLevels';
 ```
 
 ### Problem:
+
 - ❌ Mycket duplicerad kod
 - ❌ Svårt att hålla konsekvent
 - ❌ Många filer att uppdatera
@@ -59,20 +63,24 @@ import { mathGame } from '../data/mathLevels';
 ### För att lägga till ett spel behöver du:
 
 #### 1. Skapa speldata (src/data/memoryLevels.ts)
+
 ```typescript
 export const memoryGame: GameDefinition<MemoryGameLevel> = {
-  id: 'memory',
-  name: 'Minnes-Magi',
-  icon: '🧠',
-  description: 'Hitta matchande par!',
-  route: '/spel/minnes-magi',
-  illustration: 'MemoryCardIllustration',
-  badge: 'Ny!',
-  levels: [/* 20 nivåer */]
+  id: "memory",
+  name: "Minnes-Magi",
+  icon: "🧠",
+  description: "Hitta matchande par!",
+  route: "/spel/minnes-magi",
+  illustration: "MemoryCardIllustration",
+  badge: "Ny!",
+  levels: [
+    /* 20 nivåer */
+  ],
 };
 ```
 
 #### 2. Registrera (src/data/gameRegistry.ts)
+
 ```typescript
 export const GAMES: GameDefinition[] = [
   { ...abcGame, ... },
@@ -82,6 +90,7 @@ export const GAMES: GameDefinition[] = [
 ```
 
 #### 3. Dashboard.tsx (automatiskt!)
+
 ```typescript
 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
   {GAMES.map(game => (
@@ -91,6 +100,7 @@ export const GAMES: GameDefinition[] = [
 ```
 
 #### 4. CollectionPage.tsx (automatiskt!)
+
 ```typescript
 import GAMES from '../data/gameRegistry';  // ← Automatiskt!
 
@@ -98,6 +108,7 @@ import GAMES from '../data/gameRegistry';  // ← Automatiskt!
 ```
 
 #### 5. Använd LevelSelector (återanvänd!)
+
 ```typescript
 // I ditt spel
 <LevelSelector
@@ -110,6 +121,7 @@ import GAMES from '../data/gameRegistry';  // ← Automatiskt!
 ```
 
 ### Fördelar:
+
 - ✅ Minimal duplicering
 - ✅ Konsekvent UI
 - ✅ En fil att registrera i
@@ -121,18 +133,19 @@ import GAMES from '../data/gameRegistry';  // ← Automatiskt!
 
 ## 📊 Jämförelse
 
-| Aspekt | Före | Efter | Förbättring |
-|--------|------|-------|-------------|
-| **Rader kod för nytt spel** | ~400 | ~265 | 34% mindre |
-| **Filer att uppdatera** | 5+ | 3 | 40% färre |
-| **Duplicerad kod** | Hög | Minimal | 90% mindre |
-| **Tid att lägga till spel** | 2-3h | 5-10min | 95% snabbare |
-| **Konsistens** | Manuell | Automatisk | 100% bättre |
-| **Underhåll** | Svårt | Enkelt | 70% lättare |
+| Aspekt                      | Före    | Efter      | Förbättring  |
+| --------------------------- | ------- | ---------- | ------------ |
+| **Rader kod för nytt spel** | ~400    | ~265       | 34% mindre   |
+| **Filer att uppdatera**     | 5+      | 3          | 40% färre    |
+| **Duplicerad kod**          | Hög     | Minimal    | 90% mindre   |
+| **Tid att lägga till spel** | 2-3h    | 5-10min    | 95% snabbare |
+| **Konsistens**              | Manuell | Automatisk | 100% bättre  |
+| **Underhåll**               | Svårt   | Enkelt     | 70% lättare  |
 
 ## 🎯 Konkret exempel: Memory-spelet
 
 ### Före (hypotetiskt)
+
 ```
 1. Skapa memoryLevels.ts           → 60 rader
 2. Skapa MemoryGame.tsx             → 350 rader (inkl. nivåväljare)
@@ -146,6 +159,7 @@ Totalt: ~462 rader, 2-3 timmar
 ```
 
 ### Efter (faktiskt)
+
 ```
 1. Skapa memoryLevels.ts           → 60 rader
 2. Skapa MemoryGame.tsx             → 180 rader (använder LevelSelector!)
@@ -159,6 +173,7 @@ Totalt: ~265 rader, 5-10 minuter
 ```
 
 ### Resultat
+
 - **57% mindre kod**
 - **95% snabbare**
 - **100% konsekvent**
@@ -169,6 +184,7 @@ Totalt: ~265 rader, 5-10 minuter
 När du registrerar ett spel i `gameRegistry.ts`:
 
 ### ✅ Dashboard
+
 - Spelkort visas automatiskt
 - Rätt illustration laddas
 - Navigation fungerar
@@ -176,17 +192,20 @@ När du registrerar ett spel i `gameRegistry.ts`:
 - Tema-styling appliceras
 
 ### ✅ Collection Page
+
 - Spelet visas i listan
 - Märken visas i grid
 - Framstegsmätare fungerar
 - Stjärnor räknas
 
 ### ✅ Navigation
+
 - Route fungerar
 - Tillbaka-knappar fungerar
 - Deep linking fungerar
 
 ### ✅ Profil
+
 - Framsteg sparas
 - Stjärnor räknas
 - Nivåer låses upp
@@ -195,6 +214,7 @@ När du registrerar ett spel i `gameRegistry.ts`:
 ## 💡 Nyckeln till framgång
 
 ### Single Source of Truth
+
 ```typescript
 // gameRegistry.ts
 export const GAMES = [game1, game2, game3];
@@ -203,27 +223,31 @@ export const GAMES = [game1, game2, game3];
 ```
 
 ### Återanvändbara komponenter
+
 ```typescript
 <GameCard game={game} />        // Istället för 30 rader
 <LevelSelector {...props} />    // Istället för 150 rader
 ```
 
 ### TypeScript generics
+
 ```typescript
-GameDefinition<SpellingGameLevel>  // Flexibel men typsäker
-GameDefinition<MathGameLevel>
-GameDefinition<MemoryGameLevel>
+GameDefinition<SpellingGameLevel>; // Flexibel men typsäker
+GameDefinition<MathGameLevel>;
+GameDefinition<MemoryGameLevel>;
 ```
 
 ## 🎓 Lärdomar
 
 ### Vad vi lärde oss
+
 1. **DRY (Don't Repeat Yourself)** - Återanvänd komponenter
 2. **Single Source of Truth** - En plats för all speldata
 3. **Convention over Configuration** - Följ mönstret, det fungerar
 4. **Progressive Enhancement** - Börja enkelt, lägg till mer sen
 
 ### Vad vi undvek
+
 1. ❌ Över-abstraktion - Inte för komplext
 2. ❌ Över-konfiguration - Inte för många options
 3. ❌ Premature optimization - Gör det enkelt först

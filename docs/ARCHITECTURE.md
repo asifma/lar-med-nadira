@@ -34,7 +34,7 @@
 ```
 Dashboard.tsx
 ├── Hårdkodad ABC-kort
-├── Hårdkodad Math-kort  
+├── Hårdkodad Math-kort
 └── Hårdkodad Puzzle-kort
 
 CollectionPage.tsx
@@ -134,13 +134,14 @@ CollectionPage → visar märken
 ### GameCard (Återanvändbar)
 
 ```typescript
-<GameCard 
+<GameCard
   game={gameDefinition}  // Från gameRegistry
   isComingSoon={false}   // Valfri
 />
 ```
 
 **Vad den gör:**
+
 - Visar spelikon, namn, beskrivning
 - Hanterar navigation till spelet
 - Visar badge ("Ny!", "Populärt!")
@@ -164,6 +165,7 @@ CollectionPage → visar märken
 ```
 
 **Vad den gör:**
+
 - Visar alla nivåer i grupper
 - Hanterar låsning/upplåsning
 - Visar stjärnor och märken
@@ -176,16 +178,10 @@ Appen använder CSS-variabler för teman:
 
 ```css
 /* Unicorn Theme */
---primary-color: #FF6B9D
---secondary-color: #C77DFF
---accent-color: #FFD93D
---bg-gradient: linear-gradient(...)
-
-/* Hero Theme */
---primary-color: #FF6B35
---secondary-color: #004E89
---accent-color: #FFD23F
---bg-gradient: linear-gradient(...)
+--primary-color: #ff6b9d --secondary-color: #c77dff --accent-color: #ffd93d
+  --bg-gradient: linear-gradient(...) /* Hero Theme */ --primary-color: #ff6b35
+  --secondary-color: #004e89 --accent-color: #ffd23f
+  --bg-gradient: linear-gradient(...);
 ```
 
 Alla komponenter använder dessa variabler automatiskt!
@@ -203,30 +199,34 @@ localStorage
 ## 🔌 Hooks & Contexts
 
 ### useProfile()
+
 ```typescript
 const {
-  activeProfile,           // Aktiv profil
-  updateStars,            // Lägg till stjärnor
-  completeLevel,          // Markera nivå som klar
-  isLevelUnlocked,        // Kolla om nivå är upplåst
-  isLevelCompleted,       // Kolla om nivå är klar
-  getLevelStars,          // Hämta stjärnor för nivå
+  activeProfile, // Aktiv profil
+  updateStars, // Lägg till stjärnor
+  completeLevel, // Markera nivå som klar
+  isLevelUnlocked, // Kolla om nivå är upplåst
+  isLevelCompleted, // Kolla om nivå är klar
+  getLevelStars, // Hämta stjärnor för nivå
 } = useProfile();
 ```
 
 ### useSpeech()
+
 ```typescript
 const {
-  speak,    // Spela upp text
-  stop,     // Stoppa uppspelning
+  speak, // Spela upp text (använder audio sprite eller talsyntes)
+  speakSequence, // Spela upp en sekvens av texter med paus emellan
+  stop, // Stoppa uppspelning
 } = useSpeech();
 ```
 
 ### useSettings()
+
 ```typescript
 const {
-  settings,              // AppSettings
-  isGameFullyUnlocked,   // Kolla om spel är upplåst
+  settings, // AppSettings
+  isGameFullyUnlocked, // Kolla om spel är upplåst
 } = useSettings();
 ```
 
@@ -247,6 +247,7 @@ npm run dev
 ```
 
 Testa:
+
 1. Spelkort visas på Dashboard ✓
 2. Klicka på kort → navigerar till spel ✓
 3. Nivåväljare visas korrekt ✓

@@ -18,24 +18,26 @@ Att lägga till ett nytt spel kräver 5 enkla steg:
 
 Skapa en ny fil i `src/data/` för ditt spel (t.ex. `memoryLevels.ts`):
 
+> **💡 Tips om Ljud:** Om ditt spel använder nya ord eller fraser som ska läsas upp, kom ihåg att uppdatera `public/audio/sprite.json` och `public/audio/sprite.mp3` så att de fungerar offline med hög kvalitet!
+
 ```typescript
-import type { GameDefinition, MemoryGameLevel } from '../types';
+import type { GameDefinition, MemoryGameLevel } from "../types";
 
 const levels: MemoryGameLevel[] = [
-  { id: 1, name: 'Enkla par', pairs: 4, theme: 'animals', badge: '🐶' },
-  { id: 2, name: 'Fler par', pairs: 6, theme: 'animals', badge: '🐱' },
+  { id: 1, name: "Enkla par", pairs: 4, theme: "animals", badge: "🐶" },
+  { id: 2, name: "Fler par", pairs: 6, theme: "animals", badge: "🐱" },
   // ... lägg till fler nivåer
 ];
 
 export const memoryGame: GameDefinition<MemoryGameLevel> = {
-  id: 'memory',
-  name: 'Minnes-Mästaren',                   // Namn som visas i UI
-  icon: '🧠',                                // Emoji för spelet
-  description: 'Hitta matchande par!',      // Kort beskrivning
-  route: '/spel/minnes-mastaren',           // URL-sökväg
-  illustration: 'MemoryCardIllustration',   // Komponentnamn för kortet
-  badge: 'Ny!',                             // Valfri badge (Ny!, Populärt!, etc.)
-  levels
+  id: "memory",
+  name: "Minnes-Mästaren", // Namn som visas i UI
+  icon: "🧠", // Emoji för spelet
+  description: "Hitta matchande par!", // Kort beskrivning
+  route: "/spel/minnes-mastaren", // URL-sökväg
+  illustration: "MemoryCardIllustration", // Komponentnamn för kortet
+  badge: "Ny!", // Valfri badge (Ny!, Populärt!, etc.)
+  levels,
 };
 
 export default memoryGame;
@@ -82,12 +84,12 @@ const MemoryGame: React.FC = () => {
 
   // Define level groups for the selector
   const levelGroups = [
-    { 
-      title: '🐾 Djur', 
-      subtitle: 'Hitta djurpar', 
-      levels: memoryGame.levels.slice(0, 5), 
-      color: 'from-green-400 to-emerald-500', 
-      borderColor: 'border-green-300/40' 
+    {
+      title: '🐾 Djur',
+      subtitle: 'Hitta djurpar',
+      levels: memoryGame.levels.slice(0, 5),
+      color: 'from-green-400 to-emerald-500',
+      borderColor: 'border-green-300/40'
     },
     // ... fler grupper
   ];
@@ -132,7 +134,7 @@ const MemoryGame: React.FC = () => {
   // Game completion screen
   if (gameState === 'complete') {
     const stars = firstAttemptCorrect >= 10 ? 3 : firstAttemptCorrect >= 7 ? 2 : firstAttemptCorrect >= 5 ? 1 : 0;
-    
+
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-8 text-center">
         <div className="text-8xl mb-4">🎉</div>
@@ -191,12 +193,12 @@ export const MemoryCardIllustration: React.FC<{ className?: string }> = ({ class
 Öppna `src/data/gameRegistry.ts` och lägg till ditt spel:
 
 ```typescript
-import { memoryGame } from './memoryLevels';
+import { memoryGame } from "./memoryLevels";
 
 export const GAMES: GameDefinition[] = [
-  { ...abcGame, /* ... */ },
-  { ...mathGame, /* ... */ },
-  { ...memoryGame, /* ... */ },  // ← Lägg till här!
+  { ...abcGame /* ... */ },
+  { ...mathGame /* ... */ },
+  { ...memoryGame /* ... */ }, // ← Lägg till här!
 ];
 ```
 
@@ -214,6 +216,7 @@ import MemoryGame from './pages/MemoryGame';
 ## ✅ Klart!
 
 Ditt spel visas nu automatiskt på:
+
 - Dashboard (spelkort)
 - Samlingssidan (märkessamling)
 - Bottom navigation (om relevant)
@@ -232,6 +235,7 @@ Använd dessa färgscheman för konsekvens:
 ### Stjärnsystem
 
 Använd samma stjärnsystem för konsekvens (baserat på första försökets noggrannhet):
+
 - 3 stjärnor: 10/10 rätt på första försöket
 - 2 stjärnor: 7-9/10 rätt på första försöket
 - 1 stjärna: 5-6/10 rätt på första försöket

@@ -12,13 +12,16 @@ Använd denna checklista när du lägger till ett nytt spel.
 ## 🛠️ Implementation
 
 ### Steg 1: Speldata
+
 - [ ] Skapa `src/data/yourGameLevels.ts`
 - [ ] Definiera nivåtyp i `src/types.ts` (om ny typ behövs)
 - [ ] Skapa 20 nivåer med progressiv svårighet
 - [ ] Exportera `GameDefinition<YourGameLevel>`
 - [ ] Inkludera: id, name, icon, description, route, illustration, levels
+- [ ] Uppdatera `public/audio/sprite.json` och `sprite.mp3` om spelet kräver nya ord/ljud
 
 ### Steg 2: Spelkomponent
+
 - [ ] Skapa `src/pages/YourGame.tsx`
 - [ ] Implementera tre states: 'selecting', 'playing', 'complete'
 - [ ] Använd `LevelSelector` för nivåval
@@ -29,18 +32,21 @@ Använd denna checklista när du lägger till ett nytt spel.
 - [ ] Använd `useSpeech()` för text-till-tal (valfritt)
 
 ### Steg 3: Illustration
+
 - [ ] Öppna `src/components/GameCardIllustration.tsx`
 - [ ] Lägg till `YourGameCardIllustration` komponent
 - [ ] Använd SVG eller emoji
 - [ ] Testa att den ser bra ut i båda teman
 
 ### Steg 4: Registrering
+
 - [ ] Öppna `src/data/gameRegistry.ts`
 - [ ] Importera ditt spel
 - [ ] Lägg till i `GAMES` array
 - [ ] Verifiera alla properties är ifyllda
 
 ### Steg 5: Route
+
 - [ ] Öppna `src/App.tsx`
 - [ ] Importera din spelkomponent
 - [ ] Lägg till `<Route path="..." element={<YourGame />} />`
@@ -48,6 +54,7 @@ Använd denna checklista när du lägger till ett nytt spel.
 ## 🧪 Testning
 
 ### Funktionalitet
+
 - [ ] Spelkort visas på Dashboard
 - [ ] Klick på kort navigerar till spel
 - [ ] Nivåväljare visas korrekt
@@ -61,6 +68,7 @@ Använd denna checklista när du lägger till ett nytt spel.
 - [ ] Framsteg sparas mellan sessioner
 
 ### UI/UX
+
 - [ ] Enhörningstema ser bra ut
 - [ ] Hjältetema ser bra ut
 - [ ] Responsiv på mobil (320px+)
@@ -71,6 +79,7 @@ Använd denna checklista när du lägger till ett nytt spel.
 - [ ] Text är läsbar i båda teman
 
 ### Tillgänglighet
+
 - [ ] Text-till-tal fungerar (om implementerat)
 - [ ] Knappar har hover-states
 - [ ] Fokus-states är synliga
@@ -78,6 +87,7 @@ Använd denna checklista när du lägger till ett nytt spel.
 - [ ] Touch-targets är minst 44x44px
 
 ### Prestanda
+
 - [ ] Inga console errors
 - [ ] Inga console warnings
 - [ ] Spelet laddar snabbt (<1s)
@@ -85,6 +95,7 @@ Använd denna checklista när du lägger till ett nytt spel.
 - [ ] Ingen memory leak vid upprepade spel
 
 ### Webbläsare
+
 - [ ] Chrome/Edge (senaste)
 - [ ] Firefox (senaste)
 - [ ] Safari (senaste)
@@ -136,6 +147,7 @@ Använd denna checklista när du lägger till ett nytt spel.
 
 ## 📞 Hjälp
 
-Behöver du hjälp? 
+Behöver du hjälp?
+
 - 💬 [GitHub Discussions](https://github.com/asifma/lar-med-nadira/discussions)
 - 🐛 [GitHub Issues](https://github.com/asifma/lar-med-nadira/issues)

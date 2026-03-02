@@ -509,8 +509,38 @@ const PuzzleGame: React.FC = () => {
       </div>
 
       {/* Game Area */}
-      <div className="flex-1 flex flex-col items-center pt-8 w-full max-w-md mx-auto relative">
+      <div className="flex-1 flex flex-col items-center pt-4 w-full max-w-md mx-auto relative">
         
+        {/* Speaker Button */}
+        <div className="mb-6 flex justify-center z-10">
+          <button
+            onClick={() => speak(currentPuzzle.word)}
+            className="relative w-14 h-14 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-lg group"
+            style={{
+              background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), rgba(255,255,255,0.85))',
+              border: '3px solid var(--primary-color)'
+            }}
+            aria-label={`Lyssna på ordet ${currentPuzzle.word}`}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-[var(--primary-color)]"
+            >
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            </svg>
+            <span className="absolute inset-0 rounded-full border-2 border-[var(--primary-color)] opacity-0 group-hover:opacity-40 group-hover:animate-ping"></span>
+          </button>
+        </div>
+
         {/* Board Area */}
         <div 
           className="relative rounded-3xl border-4 border-white/20 bg-black/10 shadow-inner"

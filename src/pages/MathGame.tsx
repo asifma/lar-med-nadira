@@ -42,7 +42,7 @@ const MathGame: React.FC = () => {
   const [hasAttempted, setHasAttempted] = useState(false); // Track if current question was attempted
   const [feedback, setFeedback] = useState<'none'|'correct'|'wrong'>('none');
   const [streak, setStreak] = useState(0);
-  const { speak, stop } = useSpeech();
+  const { speak, speakSequence, stop } = useSpeech();
   const [isMuted, setIsMuted] = useState(false);
   const isCheckingRef = React.useRef(false);
 
@@ -53,10 +53,15 @@ const MathGame: React.FC = () => {
     });
   };
 
-  const safeSpeak = (text: string) => {
+  const safeSpeak = useCallback((text: string) => {
     if (isMuted) return;
     speak(text);
-  };
+  }, [isMuted, speak]);
+
+  const safeSpeakSequence = useCallback((texts: string[]) => {
+    if (isMuted) return;
+    speakSequence(texts);
+  }, [isMuted, speakSequence]);
 
   useEffect(() => {
     if (gameState === 'complete') {
@@ -150,20 +155,20 @@ const MathGame: React.FC = () => {
       const p = problems[index];
       if (p) {
         const opWord = level?.op === '+' ? 'plus' : level?.op === '-' ? 'minus' : level?.op === '×' ? 'gånger' : 'delat med';
-        const message = `${p.a} ${opWord} ${p.b}`;
+        const sequence = [p.a.toString(), opWord, p.b.toString()];
 
         if (index === 0) {
           // Delay first problem to avoid overlapping with level name speech
           const timer = setTimeout(() => {
-            safeSpeak(message);
+            safeSpeakSequence(sequence);
           }, 2500);
           return () => clearTimeout(timer);
         } else {
-          safeSpeak(message);
+          safeSpeakSequence(sequence);
         }
       }
     }
-  }, [gameState, index, problems, settings.autoPlayInstructions, level]);
+  }, [gameState, index, problems, settings.autoPlayInstructions, level, safeSpeakSequence]);
 
   if (!activeProfile) return (<div className="p-8 text-center"><Button onClick={() => navigate('/')}>🏠 Gå till start</Button></div>);
 
@@ -408,7 +413,7 @@ const MathGame: React.FC = () => {
             <button
               onClick={() => {
                 const opWord = level?.op === '+' ? 'plus' : level?.op === '-' ? 'minus' : level?.op === '×' ? 'gånger' : 'delat med';
-                safeSpeak(`${p.a} ${opWord} ${p.b}`);
+                safeSpeakSequence([p.a.toString(), opWord, p.b.toString()]);
               }}
               className="text-2xl hover:scale-110 transition-transform"
               title="Spela upp fråga"
